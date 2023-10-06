@@ -3,47 +3,66 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/09/07 19:38:09 by tanas            ###   ########.fr        #
+#    Updated: 2023/10/07 00:41:41 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3D
-C_FLAGS = -Wall -Wextra -Werror -O3
-LIBRARY_FLAGS = -lmlx -lm -lft -Llibft/ -Lmlx-macos/ -framework OpenGL -framework AppKit
-INCLUDES = -Iincludes/ -Ilibft/includes -Imlx-macos/
-HEADERS = includes/cub3D.h
-
-SRCS_DIR = sources/
-SRCS_LIST = main.c
-SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
-
-OBJS_DIR = objects/
-OBJS_LIST = $(SRCS_LIST:.c=.o)
-OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
-
-LIBFT = libft/libft.a
-MINILIBX = mlx-macos/libmlx.a
-
-# colours
+# ---------------------------------------------------------------------------- #
+#                                    colors                                    #
+# ---------------------------------------------------------------------------- #
 GREEN = "\033[1;32m"
 RED = "\033[1;3;31m"
 BLUE = "\033[3;34m"
 YELLOW = "\033[0;33m"
 RESET = "\033[0m"
+NAME = cub3D
+# ---------------------------------------------------------------------------- #
+#                                   variables                                  #
+# ---------------------------------------------------------------------------- #
+CC:= cc
+CFLAGS:= -Wall -Wextra -Werror -O3
 
+UNAME:= $(shell uname)
+ifeq ($(UNAME), Linux)
+	LIBRARY_FLAGS:= -Lmlx_linux/ -lmlx -lmlx_Linux -Llibft/ -lft -L/usr/lib -lXext -lX11 -lm -lz
+	INCLUDES = -Iincludes/ -Ilibft/includes -Imlx_linux/ -I/usr/include
+	MLX_DIR:= mlx_linux/
+endif
+ifeq ($(UNAME), MacOS)
+	LIBRARY_FLAGS = -lmlx -lm -lft -Llibft/ -Lmlx-macos/ -framework OpenGL -framework AppKit
+	INCLUDES = -Iincludes/ -Ilibft/includes -Imlx-macos/
+	MLX_DIR:= mlx-macos/
+endif
+
+SRCS_DIR = sources/
+SRCS = main.c mlx_core.c utils.c
+
+OBJS_DIR = objects/
+OBJS = $(SRCS:%.c=$(OBJS_DIR)%.o)
+
+LIBFT = libft/libft.a
+MINILIBX = $(MLX_DIR)libmlx.a
+# ---------------------------------------------------------------------------- #
+#                                    targets                                   #
+# ---------------------------------------------------------------------------- #
 all : $(NAME)
 
+run : all
+	./$(NAME)
+
 $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
-	@cc $(C_FLAGS) $(LIBRARY_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS)  $(INCLUDES) $(OBJS) -o $(NAME) $(LIBRARY_FLAGS)
 	@echo $(GREEN)"cub3D ready for play."$(RESET)
 
-$(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HEADERS)
-	@mkdir -p $(OBJS_DIR)
-	@cc $(C_FLAGS) -c $(INCLUDES) $< -o $@
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.c | $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $(LIBRARY_FLAGS) $(INCLUDES) $< -o $@
 	@echo $(BLUE)"Compiling $<."$(RESET)
+
+$(OBJS_DIR) :
+	@mkdir -p $(OBJS_DIR)
 
 $(LIBFT) :
 	@echo $(YELLOW)"Creating $(LIBFT)"$(RESET)
@@ -52,12 +71,12 @@ $(LIBFT) :
 
 $(MINILIBX) :
 	@echo $(YELLOW)"Creating $(MINILIBX)"$(RESET)
-	@make -sC mlx-macos
+	@make -sC $(MLX_DIR)
 	@echo $(GREEN)"MLX Library is ready. ✅\n"$(RESET)
 
 clean :
 	@make clean -sC libft
-	@make clean -sC mlx-macos
+	@make clean -sC $(MLX_DIR)
 	@rm -rf $(OBJS_DIR)
 	@echo $(RED)"\nRemoving object directory and files"$(RESET)
 
