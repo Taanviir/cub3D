@@ -19,7 +19,18 @@ t_mlx	*init_mlx_core()
 
 /* --------------------------------- events --------------------------------- */
 
-int	close_mlx(int keycode, t_mlx *mlx_core)
+int	no_event(void)
+{
+	return (0);
+}
+int	key_hook(int keysym, t_mlx *mlx_core)
+{
+	if (keysym == XK_Escape)
+		close_mlx(mlx_core);
+	return 0;
+}
+
+int	close_mlx(t_mlx *mlx_core)
 {
 	mlx_destroy_window(mlx_core->mlx, mlx_core->window);
 	free(mlx_core);

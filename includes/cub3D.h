@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/07 00:52:28 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/07 23:56:04 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <libft.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <X11/keysym.h>
 /* ----------------------------- error messages ----------------------------- */
 #define MALLOC_FAIL "failed to allocate memory"
 #define MLX_INIT_FAIL "failed to initialize mlx"
@@ -32,6 +33,12 @@ typedef struct s_mlx {
 } t_mlx;
 
 t_mlx	*init_mlx_core();
+/* --------------------------------- events --------------------------------- */
+#define KEYPRESS 2
+
+int	no_event(void);
+int key_hook(int keycode, t_mlx *mlx_core);
+int	close_mlx(t_mlx *mlx_core);
 /* -------------------------------------------------------------------------- */
 /*                                    utils                                   */
 /* -------------------------------------------------------------------------- */
