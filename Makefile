@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/10/07 16:47:19 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/10/07 23:37:29 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ NAME = cub3D
 # ---------------------------------------------------------------------------- #
 CC:= gcc
 CFLAGS:= -Wall -Wextra -Werror -O3
-IS_LINUX = 0
+
 UNAME:= $(shell uname)
 ifeq ($(UNAME), Linux)
 	LIBRARY_FLAGS:= -Lmlx_linux/ -lmlx -lmlx_Linux -Llibft/ -lft -L/usr/lib -lXext -lX11 -lm -lz
@@ -57,11 +57,11 @@ run : all
 	./$(NAME)
 
 $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
-	$(CC) $(CFLAGS)  $(INCLUDES) $(LIBRARY_FLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS)  $(INCLUDES)  $(OBJS) -o $(NAME) $(LIBRARY_FLAGS)
 	@echo $(GREEN)"cub3D ready for play."$(RESET)
 
 $(OBJS_DIR)/%.o : $(SRCS_DIR)%.c | $(OBJS_DIR)
-	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+	@$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	@echo $(BLUE)"Compiling $<."$(RESET)
 
 $(OBJS_DIR) :
