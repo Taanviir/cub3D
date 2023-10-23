@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/10/07 23:37:29 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/10/23 12:38:55 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,22 +24,22 @@ NAME = cub3D
 # ---------------------------------------------------------------------------- #
 CC:= gcc
 CFLAGS:= -Wall -Wextra -Werror -O3
-
+# ---------------------------------------------------------------------------- #
 UNAME:= $(shell uname)
+LIBRARY_FLAGS:= -Llibft/ -lft -lm -lz
+
 ifeq ($(UNAME), Linux)
 	LIBRARY_FLAGS:= -Lmlx_linux/ -lmlx -lmlx_Linux -Llibft/ -lft -L/usr/lib -lXext -lX11 -lm -lz
-	INCLUDES = -Iincludes/ -Ilibft/includes -Imlx_linux/ -I/usr/include
+	INCLUDES = -Iincludes/ -Ilibft/includes -Imlx_linux/ -I/usr/include -DLINUX
 	MLX_DIR:= mlx_linux/
 endif
 ifeq ($(UNAME), Darwin)
-	LIBRARY_FLAGS = -Llibft/ -Lmlx_macos -lmlx -lm -lft -framework OpenGL -framework AppKit
+	LIBRARY_FLAGS := -Llibft/ -Lmlx_macos -lmlx -lm -lft -framework OpenGL -framework AppKit
 	INCLUDES = -Iincludes/ -Ilibft/includes -Imlx_macos/
 	MLX_DIR:= mlx_macos/
 	IS_LINUX = 1
 endif
-
-TRUE = 1
-
+# ---------------------------------------------------------------------------- #
 SRCS_DIR = sources/
 SRCS = main.c mlx_core.c utils.c
 

@@ -25,8 +25,13 @@ int	no_event(void)
 }
 int	key_hook(int keysym, t_mlx *mlx_core)
 {
-	if (keysym == XK_Escape)
+
+	if (keysym == ESCAPE)
+	{
+		//! make sure to free
 		close_mlx(mlx_core);
+		exit(0);
+	}
 	return 0;
 }
 
