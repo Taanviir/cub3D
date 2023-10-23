@@ -3,44 +3,39 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/10/23 12:38:55 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/10/23 16:40:31 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# ---------------------------------------------------------------------------- #
-#                                    colors                                    #
-# ---------------------------------------------------------------------------- #
-GREEN = "\033[1;32m"
-RED = "\033[1;3;31m"
-BLUE = "\033[3;34m"
-YELLOW = "\033[0;33m"
-RESET = "\033[0m"
-NAME = cub3D
-# ---------------------------------------------------------------------------- #
-#                                   variables                                  #
-# ---------------------------------------------------------------------------- #
-CC:= gcc
-CFLAGS:= -Wall -Wextra -Werror -O3
-# ---------------------------------------------------------------------------- #
-UNAME:= $(shell uname)
-LIBRARY_FLAGS:= -Llibft/ -lft -lm -lz
+# ---------------------------------- colors ---------------------------------- #
+GREEN := "\033[1;32m"
+RED := "\033[1;3;31m"
+BLUE := "\033[3;34m"
+YELLOW := "\033[0;33m"
+RESET := "\033[0m"
+
+# --------------------------------- variables -------------------------------- #
+NAME := cub3D
+CC := gcc
+CFLAGS := -Wall -Wextra -Werror -O3
+UNAME := $(shell uname)
+LIBRARY_FLAGS := -Llibft/ -lft -lm -lz -lmlx -Llibft/
+INCLUDES := -Iincludes/ -Ilibft/includes
 
 ifeq ($(UNAME), Linux)
-	LIBRARY_FLAGS:= -Lmlx_linux/ -lmlx -lmlx_Linux -Llibft/ -lft -L/usr/lib -lXext -lX11 -lm -lz
-	INCLUDES = -Iincludes/ -Ilibft/includes -Imlx_linux/ -I/usr/include -DLINUX
-	MLX_DIR:= mlx_linux/
+	LIBRARY_FLAGS += -Lmlx_linux/ -lmlx_Linux -L/usr/lib -lXext -lX11
+	INCLUDES += -Imlx_linux/ -I/usr/include -DLINUX
+	MLX_DIR := mlx_linux/
+else ifeq ($(UNAME), Darwin)
+	LIBRARY_FLAGS += -Lmlx_macos/ -framework OpenGL -framework AppKit
+	INCLUDES += -Imlx_macos/
+	MLX_DIR := mlx_macos/
 endif
-ifeq ($(UNAME), Darwin)
-	LIBRARY_FLAGS := -Llibft/ -Lmlx_macos -lmlx -lm -lft -framework OpenGL -framework AppKit
-	INCLUDES = -Iincludes/ -Ilibft/includes -Imlx_macos/
-	MLX_DIR:= mlx_macos/
-	IS_LINUX = 1
-endif
-# ---------------------------------------------------------------------------- #
-SRCS_DIR = sources/
+
+SRCS_DIR = sources
 SRCS = main.c mlx_core.c utils.c
 
 OBJS_DIR = objects
@@ -48,19 +43,18 @@ OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
 LIBFT = libft/libft.a
 MINILIBX = $(MLX_DIR)libmlx.a
-# ---------------------------------------------------------------------------- #
-#                                    targets                                   #
-# ---------------------------------------------------------------------------- #
+
+# ---------------------------------- targets --------------------------------- #
 all : $(NAME)
 
 run : all
 	./$(NAME)
 
 $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
-	$(CC) $(CFLAGS)  $(INCLUDES)  $(OBJS) -o $(NAME) $(LIBRARY_FLAGS)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LIBRARY_FLAGS)
 	@echo $(GREEN)"cub3D ready for play."$(RESET)
 
-$(OBJS_DIR)/%.o : $(SRCS_DIR)%.c | $(OBJS_DIR)
+$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	@echo $(BLUE)"Compiling $<."$(RESET)
 

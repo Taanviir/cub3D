@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   keycodes.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 16:45:11 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/23 16:45:17 by tanas            ###   ########.fr       */
+/*   Created: 2023/10/23 14:50:08 by tanas             #+#    #+#             */
+/*   Updated: 2023/10/23 16:44:14 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#ifndef KEYCODES_H
+# define KEYCODES_H
 
-/* ------------------------------- error utils ------------------------------ */
-int	write_error_msg(char *error_msg)
-{
-	write(2, error_msg, ft_strlen(error_msg));
-	return (0);
-}
+# if __APPLE__
+#  define ESCAPE 53
+
+# elif __LINUX__
+#  define ESCAPE 53
+
+# endif
+
+#endif
