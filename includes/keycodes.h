@@ -11,14 +11,14 @@
 /* ************************************************************************** */
 
 #ifndef KEYCODES_H
-# define KEYCODES_H
+#define KEYCODES_H
 
-# if __APPLE__
-#  define ESCAPE 53
+#ifdef __APPLE__
+#define ESCAPE 53
+#endif
 
-# elif __LINUX__
-#  define ESCAPE 53
-
-# endif
+#ifdef __LINUX__
+#define ESCAPE XK_Escape
+#endif
 
 #endif

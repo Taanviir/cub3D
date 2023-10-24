@@ -20,14 +20,14 @@ RESET := "\033[0m"
 # --------------------------------- variables -------------------------------- #
 NAME := cub3D
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror -O3
+CFLAGS := -Wall -Wextra -Werror
 UNAME := $(shell uname)
 LIBRARY_FLAGS := -Llibft/ -lft -lm -lz -lmlx -Llibft/
 INCLUDES := -Iincludes/ -Ilibft/includes
 
 ifeq ($(UNAME), Linux)
-	LIBRARY_FLAGS += -Lmlx_linux/ -lmlx_Linux -L/usr/lib -lXext -lX11
-	INCLUDES += -Imlx_linux/ -I/usr/include -DLINUX
+	LIBRARY_FLAGS += -Lmlx_linux/ -lmlx_Linux -L/usr/lib -lXext -lX11 
+	INCLUDES += -Imlx_linux/ -I/usr/include -D__LINUX__
 	MLX_DIR := mlx_linux/
 else ifeq ($(UNAME), Darwin)
 	LIBRARY_FLAGS += -Lmlx_macos/ -framework OpenGL -framework AppKit
@@ -55,7 +55,7 @@ $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
 	@echo $(GREEN)"cub3D ready for play."$(RESET)
 
 $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJS_DIR)
-	@$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	@echo $(BLUE)"Compiling $<."$(RESET)
 
 $(OBJS_DIR) :
