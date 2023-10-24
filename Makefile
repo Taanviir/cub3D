@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/10/23 16:40:31 by tanas            ###   ########.fr        #
+#    Updated: 2023/10/25 03:32:37 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ LIBRARY_FLAGS := -Llibft/ -lft -lm -lz -lmlx -Llibft/
 INCLUDES := -Iincludes/ -Ilibft/includes
 
 ifeq ($(UNAME), Linux)
-	LIBRARY_FLAGS += -Lmlx_linux/ -lmlx_Linux -L/usr/lib -lXext -lX11 
+	LIBRARY_FLAGS += -Lmlx_linux/ -lmlx_Linux -L/usr/lib -lXext -lX11
 	INCLUDES += -Imlx_linux/ -I/usr/include -D__LINUX__
 	MLX_DIR := mlx_linux/
 else ifeq ($(UNAME), Darwin)
@@ -36,7 +36,7 @@ else ifeq ($(UNAME), Darwin)
 endif
 
 SRCS_DIR = sources
-SRCS = main.c mlx_core.c utils.c
+SRCS = main.c mlx_core.c utils.c map.c
 
 OBJS_DIR = objects
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)

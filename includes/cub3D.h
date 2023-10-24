@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/23 16:43:58 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/25 03:31:28 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define MALLOC_FAIL "failed to allocate memory"
 # define MLX_INIT_FAIL "failed to initialize mlx"
 # define MLX_WIN_FAIL "failed to start mlx window"
+# define MAP_FAIL "failed to open map"
 
 /* -------------------------------- mlx core -------------------------------- */
 # define WIN_WIDTH 1920
@@ -47,9 +48,25 @@ int		no_event(void);
 int		key_hook(int keycode, t_mlx *mlx_core);
 int		close_mlx(t_mlx *mlx_core);
 
+/* ----------------------------------- map ---------------------------------- */
+# define MAP_INITIAL_CAPACITY 10
+
+// TODO
+// [ ] validate
+// [ ] clean-up error handling
+typedef struct s_map
+{
+	char			**grid;
+	int				n_rows;
+	int				__row_capacity;
+} t_map;
+
+t_map	*load_map(char *map_path);
+void	free_map(t_map *map);
 /* ---------------------------------- utils --------------------------------- */
 
 /* --------------------------------- errors --------------------------------- */
+// return 0 on error
 int		write_error_msg(char *error_msg);
 
 #endif
