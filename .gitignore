@@ -5,3 +5,6 @@ cub3D
 *.o
 *.dylib
 *.a
+.cache/
+compile-commands.json
+
