@@ -18,7 +18,11 @@
 # include <libft.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 # include "keycodes.h"
+# include "get_next_line.h"
 
 # ifdef __LINUX__
 #  include <X11/keysym.h>
