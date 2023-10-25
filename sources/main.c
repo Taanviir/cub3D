@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/25 03:29:19 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/25 16:38:37 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int main(int argc, char **argv)
 	if (argc != 2)
 		return -1;
 	t_map *map = NULL;
-	map = load_map(argv[1]);
+	map = map_load(argv[1]);
 	for(int i =0; i < map->n_rows; i++)
 		ft_printf("%s", map->grid[i]);
-	free_map(map);
+	map_free(map);
 #endif
 
 #if 0 // mlx_core

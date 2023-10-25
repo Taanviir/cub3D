@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/10/25 03:32:37 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/10/25 15:09:15 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,17 @@ all : $(NAME)
 
 run : all
 	./$(NAME)
+
+# --------------------------------- debugging -------------------------------- #
+DEBUG_MAP:= ./file.txt
+
+valgrind: CFLAGS += -DDEBUG -ggdb3
+valgrind: re
+	valgrind ./$(NAME) $(DEBUG_MAP)
+
+debug: CFLAGS += -fsanitize=address -ggdb3
+debug: re
+	./$(NAME) $(DEBUG_MAP)
 
 $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LIBRARY_FLAGS)

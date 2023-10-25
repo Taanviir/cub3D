@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/25 03:31:28 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/25 16:45:06 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@
 #  include <X11/keysym.h>
 # endif
 
-/* ----------------------------- error messages ----------------------------- */
-# define MALLOC_FAIL "failed to allocate memory"
-# define MLX_INIT_FAIL "failed to initialize mlx"
-# define MLX_WIN_FAIL "failed to start mlx window"
-# define MAP_FAIL "failed to open map"
 
 /* -------------------------------- mlx core -------------------------------- */
 # define WIN_WIDTH 1920
@@ -53,24 +48,42 @@ int		key_hook(int keycode, t_mlx *mlx_core);
 int		close_mlx(t_mlx *mlx_core);
 
 /* ----------------------------------- map ---------------------------------- */
-# define MAP_INITIAL_CAPACITY 10
+# define MAP_INITIAL_CAPACITY 1
+# define DOUBLE 2
 
-// TODO
-// [ ] validate
-// [ ] clean-up error handling
+/**
+ * @brief Structure to hold map data including the grid and its metadata.
+ *
+ * The grid is represented as a dynamic array of strings, where each string represents a row.
+ * The structure also holds the current number of rows (n_rows) and the current grid capacity (grid_capacity).
+ */
 typedef struct s_map
 {
-	char			**grid;
-	int				n_rows;
-	int				__row_capacity;
+	char			**grid;			// Dynamic array of strings to represent the grid.
+	int				n_rows;			// Current number of rows in the grid
+	int				grid_capacity;	// Current capacity of the grid array.
 } t_map;
 
-t_map	*load_map(char *map_path);
-void	free_map(t_map *map);
+t_map	*map_load(char *map_path);
+void	map_free(t_map *map);
 /* ---------------------------------- utils --------------------------------- */
 
-/* --------------------------------- errors --------------------------------- */
-// return 0 on error
+/* -------------------------------------------------------------------------- */
+/*                               error handling                               */
+/* -------------------------------------------------------------------------- */
+
+/* ------------------------------- return codes ------------------------------ */
+
+# define SUCCESS 1
+# define FAILURE 0
+
+/* ----------------------------- error messages ----------------------------- */
+
+# define MALLOC_FAIL "failed to allocate memory"
+# define MLX_INIT_FAIL "failed to initialize mlx"
+# define MLX_WIN_FAIL "failed to start mlx window"
+# define MAP_FAIL "failed to open map"
+
 int		write_error_msg(char *error_msg);
 
 #endif
