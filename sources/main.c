@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/25 16:38:37 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/25 22:29:27 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,22 @@
 
 int main(int argc, char **argv)
 {
-#if 1 // parsing map
+#if 1 // flood_fill
+	if (argc != 2)
+		return -1;
+	t_map *map = NULL;
+	map = map_load(argv[1]);
+	if(map_validate(map, 1, 1) == -1)
+	{
+		printf("Fail\n");
+		return 0;
+	}
+	for (int i = 0; i < map->n_rows; i++)
+	{
+		printf("%s", map->grid[i]);
+	}
+#endif
+#if 0 // parsing map
 	if (argc != 2)
 		return -1;
 	t_map *map = NULL;

@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/25 16:45:06 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/25 22:29:27 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,12 @@ typedef struct s_map
 	char			**grid;			// Dynamic array of strings to represent the grid.
 	int				n_rows;			// Current number of rows in the grid
 	int				grid_capacity;	// Current capacity of the grid array.
+	int				*player_start_position; // x, y co-ordinates of player start
 } t_map;
 
 t_map	*map_load(char *map_path);
 void	map_free(t_map *map);
+int		map_validate(t_map *map, int sp_x, int sp_y);
 /* ---------------------------------- utils --------------------------------- */
 
 /* -------------------------------------------------------------------------- */
