@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/25 22:29:27 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:25:18 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include "keycodes.h"
-# include "get_next_line.h"
 
 # ifdef __LINUX__
 #  include <X11/keysym.h>
@@ -48,8 +47,16 @@ int		key_hook(int keycode, t_mlx *mlx_core);
 int		close_mlx(t_mlx *mlx_core);
 
 /* ----------------------------------- map ---------------------------------- */
-# define MAP_INITIAL_CAPACITY 1
+# define MAP_INITIAL_CAPACITY 2
 # define DOUBLE 2
+
+enum e_map_color
+{
+	R = 0,
+	G,
+	B,
+	TOTAL_COLORS
+};
 
 /**
  * @brief Structure to hold map data including the grid and its metadata.
@@ -59,15 +66,27 @@ int		close_mlx(t_mlx *mlx_core);
  */
 typedef struct s_map
 {
-	char			**grid;			// Dynamic array of strings to represent the grid.
-	int				n_rows;			// Current number of rows in the grid
-	int				grid_capacity;	// Current capacity of the grid array.
-	int				*player_start_position; // x, y co-ordinates of player start
+	/* ---------------------------------- grid ---------------------------------- */
+
+	char			**grid;					// Dynamic array of strings to represent the grid.
+	int				n_rows;					// Current number of rows in the grid
+	int				grid_capacity;			// Current capacity of the grid array.
+
+	/* ---------------------------------- scene --------------------------------- */
+	char			*NO_texture;			// path to north texture
+	char			*SO_texture;			// path to south texture
+	char			*WE_texture;			// path to west texture
+	char			*EA_texture;			// path to east texture
+	int				c_color[TOTOAL_COLORS];	// ceiling color
+	int				f_color[TOTOAL_COLORS];	// floor color
+
+	/* --------------------------------- player --------------------------------- */
+	int				*start_position;		// x, y co-ordinates of player start
 } t_map;
 
 t_map	*map_load(char *map_path);
 void	map_free(t_map *map);
-int		map_validate(t_map *map, int sp_x, int sp_y);
+bool	map_is_enclosed(t_map *map, int x, int y);
 /* ---------------------------------- utils --------------------------------- */
 
 /* -------------------------------------------------------------------------- */
@@ -78,7 +97,6 @@ int		map_validate(t_map *map, int sp_x, int sp_y);
 
 # define SUCCESS 1
 # define FAILURE 0
-
 /* ----------------------------- error messages ----------------------------- */
 
 # define MALLOC_FAIL "failed to allocate memory"
