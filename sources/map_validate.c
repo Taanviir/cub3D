@@ -6,34 +6,47 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 22:31:56 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/25 22:33:21 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/26 02:33:25 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-/* -------------------------------- flood map ------------------------------- */
-int	map_validate(t_map *map, int sp_x, int sp_y)
-{
-	char	*current_location;
 
-	if (sp_x < 0 || sp_y < 0 || sp_y >= map->n_rows)
-		return (-1);
-	current_location = &map->grid[sp_y][sp_x];
-	if (*current_location == '1' || *current_location == 'V')
-		return (1);
-	else if (*current_location == '0' || *current_location == 'S')
-		*current_location = 'V';
-	else if (sp_x == 0 || *current_location == '\n'
-		|| ft_is_whitespace(*current_location)
-		|| sp_y == 0 || sp_y == map->n_rows - 1)
-		return (-1);
-	if (map_validate(map, sp_x + 1, sp_y) == -1)
-		return (-1);
-	if (map_validate(map, sp_x - 1, sp_y) == -1)
-		return (-1);
-	if (map_validate(map, sp_x, sp_y + 1) == -1)
-		return (-1);
-	if (map_validate(map, sp_x, sp_y - 1) == -1)
-		return (-1);
-	return (1);
+
+/**
+ * @brief Checks if a given cell in the map grid is enclosed by walls ('1') or not.
+ *
+ * Starting from a given cell specified by its coordinates (x, y), the function uses recursion to traverse the neighboring cells. If it encounters a cell with a value other than '1' or 'V', it returns false.
+ *
+ * @param map A pointer to the t_map structure that contains the grid to be checked.
+ * @param x The x-coordinate of the starting cell.
+ * @param y The y-coordinate of the starting cell.
+ *
+ * @return Returns true if the starting cell is completely enclosed by '1', else returns false.
+ */
+bool	map_is_enclosed(t_map *map, int x, int y)
+{
+	char	*current_cell;
+
+	if (x < 0 || y < 0 || y >= map->n_rows)
+		return (false);
+	current_cell = &map->grid[y][x];
+	if (*current_cell == '1' || *current_cell == 'V')
+		return (true);
+	else if (*current_cell == '0' || *current_cell == 'S')
+		*current_cell = 'V';
+	else if (x == 0 || *current_cell == '\n'
+		|| ft_is_whitespace(*current_cell)
+		|| y == 0 || y == map->n_rows - 1)
+		return (false);
+	if (map_is_enclosed(map, x + 1, y) == false)
+		return (false);
+	if (map_is_enclosed(map, x - 1, y) == false)
+		return (false);
+	if (map_is_enclosed(map, x, y + 1) == false)
+		return (false);
+	if (map_is_enclosed(map, x, y - 1) == false)
+		return (false);
+	return (true);
 }
+
