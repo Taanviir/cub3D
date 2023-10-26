@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/10/25 22:29:20 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/10/26 04:12:11y sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ DEBUG_MAP:= ./file.txt
 
 valgrind: CFLAGS += -DDEBUG -ggdb3
 valgrind: re
-	valgrind ./$(NAME) $(DEBUG_MAP)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) $(DEBUG_MAP)
 
 debug: CFLAGS += -fsanitize=address -ggdb3
 debug: re
