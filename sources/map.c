@@ -25,6 +25,7 @@ static int		map_load_scene(t_map *map, int map_fd, char **current_map_row);
 
 /* -------------------------------- utilities ------------------------------- */
 
+static void		map_close(t_map *map);
 static int		verifiy_open(char *map_path, int options);
 
 /* -------------------------------------------------------------------------- */
@@ -52,11 +53,13 @@ t_map	*map_load(char *map_path)
 		return (NULL);
 	if (!map_load_scene(map, map_fd, &current_map_row))
 	{
+		map_close(map);
 		map_free(map);
 		return (NULL);
 	}
 	if (!map_load_grid(map, map_fd, &current_map_row))
 	{
+		map_close(map);
 		map_free(map);
 		return (NULL);
 	}
@@ -263,13 +266,10 @@ static void	map_set_texture(int	*texture_fd, char *current_map_row)
 
 	texture_path= ft_substr(current_map_row, 3, ft_strlen(current_map_row) - 3);
 	*texture_fd = verifiy_open(texture_path, O_RDONLY);
-	free(texture_path);
-	if (*texture_fd == 0)
-	{
-		write_error_msg(SCENE_FAIL);
-		*texture_fd = FAILURE;
-	}
 	free(current_map_row);
+	free(texture_path);
+	if (*texture_fd == FAILURE)
+		write_error_msg(SCENE_FAIL);
 }
 
 static void	map_set_color(int *map_color, char *current_map_row)
@@ -296,6 +296,27 @@ static void	map_set_color(int *map_color, char *current_map_row)
 	free(color_string);
 	free(current_map_row);
 }
+
+static int	map_set_scene(t_map *map, char *texture_id, char *current_map_row)
+{
+	if (!texture_id)
+		return (FAILURE);
+	if (!ft_strncmp(texture_id, "NO", 2))
+		map_set_texture(&map->NO_texture_fd, current_map_row);
+	else if (!ft_strncmp(texture_id, "SO", 2))
+		map_set_texture(&map->SO_texture_fd, current_map_row);
+	else if (!ft_strncmp(texture_id, "WE", 2))
+		map_set_texture(&map->WE_texture_fd, current_map_row);
+	else if (!ft_strncmp(texture_id, "EA", 2))
+		map_set_texture(&map->EA_texture_fd, current_map_row);
+	else if (!ft_strncmp(texture_id, "F", 1))
+		map_set_color(map->f_color, current_map_row);
+	else if (!ft_strncmp(texture_id, "C", 1))
+		map_set_color(map->c_color, current_map_row);
+	else
+		return (FAILURE);
+	return (SUCCESS);
+}
 static int	map_load_scene(t_map *map, int map_fd, char **current_map_row)
 {
 	char	*texture_id;
@@ -306,33 +327,36 @@ static int	map_load_scene(t_map *map, int map_fd, char **current_map_row)
 		if (!*current_map_row || !ft_is_alpha(*current_map_row[0]))
 			break ;
 		texture_id = map_get_texture_id(*current_map_row);
-		if (!texture_id)
-			return (FAILURE);
-		// make into function pointers
-		if (!ft_strncmp(texture_id, "NO", 2))
-			map_set_texture(&map->NO_texture_fd, *current_map_row);
-		else if (!ft_strncmp(texture_id, "SO", 2))
-			map_set_texture(&map->SO_texture_fd, *current_map_row);
-		else if (!ft_strncmp(texture_id, "WE", 2))
-			map_set_texture(&map->WE_texture_fd, *current_map_row);
-		else if (!ft_strncmp(texture_id, "EA", 2))
-			map_set_texture(&map->EA_texture_fd, *current_map_row);
-		else if (!ft_strncmp(texture_id, "F", 1))
-			map_set_color(map->f_color, *current_map_row);
-		else if (!ft_strncmp(texture_id, "C", 1))
-			map_set_color(map->c_color, *current_map_row);
-		else // invalid texture/color id
-			break ;
+		map_set_scene(map, texture_id, *current_map_row);
 		free(texture_id);
 	}
-	if (!map->EA_texture_fd || !map->SO_texture_fd || !map->WE_texture_fd || !map->EA_texture_fd)
+	if (!map->EA_texture_fd || !map->SO_texture_fd || !map->WE_texture_fd
+		|| !map->EA_texture_fd || !map->f_color || !map->c_color)
+	{
+		map_close(map);
 		return (FAILURE);
-	if (!map->f_color || !map->c_color) // not good error handling since this is an array
-		return (FAILURE);
+	}
 	return (SUCCESS);
 }
 
 /* -------------------------------- clean-up -------------------------------- */
+
+/**
+ * @brief Closes texture file descriptors if they were opened
+ *
+ * @param map A pointer to the t_map structure whose file descriptors are to be closed
+ */
+void	map_close(t_map *map)
+{
+	if (map->NO_texture_fd)
+		close (map->EA_texture_fd);
+	if (map->SO_texture_fd)
+		close (map->EA_texture_fd);
+	if (map->WE_texture_fd)
+		close (map->EA_texture_fd);
+	if (map->EA_texture_fd)
+		close (map->EA_texture_fd);
+}
 
 /**
  * @brief Frees all dynamically allocated resources associated with the given t_map structure.

@@ -55,7 +55,7 @@ DEBUG_MAP:= ./file.txt
 
 valgrind: CFLAGS += -DDEBUG -ggdb3
 valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(DEBUG_MAP)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./$(NAME) $(DEBUG_MAP)
 
 debug: CFLAGS += -fsanitize=address -ggdb3
 debug: re
