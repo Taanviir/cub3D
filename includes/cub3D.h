@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/26 17:25:18 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/27 17:02:00 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		key_hook(int keycode, t_mlx *mlx_core);
 int		close_mlx(t_mlx *mlx_core);
 
 /* ----------------------------------- map ---------------------------------- */
-# define MAP_INITIAL_CAPACITY 2
+# define MAP_INITIAL_CAPACITY 10
 # define DOUBLE 2
 
 enum e_map_color
@@ -73,15 +73,16 @@ typedef struct s_map
 	int				grid_capacity;			// Current capacity of the grid array.
 
 	/* ---------------------------------- scene --------------------------------- */
-	char			*NO_texture;			// path to north texture
-	char			*SO_texture;			// path to south texture
-	char			*WE_texture;			// path to west texture
-	char			*EA_texture;			// path to east texture
-	int				c_color[TOTOAL_COLORS];	// ceiling color
-	int				f_color[TOTOAL_COLORS];	// floor color
+	int				NO_texture_fd;			// path to north texture
+	int				SO_texture_fd;			// path to south texture
+	int				WE_texture_fd;			// path to west texture
+	int				EA_texture_fd;			// path to east texture
+	int				f_color[TOTAL_COLORS];	// floor color
+	int				c_color[TOTAL_COLORS];	// cieling color
 
 	/* --------------------------------- player --------------------------------- */
-	int				*start_position;		// x, y co-ordinates of player start
+	int				x;						// player starting x-coordinate
+	int				y;						// player starting y-coordinate
 } t_map;
 
 t_map	*map_load(char *map_path);
@@ -102,7 +103,9 @@ bool	map_is_enclosed(t_map *map, int x, int y);
 # define MALLOC_FAIL "failed to allocate memory"
 # define MLX_INIT_FAIL "failed to initialize mlx"
 # define MLX_WIN_FAIL "failed to start mlx window"
-# define MAP_FAIL "failed to open map"
+# define OPEN_FAIL "failed to open file"
+# define SCENE_FAIL "failed to load scene"
+# define MAP_NOT_ENCLOSED "map is not en-closed"
 
 int		write_error_msg(char *error_msg);
 

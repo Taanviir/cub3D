@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:11 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/23 16:45:17 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/26 22:12:04 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,6 @@
 int	write_error_msg(char *error_msg)
 {
 	write(2, error_msg, ft_strlen(error_msg));
+	write(2, "\n", 1);
 	return (0);
 }
