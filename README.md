@@ -10,15 +10,11 @@ The user or player in this case can move around the maze using the WASD keys, an
 
 ...attach gif here...
 
----
-
 ## Installation
 
 To install the program, simply run the following command in the root directory of your choice:
 
 `git clone https://github.com/Taanviir/cub3D.git`
-
----
 
 ## Usage
 
@@ -35,8 +31,6 @@ To move around the maze, use the `W` `A` `S` `D` keys.
 To move the camera left and right, use the `←` `→` keys.
 
 To exit the program, press the ESC key or click the red cross in the top left corner of the window.
-
----
 
 ## Resources
 
