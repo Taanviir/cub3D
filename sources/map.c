@@ -422,11 +422,11 @@ static int	map_load_scene(t_map *map, int map_fd, char **current_map_row)
 void	map_close(t_map *map)
 {
 	if (map->NO_texture_fd)
-		close (map->EA_texture_fd);
+		close (map->NO_texture_fd);
 	if (map->SO_texture_fd)
-		close (map->EA_texture_fd);
+		close (map->SO_texture_fd);
 	if (map->WE_texture_fd)
-		close (map->EA_texture_fd);
+		close (map->WE_texture_fd);
 	if (map->EA_texture_fd)
 		close (map->EA_texture_fd);
 }
@@ -440,6 +440,7 @@ void	map_free(t_map *map)
 {
 	if (map)
 	{
+		map_close(map);
 		ft_free_double((void **)map->grid);
 		free(map);
 		map = NULL;
