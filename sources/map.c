@@ -3,11 +3,6 @@
 /* -------------------------------------------------------------------------- */
 /*                                    BUGS                                    */
 /* -------------------------------------------------------------------------- */
-// [ ] error handling when scene fails, and overall error handling should be consistent
-// [ ] No grid, leaks
-// [ ] Empty file leaks
-// [ ] Doesn't reject no textures
-// [ ] failed to load scene, __spaces__ ID texture
 
 /* ----------------------------- initialization ----------------------------- */
 static t_map	*map_init(void);
@@ -27,10 +22,21 @@ static int		map_load_scene(t_map *map, int map_fd, char **current_map_row);
 
 static void		map_close(t_map *map);
 static int		verifiy_open(char *map_path, int options);
+static void		empty_gnl(char *current_map_row, int map_fd);
 
 /* -------------------------------------------------------------------------- */
 /*                                  Load Map                                  */
 /* -------------------------------------------------------------------------- */
+static void empty_gnl(char *current_map_row, int map_fd)
+{
+	while (true)
+	{
+		if (!current_map_row)
+			break;
+		free(current_map_row);
+		current_map_row = get_next_line(map_fd);
+	}
+}
 
 /**
  * @brief Loads the map data into a t_map structure from the given file path.
@@ -53,13 +59,13 @@ t_map	*map_load(char *map_path)
 		return (NULL);
 	if (!map_load_scene(map, map_fd, &current_map_row))
 	{
-		map_close(map);
+		empty_gnl(current_map_row, map_fd);
 		map_free(map);
 		return (NULL);
 	}
 	if (!map_load_grid(map, map_fd, &current_map_row))
 	{
-		map_close(map);
+		empty_gnl(current_map_row, map_fd);
 		map_free(map);
 		return (NULL);
 	}

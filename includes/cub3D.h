@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/27 17:02:00 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/28 04:34:20 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		key_hook(int keycode, t_mlx *mlx_core);
 int		close_mlx(t_mlx *mlx_core);
 
 /* ----------------------------------- map ---------------------------------- */
-# define MAP_INITIAL_CAPACITY 10
+# define MAP_INITIAL_CAPACITY 1
 # define DOUBLE 2
 
 enum e_map_color
@@ -98,6 +98,7 @@ bool	map_is_enclosed(t_map *map, int x, int y);
 
 # define SUCCESS 1
 # define FAILURE 0
+# define NOT_SET -1 // error code to handle failing during color
 /* ----------------------------- error messages ----------------------------- */
 
 # define MALLOC_FAIL "failed to allocate memory"
@@ -106,6 +107,7 @@ bool	map_is_enclosed(t_map *map, int x, int y);
 # define OPEN_FAIL "failed to open file"
 # define SCENE_FAIL "failed to load scene"
 # define MAP_NOT_ENCLOSED "map is not en-closed"
+# define COLOR_ERROR "color was not set correctly"
 
 int		write_error_msg(char *error_msg);
 
