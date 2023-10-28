@@ -97,6 +97,18 @@ static int	verifiy_open(char *file_path, int options)
 	return (fd);
 }
 
+static void init_colors(t_map *map)
+{
+	int	i;
+
+	i = 0;
+	while (i < TOTAL_COLORS)
+		map->f_color[i++] = NOT_SET;
+	i = 0;
+	while (i < TOTAL_COLORS)
+		map->c_color[i++] = NOT_SET;
+}
+
 /**
  * @brief Initializes a new t_map structure with initial capacity.
  *
@@ -120,6 +132,7 @@ static t_map	*map_init(void)
 	map->SO_texture_fd = 0;
 	map->WE_texture_fd = 0;
 	map->EA_texture_fd = 0;
+	init_colors(map);
 	map->grid_capacity = MAP_INITIAL_CAPACITY;
 	map->grid= ft_calloc(map->grid_capacity, sizeof(char *));
 	if (!map->grid)
@@ -259,7 +272,7 @@ static char	*map_get_texture_id(char *current_map_row)
 	int	id_length;
 
 	id_length = 0;
-	while (current_map_row && current_map_row[id_length] != ' ')
+	while (current_map_row[id_length] && current_map_row[id_length] != ' ')
 		id_length++;
 	if (id_length != 2 && id_length != 1)
 		return (NULL);
@@ -278,6 +291,22 @@ static void	map_set_texture(int	*texture_fd, char *current_map_row)
 		write_error_msg(SCENE_FAIL);
 }
 
+static bool validate_color_string(char *color_string)
+{
+	size_t	i;
+
+	i = 0;
+	if (!color_string || !*color_string)
+		return (false);
+	while (color_string[i])
+	{
+		if (!ft_is_digit(color_string[i])
+			&& color_string[i] != ',')
+		return (false);
+		i++;
+	}
+	return (true);
+}
 static void	map_set_color(int *map_color, char *current_map_row)
 {
 	// get color string
@@ -285,16 +314,20 @@ static void	map_set_color(int *map_color, char *current_map_row)
 	char	**rgb_color_strings;
 	int		i;
 
-	color_string = ft_substr(current_map_row, 2, ft_strlen(current_map_row) - 2); // in the format x[x*],x[x*],x[x*]
-	rgb_color_strings = ft_split(color_string, ',');
 	i = 0;
+	color_string = ft_substr(current_map_row, 2, ft_strlen(current_map_row) - 2); // in the format x[x*],x[x*],x[x*]
+	if (!validate_color_string(color_string))
+		i = TOTAL_COLORS; // oh god the fixes top kek, nah jk please fix this
+	rgb_color_strings = ft_split(color_string, ',');
 	while (i < TOTAL_COLORS)
 	{
+		if (!rgb_color_strings[i])
+			break ;
 		map_color[i] = ft_atoi(rgb_color_strings[i]);
 		if (map_color[i] > 255 || map_color[i] < 0)
 		{
-			write_error_msg(SCENE_FAIL);
-			map_color = FAILURE;
+			map_color[i] = NOT_SET;
+			break;
 		}
 		i++;
 	}
@@ -306,7 +339,10 @@ static void	map_set_color(int *map_color, char *current_map_row)
 static int	map_set_scene(t_map *map, char *texture_id, char *current_map_row)
 {
 	if (!texture_id)
+	{
+		write_error_msg(SCENE_FAIL);
 		return (FAILURE);
+	}
 	if (!ft_strncmp(texture_id, "NO", 2))
 		map_set_texture(&map->NO_texture_fd, current_map_row);
 	else if (!ft_strncmp(texture_id, "SO", 2))
@@ -320,9 +356,37 @@ static int	map_set_scene(t_map *map, char *texture_id, char *current_map_row)
 	else if (!ft_strncmp(texture_id, "C", 1))
 		map_set_color(map->c_color, current_map_row);
 	else
+	{
+		write_error_msg(SCENE_FAIL);
 		return (FAILURE);
+	}
 	return (SUCCESS);
 }
+static int	check_colors(t_map *map)
+{
+	int	i;
+
+	i = 0;
+	while (i < TOTAL_COLORS)
+	{
+		if (map->f_color[i++] == NOT_SET)
+		{
+			write_error_msg(COLOR_ERROR);
+			return (FAILURE);
+		}
+	}
+	i = 0;
+	while (i < TOTAL_COLORS)
+	{
+		if (map->c_color[i++] == NOT_SET)
+		{
+			write_error_msg(COLOR_ERROR);
+			return (FAILURE);
+		}
+	}
+	return (SUCCESS);
+}
+
 static int	map_load_scene(t_map *map, int map_fd, char **current_map_row)
 {
 	char	*texture_id;
@@ -333,13 +397,16 @@ static int	map_load_scene(t_map *map, int map_fd, char **current_map_row)
 		if (!*current_map_row || !ft_is_alpha(*current_map_row[0]))
 			break ;
 		texture_id = map_get_texture_id(*current_map_row);
-		map_set_scene(map, texture_id, *current_map_row);
+		if(!map_set_scene(map, texture_id, *current_map_row))
+		{
+			free(texture_id);
+			return(FAILURE);
+		}
 		free(texture_id);
 	}
 	if (!map->EA_texture_fd || !map->SO_texture_fd || !map->WE_texture_fd
-		|| !map->EA_texture_fd || !map->f_color || !map->c_color)
+		|| !map->EA_texture_fd || !check_colors(map))
 	{
-		map_close(map);
 		return (FAILURE);
 	}
 	return (SUCCESS);
