@@ -14,23 +14,36 @@ The user or player in this case can move around the maze using the WASD keys, an
 
 To install the program, simply run the following command in the root directory of your choice:
 
-`git clone https://github.com/Taanviir/cub3D.git`
+```
+git clone https://github.com/Taanviir/cub3D.git
+```
+
+To go into the root directory of the project, use:
+```
+cd cub3D
+```
+
+To compile the program and create the executable file, `cub3D`, use:
+```
+make
+```
 
 ## Usage
 
-Use `cd cub3D` to go into the root directory of the project.
+Run the program using:
+```
+./cub3D <map.cub>
+```
 
-Run `make` to compile the program. This will create an executable called `cub3D`.
-
-To run the program, type `./cub3D <map.cub>` in the root directory of the project. The program will read the map file and display the maze in a new window.
+The program will read the map file and display the maze in a new window.
 
 Maps can be found in the `maps` directory. The program will only accept maps with the `.cub` extension.
 
-To move around the maze, use the `W` `A` `S` `D` keys.
+Use the `W` `A` `S` `D` keys to move around the maze.
 
-To move the camera left and right, use the `←` `→` keys.
+Use the `←` `→` keys to move the camera left and right.
 
-To exit the program, press the ESC key or click the red cross in the top left corner of the window.
+Use the `ESC` key or click the red cross in the top left corner of the window to exit the program.
 
 ## Resources
 
