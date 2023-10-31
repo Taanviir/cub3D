@@ -22,7 +22,11 @@ void	ft_free_double(void **double_ptr)
 	int	i;
 
 	if (!double_ptr || !(*double_ptr))
+	{
+		if (double_ptr)
+			free(double_ptr);
 		return ;
+	}
 	i = 0;
 	while (double_ptr[i])
 	{

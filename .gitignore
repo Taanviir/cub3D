@@ -7,4 +7,6 @@ cub3D
 *.a
 .cache/
 compile-commands.json
+*.txt
+
 
