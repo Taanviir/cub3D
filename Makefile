@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/10/30 22:43:57 by tanas            ###   ########.fr        #
+#    Updated: 2023/10/31 15:46:57 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ run : all
 	./$(NAME)
 
 # --------------------------------- debugging -------------------------------- #
-DEBUG_MAP:= ./file.txt
+DEBUG_MAP:= ./test_maps/overflow-map.cub # need to change this for maps in test_maps/
 
 valgrind: CFLAGS += -DDEBUG -ggdb3
 valgrind: re

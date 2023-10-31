@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/28 02:52:22 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:38:40 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void print_t_map(t_map *map)
 	printf("----------GRID------------\n");
 	for(int i =0; i < map->n_rows; i++)
 		ft_printf("%s", map->grid[i]);
-	printf("--------TEXTURES----------\n");
+	printf("\n--------TEXTURES----------\n");
 	printf("NO_texture_fd = %d\n", map->NO_texture_fd);
 	printf("SO_texture_fd = %d\n", map->SO_texture_fd);
 	printf("WE_texture_fd = %d\n", map->WE_texture_fd);
