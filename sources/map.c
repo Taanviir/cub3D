@@ -43,7 +43,7 @@ void			map_free(t_map *map);
  */
 static void empty_gnl(char *current_map_row, int map_fd)
 {
-	while (!current_map_row)
+	while (current_map_row)
 	{
 		free(current_map_row);
 		current_map_row = get_next_line(map_fd);

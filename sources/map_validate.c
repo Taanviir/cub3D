@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 22:31:56 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/26 02:33:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/26 02:33:25by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,3 @@ bool	map_is_enclosed(t_map *map, int x, int y)
 		return (false);
 	return (true);
 }
-
