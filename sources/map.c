@@ -4,35 +4,47 @@
 /*                                    BUGS                                    */
 /* -------------------------------------------------------------------------- */
 
+/* ------------------------------ main function ----------------------------- */
+t_map			*map_load(char *map_path);
 /* ----------------------------- initialization ----------------------------- */
+static int		verify_open(char *map_path, int options);
+static void		map_init_colors(t_map *map);
 static t_map	*map_init(void);
 /* ---------------------------------- grid ---------------------------------- */
 static int		map_resize(t_map *map);
 static int		map_add_row(char *row, t_map *map);
-static int		map_load_grid(t_map *map, int map_fd, char **current_map_row);
+static int		map_load_grid(t_map *map, int map_fd, char **current_map_row); //!
 /* ---------------------------------- scene --------------------------------- */
 static bool		map_row_is_empty(char *current_map_row);
 static char		*map_next_valid_row(int map_fd);
 static char		*map_get_texture_id(char *current_map_row);
 static void		map_set_texture(int	*texture_fd, char *current_map_row);
+static bool		validate_color_string(char *color_string);
 static void		map_set_color(int *map_color, char *current_map_row);
+static int		map_set_scene(t_map *map, char *texture_id, char *current_map_row);
+static int		check_colors(t_map *map);
 static int		map_load_scene(t_map *map, int map_fd, char **current_map_row);
 
 /* -------------------------------- utilities ------------------------------- */
-
 static void		map_close(t_map *map);
-static int		verifiy_open(char *map_path, int options);
 static void		empty_gnl(char *current_map_row, int map_fd);
-
+void			map_free(t_map *map);
 /* -------------------------------------------------------------------------- */
 /*                                  Load Map                                  */
 /* -------------------------------------------------------------------------- */
+
+/**
+ * @brief Clears the buffer used by the get_next_line (gnl) function to prevent memory leaks.
+ *
+ * This function is needed because gnl retains a portion of the file in a static variable, which can lead to a memory leak if the file is not completely read.
+ *
+ * @param current_map_row Pointer to the current line being read from the file.
+ * @param map_fd File descriptor of the map file.
+ */
 static void empty_gnl(char *current_map_row, int map_fd)
 {
-	while (true)
+	while (!current_map_row)
 	{
-		if (!current_map_row)
-			break;
 		free(current_map_row);
 		current_map_row = get_next_line(map_fd);
 	}
@@ -51,7 +63,7 @@ t_map	*map_load(char *map_path)
 	char	*current_map_row;
 	int		map_fd;
 
-	map_fd = verifiy_open(map_path, O_RDONLY);
+	map_fd = verify_open(map_path, O_RDONLY);
 	if (map_fd == FAILURE)
 		return (NULL);
 	map = map_init();
@@ -82,7 +94,7 @@ t_map	*map_load(char *map_path)
  *
  * @return The file descriptor for the opened file, or 0 if the file cannot be opened.
  */
-static int	verifiy_open(char *file_path, int options)
+static int	verify_open(char *file_path, int options)
 {
 	int	fd;
 
@@ -97,7 +109,14 @@ static int	verifiy_open(char *file_path, int options)
 	return (fd);
 }
 
-static void init_colors(t_map *map)
+/**
+ * @brief Initializes the color arrays in the t_map structure to an invalid initial value.
+ *
+ * This function sets all the elements of `f_color` and `c_color` arrays in the t_map structure to NOT_SET. These are later checked to see if they have been set.
+ *
+ * @param map A pointer to the t_map structure containing the color arrays to be initialized.
+ */
+static void map_init_colors(t_map *map)
 {
 	int	i;
 
@@ -132,7 +151,7 @@ static t_map	*map_init(void)
 	map->SO_texture_fd = 0;
 	map->WE_texture_fd = 0;
 	map->EA_texture_fd = 0;
-	init_colors(map);
+	map_init_colors(map);
 	map->grid_capacity = MAP_INITIAL_CAPACITY;
 	map->grid= ft_calloc(map->grid_capacity, sizeof(char *));
 	if (!map->grid)
@@ -267,6 +286,14 @@ static char	*map_next_valid_row(int map_fd)
 	return (current_map_row);
 }
 
+/**
+ * @brief Extracts the texture identifier from the current map row.
+ *
+ * This function scans the current map row to find a texture identifier which is either one or two characters long and terminated by a space. If such an identifier is found, it is returned as a substring.
+ *
+ * @param current_map_row A pointer to the string containing the current map row from which the texture identifier is to be extracted.
+ * @return A pointer to the substring containing the texture identifier, or NULL if the identifier is invalid.
+ */
 static char	*map_get_texture_id(char *current_map_row)
 {
 	int	id_length;
@@ -279,18 +306,34 @@ static char	*map_get_texture_id(char *current_map_row)
 	return (ft_substr(current_map_row, 0, id_length));
 }
 
-static void	map_set_texture(int	*texture_fd, char *current_map_row)
+static void/**
+ * @brief Sets the file descriptor for a texture based on its path extracted from the current map row.
+ *
+ * This function extracts the texture path from the current map row starting at index 3, then attempts to open the file to set the file descriptor. It also handles failures by writing an error message.
+ *
+ * @param texture_fd A pointer to the file descriptor to be set.
+ * @param current_map_row A pointer to the string containing the current map row from which the texture path is to be extracted.
+ */
+map_set_texture(int	*texture_fd, char *current_map_row)
 {
 	char	*texture_path;
 
 	texture_path= ft_substr(current_map_row, 3, ft_strlen(current_map_row) - 3);
-	*texture_fd = verifiy_open(texture_path, O_RDONLY);
+	*texture_fd = verify_open(texture_path, O_RDONLY);
 	free(current_map_row);
 	free(texture_path);
 	if (*texture_fd == FAILURE)
 		write_error_msg(SCENE_FAIL);
 }
 
+/**
+ * @brief Validates if a given string is a valid representation of a color.
+ *
+ * This function checks that each character in the string is either a digit or a comma, ensuring that it can be safely used as a color specification string.
+ *
+ * @param color_string A pointer to the string that needs to be validated.
+ * @return Returns true if the string is a valid representation of a color, otherwise returns false.
+ */
 static bool validate_color_string(char *color_string)
 {
 	size_t	i;
@@ -307,6 +350,14 @@ static bool validate_color_string(char *color_string)
 	}
 	return (true);
 }
+/**
+ * @brief Sets the color components of a map using the information from the current row of the map file.
+ *
+ * Parses the color string into individual RGB components and updates the corresponding color variables in the map.
+ *
+ * @param map_color A pointer to an array of integers representing the RGB color values for the map.
+ * @param current_map_row A pointer to the current line in the map file, which contains the color information.
+ */
 static void	map_set_color(int *map_color, char *current_map_row)
 {
 	// get color string
@@ -336,6 +387,16 @@ static void	map_set_color(int *map_color, char *current_map_row)
 	free(current_map_row);
 }
 
+/**
+ * @brief Configures the scene settings for the map based on the texture and color identifiers.
+ *
+ * This function sets the textures and colors based on the identifier string provided. It calls appropriate helper functions to handle the actual setting of values.
+ *
+ * @param map A pointer to the t_map structure where the scene settings will be stored.
+ * @param texture_id A pointer to the string identifier for the texture or color.
+ * @param current_map_row A pointer to the current line in the map file, containing texture or color information.
+ * @return An integer indicating success (SUCCESS) or failure (FAILURE).
+ */
 static int	map_set_scene(t_map *map, char *texture_id, char *current_map_row)
 {
 	if (!texture_id)
@@ -362,6 +423,15 @@ static int	map_set_scene(t_map *map, char *texture_id, char *current_map_row)
 	}
 	return (SUCCESS);
 }
+/**
+ * @brief Verifies that all color components for the floor and ceiling have been properly set.
+ *
+ * This function iterates through the arrays for floor and ceiling colors in the t_map structure,
+ * checking to ensure that none of the color components have been left unset.
+ *
+ * @param map A pointer to the t_map structure containing the color settings.
+ * @return An integer indicating success (SUCCESS) or failure (FAILURE).
+ */
 static int	check_colors(t_map *map)
 {
 	int	i;
@@ -387,6 +457,18 @@ static int	check_colors(t_map *map)
 	return (SUCCESS);
 }
 
+/**
+ * @brief Loads scene-related settings for the map.
+ *
+ * This function reads lines from the file descriptor until it encounters either an empty row or a row that doesn't
+ * begin with an alphabetic character. It then tries to set scene-related parameters (textures and colors) based on the
+ * read lines.
+ *
+ * @param map A pointer to the t_map structure where the scene data will be stored.
+ * @param map_fd File descriptor from which the map data is read.
+ * @param current_map_row Double pointer to the string that holds the current map row being processed.
+ * @return An integer indicating success (SUCCESS) or failure (FAILURE).
+ */
 static int	map_load_scene(t_map *map, int map_fd, char **current_map_row)
 {
 	char	*texture_id;
