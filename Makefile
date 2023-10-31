@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/10/26 04:12:11y sabdelra         ###   ########.fr        #
+#    Updated: 2023/10/30 22:43:57 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ RESET := "\033[0m"
 
 # --------------------------------- variables -------------------------------- #
 NAME := cub3D
-CC := gcc
 CFLAGS := -Wall -Wextra -Werror
 UNAME := $(shell uname)
 LIBRARY_FLAGS := -Llibft/ -lft -lm -lz -lmlx -Llibft/
@@ -66,7 +65,7 @@ $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
 	@echo $(GREEN)"cub3D ready for play."$(RESET)
 
 $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJS_DIR)
-	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+	@$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	@echo $(BLUE)"Compiling $<."$(RESET)
 
 $(OBJS_DIR) :
@@ -80,7 +79,7 @@ $(LIBFT) :
 $(MINILIBX) :
 	@echo $(YELLOW)"Creating $(MINILIBX)"$(RESET)
 	@make -sC $(MLX_DIR)
-	@if [ $(UNAME) == Darwin ]; then \
+	@if [ $(UNAME) = Darwin ]; then \
 		cp $(MLX_DIR)libmlx.dylib ./ ; \
 	fi
 	@echo $(GREEN)"MLX Library is ready. ✅\n"$(RESET)
@@ -93,7 +92,7 @@ clean :
 
 fclean : clean
 	@rm -f $(NAME)
-	@if [ $(UNAME) == Darwin ]; then \
+	@if [ $(UNAME) = Darwin ]; then \
 		rm -f libmlx.dylib; \
 	fi
 	@make fclean -sC libft
