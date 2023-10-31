@@ -27,7 +27,8 @@
 bool	map_is_enclosed(t_map *map, int x, int y)
 {
 	char	*current_cell;
-
+	if (x >= (int)ft_strlen(map->grid[y]))
+		return (false);
 	if (x < 0 || y < 0 || y >= map->n_rows)
 		return (false);
 	current_cell = &map->grid[y][x];
