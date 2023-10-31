@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/31 15:38:40 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/31 21:56:40 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int main(int argc, char **argv)
 {
 #if 1 // forming struct
 	if (argc != 2)
+		return -1;
+	if (!map_extension_check(argv[1]))
 		return -1;
 	t_map *map = map_load(argv[1]);
 	print_t_map(map);

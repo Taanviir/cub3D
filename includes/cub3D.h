@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/28 04:34:20 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/31 21:55:32 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ typedef struct s_map
 } t_map;
 
 t_map	*map_load(char *map_path);
-void	map_free(t_map *map);
 bool	map_is_enclosed(t_map *map, int x, int y);
 /* ---------------------------------- utils --------------------------------- */
-
+bool	map_extension_check(char *map_path);
+void	map_free(t_map *map);
 /* -------------------------------------------------------------------------- */
 /*                               error handling                               */
 /* -------------------------------------------------------------------------- */
@@ -108,6 +108,7 @@ bool	map_is_enclosed(t_map *map, int x, int y);
 # define SCENE_FAIL "failed to load scene"
 # define MAP_NOT_ENCLOSED "map is not en-closed"
 # define COLOR_ERROR "color was not set correctly"
+# define EXTENSION_ERROR "wrong file extension"
 
 int		write_error_msg(char *error_msg);
 

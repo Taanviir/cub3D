@@ -29,6 +29,7 @@ static int		map_load_scene(t_map *map, int map_fd, char **current_map_row);
 static void		map_close(t_map *map);
 static void		empty_gnl(char *current_map_row, int map_fd);
 void			map_free(t_map *map);
+bool			map_extension_check(char *map_path);
 /* -------------------------------------------------------------------------- */
 /*                                  Load Map                                  */
 /* -------------------------------------------------------------------------- */
@@ -527,4 +528,25 @@ void	map_free(t_map *map)
 		free(map);
 		map = NULL;
 	}
+}
+
+/**
+ * @brief Checks if the file extension of the given map path is '.cub'.
+ *
+ * This function verifies that the map file has the '.cub' extension. If not, it prints an extension error message.
+ *
+ * @param map_path Pointer to the path of the map file.
+ * @return true if the file has a '.cub' extension, false otherwise.
+ */
+bool	map_extension_check(char *map_path)
+{
+	if (!map_path)
+		return (write_error_msg(EXTENSION_ERROR));
+	char *extension = ft_strrchr(map_path, '.');
+	if (!extension)
+		return (write_error_msg(EXTENSION_ERROR));
+	if (ft_strncmp(extension, ".cub", 4))
+		return (write_error_msg(EXTENSION_ERROR));
+	else
+		return (true);
 }
