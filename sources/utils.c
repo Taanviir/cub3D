@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:11 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/26 22:12:04 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/01 17:19:28 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /* ------------------------------- error utils ------------------------------ */
 int	write_error_msg(char *error_msg)
 {
-	write(2, error_msg, ft_strlen(error_msg));
-	write(2, "\n", 1);
+	ft_putendl_fd(error_msg, 2);
 	return (0);
 }

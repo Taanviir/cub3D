@@ -12,7 +12,6 @@
 
 #include "cub3D.h"
 
-
 /**
  * @brief Checks if a given cell in the map grid is enclosed by walls ('1') or not.
  *

@@ -1,7 +1,7 @@
-NO ./t0.txt
-SO ./t1.txt
-WE ./t2.txt
-EA ./t3.txt
+NO ./test_maps/t0.txt
+SO ./test_maps/t1.txt
+WE ./test_maps/t2.txt
+EA ./test_maps/t3.txt
 
 
 F 220,100,0
