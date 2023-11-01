@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/10/31 15:46:57 by tanas            ###   ########.fr        #
+#    Updated: 2023/11/01 22:36:53 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ else ifeq ($(UNAME), Darwin)
 endif
 
 SRCS_DIR = sources
-SRCS = main.c mlx_core.c utils.c map.c map_validate.c
+SRCS = main.c mlx_core.c utils.c map.c map_validate.c events.c raycaster_engine.c \
+	draw_pixel.c
 
 OBJS_DIR = objects
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
@@ -50,11 +51,11 @@ run : all
 	./$(NAME)
 
 # --------------------------------- debugging -------------------------------- #
-DEBUG_MAP:= ./test_maps/overflow-map.cub # need to change this for maps in test_maps/
+DEBUG_MAP:= ./test_maps/regular-map.cub # need to change this for maps in test_maps/
 
 valgrind: CFLAGS += -DDEBUG -ggdb3
 valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./$(NAME) $(DEBUG_MAP)
+	valgrind --leak-check=full --show-leak-kinds=definite --track-origins=yes --track-fds=yes ./$(NAME) $(DEBUG_MAP)
 
 debug: CFLAGS += -fsanitize=address -ggdb3
 debug: re
