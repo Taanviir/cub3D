@@ -147,14 +147,9 @@ static t_map	*map_init(void)
 		write_error_msg(MALLOC_FAIL);
 		return (NULL);
 	}
-	map->n_rows = 0;
-	map->NO_texture_fd = 0;
-	map->SO_texture_fd = 0;
-	map->WE_texture_fd = 0;
-	map->EA_texture_fd = 0;
 	map_init_colors(map);
 	map->grid_capacity = MAP_INITIAL_CAPACITY;
-	map->grid= ft_calloc(map->grid_capacity, sizeof(char *));
+	map->grid = ft_calloc(map->grid_capacity, sizeof(char *));
 	if (!map->grid)
 	{
 		write_error_msg(MALLOC_FAIL);
@@ -204,7 +199,7 @@ static int map_resize(t_map *map)
 	row_index = 0;
 	old_grid = map->grid;
 	map->grid_capacity *= DOUBLE;
-	map->grid = ft_calloc(sizeof(char *),  map->grid_capacity);
+	map->grid = ft_calloc(sizeof(char *), map->grid_capacity);
 	if(!map->grid)
 	{
 		write_error_msg(MALLOC_FAIL);
@@ -307,7 +302,7 @@ static char	*map_get_texture_id(char *current_map_row)
 	return (ft_substr(current_map_row, 0, id_length));
 }
 
-static void/**
+/**
  * @brief Sets the file descriptor for a texture based on its path extracted from the current map row.
  *
  * This function extracts the texture path from the current map row starting at index 3, then attempts to open the file to set the file descriptor. It also handles failures by writing an error message.
@@ -315,7 +310,7 @@ static void/**
  * @param texture_fd A pointer to the file descriptor to be set.
  * @param current_map_row A pointer to the string containing the current map row from which the texture path is to be extracted.
  */
-map_set_texture(int	*texture_fd, char *current_map_row)
+static void	map_set_texture(int	*texture_fd, char *current_map_row)
 {
 	char	*texture_path;
 
