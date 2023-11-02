@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/11/01 22:36:53 by tanas            ###   ########.fr        #
+#    Updated: 2023/11/02 14:57:27 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ DEBUG_MAP:= ./test_maps/regular-map.cub # need to change this for maps in test_m
 
 valgrind: CFLAGS += -DDEBUG -ggdb3
 valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=definite --track-origins=yes --track-fds=yes ./$(NAME) $(DEBUG_MAP)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./$(NAME) $(DEBUG_MAP)
 
 debug: CFLAGS += -fsanitize=address -ggdb3
 debug: re

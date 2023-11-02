@@ -6,14 +6,14 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/01 20:15:48 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/02 01:48:57 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
 /* ------------------------------ initializing ------------------------------ */
-t_img	create_mlx_image(void *mlx_ptr)
+static t_img	create_mlx_image(void *mlx_ptr)
 {
 	t_img	image;
 
@@ -23,7 +23,7 @@ t_img	create_mlx_image(void *mlx_ptr)
 	return (image);
 }
 
-t_mlx	*init_mlx_core(void)
+t_mlx	*init_mlx_core(char *map_path)
 {
 	t_mlx	*mlx_core;
 
@@ -45,5 +45,8 @@ t_mlx	*init_mlx_core(void)
 		return (NULL);
 	}
 	mlx_core->img = create_mlx_image(mlx_core->mlx_ptr);
+	mlx_core->map = map_load(map_path);
+	if (mlx_core->map)
+		mlx_core->player = mlx_core->map->player; //!
 	return (mlx_core);
 }

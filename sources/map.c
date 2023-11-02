@@ -103,8 +103,7 @@ static int	verify_open(char *file_path, int options)
 	if (fd == -1)
 	{
 		write_error_msg(OPEN_FAIL);
-		write(2, file_path, ft_strlen(file_path));
-		write(2, "\n", 1);
+		ft_putendl_fd(file_path, 2);
 		return (FAILURE);
 	}
 	return (fd);

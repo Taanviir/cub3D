@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/01 17:50:50 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/02 15:16:00 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	close_mlx_core(t_mlx *mlx_core)
 {
 	mlx_destroy_window(mlx_core->mlx_ptr, mlx_core->window);
 	map_free(mlx_core->map);
+	free(mlx_core->mlx_ptr);
 	free(mlx_core);
 	exit(0);
 }
@@ -23,7 +24,6 @@ int	close_mlx_core(t_mlx *mlx_core)
 int	handle_events(int keycode, t_mlx *mlx_core)
 {
 	// printf("events caled for: %i\n", keycode);
-	// TODO handle WASD, ESC, CLOSE, <- ->
 	if (keycode == KEYCODE_ESC)
 		close_mlx_core(mlx_core);
 	else if (keycode == KEYCODE_W)

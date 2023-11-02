@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_validate.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 22:31:56 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/26 02:33:25by sabdelra         ###   ########.fr       */
+/*   Created: 2023/11/02 00:10:33 by tanas             #+#    #+#             */
+/*   Updated: 2023/11/02 01:29:59 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,25 @@
 bool	map_is_enclosed(t_map *map, int x, int y)
 {
 	char	*current_cell;
-	if (x >= (int)ft_strlen(map->grid[y]))
-		return (false);
-	if (x < 0 || y < 0 || y >= map->n_rows)
+
+	if (x >= (int)ft_strlen(map->grid[y]) || x < 0 || y < 0 || y >= map->n_rows)
 		return (false);
 	current_cell = &map->grid[y][x];
 	if (*current_cell == '1' || *current_cell == 'V')
 		return (true);
-	else if (*current_cell == '0' || *current_cell == 'S')
+	else if (*current_cell == '0')
 		*current_cell = 'V';
-	else if (x == 0 || *current_cell == '\n'
-		|| ft_is_whitespace(*current_cell)
+	else if (*current_cell == 'N' || *current_cell == 'S'
+		|| *current_cell == 'W' || *current_cell == 'E')
+	{
+		map->player = (t_player){x, y, *current_cell};
+		*current_cell = 'V';
+	}
+	else if (x == 0 || *current_cell == '\n' || ft_is_whitespace(*current_cell)
 		|| y == 0 || y == map->n_rows - 1)
 		return (false);
-	if (map_is_enclosed(map, x + 1, y) == false)
-		return (false);
-	if (map_is_enclosed(map, x - 1, y) == false)
-		return (false);
-	if (map_is_enclosed(map, x, y + 1) == false)
-		return (false);
-	if (map_is_enclosed(map, x, y - 1) == false)
+	if (!map_is_enclosed(map, x + 1, y) || !map_is_enclosed(map, x - 1, y)
+		|| !map_is_enclosed(map, x, y + 1) || !map_is_enclosed(map, x, y - 1))
 		return (false);
 	return (true);
 }
