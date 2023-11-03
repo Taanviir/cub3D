@@ -1,7 +1,7 @@
-NO ./test_maps/textures/test_maps/t0.xmp
-SO ./test_maps/textures/test_maps/t1.xmp
-WE ./test_maps/textures/test_maps/t2.xmp
-EA ./test_maps/textures/test_maps/t3.xmp
+NO ./test_maps/textures/t0.xmp
+SO ./test_maps/textures/t1.xmp
+WE ./test_maps/textures/t2.xmp
+EA ./test_maps/textures/t3.xmp
 
 
 F 220,100,0

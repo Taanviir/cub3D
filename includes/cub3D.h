@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/03 16:46:19 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/03 16:49:59 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ enum e_map_color
 	B,
 	TOTAL_COLORS
 };
+
+typedef struct s_player
+{
+	int		x_coord;
+	int		y_coord;
+	char	view_direction;
+}	t_player;
 
 /**
  * @brief Structure to hold map data including the grid and its metadata.
@@ -75,12 +82,7 @@ bool	map_is_enclosed(t_map *map, int x, int y);
 # define WIN_HEIGHT 1080
 # define WIN_TITLE "cub3D"
 
-typedef struct s_player
-{
-	int		x_coord;
-	int		y_coord;
-	char	view_direction;
-}	t_player;
+
 
 typedef struct s_img
 {
@@ -111,6 +113,7 @@ int		close_mlx_core(t_mlx *mlx_core);
 
 bool	map_extension_check(char *map_path);
 void	map_free(t_map *map);
+void	my_pixel_put(t_img *image, int x, int y, int color);
 /* -------------------------------------------------------------------------- */
 /*                               error handling                               */
 /* -------------------------------------------------------------------------- */

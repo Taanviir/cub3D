@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/11/01 22:36:53 by tanas            ###   ########.fr        #
+#    Updated: 2023/11/03 16:51:27 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ else ifeq ($(UNAME), Darwin)
 endif
 
 SRCS_DIR = sources
-SRCS = main.c mlx_core.c utils.c map.c map_validate.c events.c raycaster_engine.c \
+SRCS = main.c mlx_core.c utils.c map.c map_validate.c events.c \
 	draw_pixel.c
 
 OBJS_DIR = objects
