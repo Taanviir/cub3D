@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/01 23:18:48 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/03 16:46:19 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,6 @@ int		close_mlx_core(t_mlx *mlx_core);
 
 bool	map_extension_check(char *map_path);
 void	map_free(t_map *map);
-
-/* ---------------------------------- draw ---------------------------------- */
-void	my_pixel_put(t_img *image, int x, int y, int color);
-
 /* -------------------------------------------------------------------------- */
 /*                               error handling                               */
 /* -------------------------------------------------------------------------- */
@@ -130,6 +126,7 @@ void	my_pixel_put(t_img *image, int x, int y, int color);
 # define MALLOC_FAIL "failed to allocate memory"
 # define MLX_INIT_FAIL "failed to initialize mlx"
 # define MLX_WIN_FAIL "failed to start mlx window"
+# define MLX_IMG_FAIL "failed to start mlx image"
 # define OPEN_FAIL "failed to open file"
 # define SCENE_FAIL "failed to load scene"
 # define MAP_NOT_ENCLOSED "map is not en-closed"

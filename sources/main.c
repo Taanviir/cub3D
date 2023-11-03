@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/01 22:52:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/03 16:40:32 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ int	main(int argc, char **argv)
 	// verify argv
 	mlx_core = init_mlx_core();
 	mlx_core->map = map_load(argv[1]);
-	
+
 	for (int j = 100; j < 1000; j++) {
 		for (int i = 100; i < 1000; i++) {
 			my_pixel_put(&mlx_core->img, i, j, 0xFF0000);
 		}
 	}
 	mlx_put_image_to_window(mlx_core->mlx_ptr, mlx_core->window, mlx_core->img.img_ptr, 0, 0);
-	
+
 	mlx_loop_hook(mlx_core->mlx_ptr, no_event, mlx_core);
 	mlx_key_hook(mlx_core->window, handle_events, mlx_core);
 	mlx_hook(mlx_core->window, 17, 1L << 17, close_mlx_core, mlx_core);
