@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/11/02 14:57:27 by tanas            ###   ########.fr        #
+#    Updated: 2023/11/05 13:23:41 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ MINILIBX = $(MLX_DIR)libmlx.a
 all : $(NAME)
 
 run : all
-	./$(NAME)
+	./$(NAME) test_maps/regular-map.cub
 
 # --------------------------------- debugging -------------------------------- #
 DEBUG_MAP:= ./test_maps/regular-map.cub # need to change this for maps in test_maps/

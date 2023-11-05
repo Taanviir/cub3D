@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/05 13:05:02 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/05 14:23:25 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	main(int argc, char **argv)
 	start_raycaster(mlx_core);
 
 	mlx_loop_hook(mlx_core->mlx_ptr, no_event, mlx_core);
-	mlx_key_hook(mlx_core->window, handle_events, mlx_core);
+	mlx_hook(mlx_core->window, 2, 1L << 0, handle_events, mlx_core);
 	mlx_hook(mlx_core->window, 17, 1L << 17, close_mlx_core, mlx_core);
 	mlx_loop(mlx_core->mlx_ptr);
 	return (0);
