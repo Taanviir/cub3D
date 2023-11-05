@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:39:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/05 12:40:31 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/05 13:11:44 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	draw_cell(int x, int y, char cell_value, t_mlx *mlx_core)
 	int	i;
 	int	j;
 
-	if (!cell_value || cell_value == '\n')
+	if (!cell_value || cell_value == ' ' || cell_value == '\n')
 		return ;
 	x_pos = x * CELL_SIZE + 400;
 	y_pos = y * CELL_SIZE + 100;
