@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/02 01:48:57 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/04 18:00:39 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ t_mlx	*init_mlx_core(char *map_path)
 		free(mlx_core);
 		return (NULL);
 	}
-	mlx_core->img = create_mlx_image(mlx_core->mlx_ptr);
+	mlx_core->img_data = create_mlx_image(mlx_core->mlx_ptr);
 	mlx_core->map = map_load(map_path);
 	if (mlx_core->map)
-		mlx_core->player = mlx_core->map->player; //!
+		mlx_core->player = mlx_core->map->player;
 	return (mlx_core);
 }

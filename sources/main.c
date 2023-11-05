@@ -6,33 +6,32 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/02 15:16:10 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/05 13:05:02 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-#include <stdio.h>
 
-static void print_t_map(t_map *map)
-{
-	if (!map)
-		return ;
-	printf("----------GRID------------\n");
-	for(int i =0; i < map->n_rows; i++)
-		printf("%s", map->grid[i]);
-	printf("\n--------TEXTURES----------\n");
-	printf("NO_texture_fd = %d\n", map->NO_texture_fd);
-	printf("SO_texture_fd = %d\n", map->SO_texture_fd);
-	printf("WE_texture_fd = %d\n", map->WE_texture_fd);
-	printf("EA_texture_fd = %d\n", map->EA_texture_fd);
-	printf("---------COLORS-----------\n");
-	printf("floor	[R] = %d\n", map->f_color[R]);
-	printf("floor	[G] = %d\n", map->f_color[G]);
-	printf("floor	[B] = %d\n", map->f_color[B]);
-	printf("ceiling [R] = %d\n", map->c_color[R]);
-	printf("ceiling [G] = %d\n", map->c_color[G]);
-	printf("ceiling [B] = %d\n", map->c_color[B]);
-}
+// static void print_t_map(t_map *map)
+// {
+// 	if (!map)
+// 		return ;
+// 	printf("----------GRID------------\n");
+// 	for(int i = 0; i < map->n_rows; i++)
+// 		printf("%s", map->grid[i]);
+// 	printf("\n--------TEXTURES----------\n");
+// 	printf("NO_texture_fd = %d\n", map->NO_texture_fd);
+// 	printf("SO_texture_fd = %d\n", map->SO_texture_fd);
+// 	printf("WE_texture_fd = %d\n", map->WE_texture_fd);
+// 	printf("EA_texture_fd = %d\n", map->EA_texture_fd);
+// 	printf("---------COLORS-----------\n");
+// 	printf("floor	[R] = %d\n", map->f_color[R]);
+// 	printf("floor	[G] = %d\n", map->f_color[G]);
+// 	printf("floor	[B] = %d\n", map->f_color[B]);
+// 	printf("ceiling [R] = %d\n", map->c_color[R]);
+// 	printf("ceiling [G] = %d\n", map->c_color[G]);
+// 	printf("ceiling [B] = %d\n", map->c_color[B]);
+// }
 
 // int main(int argc, char **argv)
 // {
@@ -92,16 +91,10 @@ int	main(int argc, char **argv)
 	// verify argv
 	mlx_core = init_mlx_core(argv[1]);
 
-	print_t_map(mlx_core->map);
-	printf("player view dir: %c\n", mlx_core->player.view_direction);
-	
-	for (int j = 100; j < 1000; j++) {
-		for (int i = 100; i < 1000; i++) {
-			my_pixel_put(&mlx_core->img, i, j, 0xFF0000);
-		}
-	}
-	mlx_put_image_to_window(mlx_core->mlx_ptr, mlx_core->window, mlx_core->img.img_ptr, 0, 0);
-	
+	if (!mlx_core->map)
+		return (-1);
+	start_raycaster(mlx_core);
+
 	mlx_loop_hook(mlx_core->mlx_ptr, no_event, mlx_core);
 	mlx_key_hook(mlx_core->window, handle_events, mlx_core);
 	mlx_hook(mlx_core->window, 17, 1L << 17, close_mlx_core, mlx_core);

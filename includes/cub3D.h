@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/02 01:41:33 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/05 13:04:36 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_player
 {
 	int		x_coord;
 	int		y_coord;
-	char	view_direction;
+	int		view_angle;
 }	t_player;
 
 /**
@@ -56,9 +56,8 @@ typedef struct s_player
 typedef struct s_map
 {
 	/* ---------------------------------- grid ---------------------------------- */
-
 	char		**grid;					// Dynamic array of strings to represent the grid.
-	int			n_rows;					// Current number of rows in the grid
+	int			n_rows;					// Current number of rows in the grid.
 	int			grid_capacity;			// Current capacity of the grid array.
 
 	/* ---------------------------------- scene --------------------------------- */
@@ -95,12 +94,15 @@ typedef struct s_mlx
 {
 	void		*mlx_ptr;
 	void		*window;
-	t_img		img;
+	t_img		img_data;
 	t_map		*map;
 	t_player	player;
 }	t_mlx;
 
 t_mlx	*init_mlx_core(char *map_path);
+
+/* ------------------------------- raycaster -------------------------------- */
+void	start_raycaster(t_mlx *mlx_core);
 
 /* --------------------------------- events --------------------------------- */
 
@@ -112,8 +114,6 @@ int		close_mlx_core(t_mlx *mlx_core);
 
 bool	map_extension_check(char *map_path);
 void	map_free(t_map *map);
-
-/* ---------------------------------- draw ---------------------------------- */
 void	my_pixel_put(t_img *image, int x, int y, int color);
 
 /* -------------------------------------------------------------------------- */

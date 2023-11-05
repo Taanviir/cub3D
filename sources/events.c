@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/02 15:16:00 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/03 16:36:51 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	close_mlx_core(t_mlx *mlx_core)
 {
 	mlx_destroy_window(mlx_core->mlx_ptr, mlx_core->window);
+	mlx_destroy_image(mlx_core->mlx_ptr, mlx_core->img_data.img_ptr);
 	map_free(mlx_core->map);
 	free(mlx_core->mlx_ptr);
 	free(mlx_core);
