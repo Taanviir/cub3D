@@ -1,7 +1,7 @@
-NO ./test_maps/t0.txt
-SO ./test_maps/t1.txt
-WE ./test_maps/t2.txt
-EA ./test_maps/t3.txt
+NO ./test_maps/textures/t0.xpm
+SO ./test_maps/textures/t1.xpm
+WE ./test_maps/textures/t2.xpm
+EA ./test_maps/textures/t3.xpm
 
 
 F 220,100,0
