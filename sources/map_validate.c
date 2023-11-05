@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 00:10:33 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/04 18:00:29 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/05 13:54:03 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ bool	map_is_enclosed(t_map *map, int x, int y)
 	if (x >= (int)ft_strlen(map->grid[y]) || x < 0 || y < 0 || y >= map->n_rows)
 		return (false);
 	current_cell = &map->grid[y][x];
-	if (*current_cell == '1' || *current_cell == 'V')
-		return (true);
-	else if (*current_cell == '0' || *current_cell == 'N'
+	if (*current_cell == '1' || *current_cell == 'V' || *current_cell == 'N'
 		|| *current_cell == 'S' || *current_cell == 'W' || *current_cell == 'E')
+		return (true);
+	else if (*current_cell == '0')
 		*current_cell = 'V';
 	else if (x == 0 || *current_cell == '\n' || ft_is_whitespace(*current_cell)
 		|| y == 0 || y == map->n_rows - 1)

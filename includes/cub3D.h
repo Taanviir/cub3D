@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/05 13:04:36 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/06 01:14:10 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,6 @@ enum e_map_color
 	TOTAL_COLORS
 };
 
-typedef struct s_player
-{
-	int		x_coord;
-	int		y_coord;
-	int		view_angle;
-}	t_player;
-
 /**
  * @brief Structure to hold map data including the grid and its metadata.
  *
@@ -67,13 +60,22 @@ typedef struct s_map
 	int			EA_texture_fd;			// fd for east texture file
 	int			f_color[TOTAL_COLORS];	// floor color
 	int			c_color[TOTAL_COLORS];	// ceiling color
-
-	/* -------------------------------- player ------------------------------ */
-	t_player	player;
 }	t_map;
 
 t_map	*map_load(char *map_path);
 bool	map_is_enclosed(t_map *map, int x, int y);
+
+/* --------------------------------- player --------------------------------- */
+
+# define CELL_SIZE 64
+# define PLAYER_SIZE 32
+
+typedef struct s_player
+{
+	int		x_pos;
+	int		y_pos;
+	char	view_direction;
+}	t_player;
 
 /* -------------------------------- mlx core -------------------------------- */
 
@@ -102,6 +104,7 @@ typedef struct s_mlx
 t_mlx	*init_mlx_core(char *map_path);
 
 /* ------------------------------- raycaster -------------------------------- */
+
 void	start_raycaster(t_mlx *mlx_core);
 
 /* --------------------------------- events --------------------------------- */
@@ -131,11 +134,13 @@ void	my_pixel_put(t_img *image, int x, int y, int color);
 # define MALLOC_FAIL "Failed to allocate memory."
 # define MLX_INIT_FAIL "Failed to initialize mlx."
 # define MLX_WIN_FAIL "Failed to start mlx window."
+# define MLX_IMG_FAIL "Failed to create mlx image."
 # define OPEN_FAIL "Failed to open file."
 # define SCENE_FAIL "Failed to load scene."
 # define MAP_NOT_ENCLOSED "Map is not en-closed."
 # define COLOR_ERROR "Color was not set correctly."
 # define EXTENSION_ERROR "Wrong file extension."
+# define INVALID_MAP_ERROR "Invalid character in map file."
 
 int		write_error_msg(char *error_msg);
 

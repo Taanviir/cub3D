@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/05 14:23:25 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/05 16:47:15 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,7 @@ int	main(int argc, char **argv)
 		return (write_error_msg("Error: args"), -1);
 	// verify argv
 	mlx_core = init_mlx_core(argv[1]);
-
-	if (!mlx_core->map)
+	if (!mlx_core)
 		return (-1);
 	start_raycaster(mlx_core);
 

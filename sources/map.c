@@ -69,19 +69,22 @@ t_map	*map_load(char *map_path)
 		return (NULL);
 	map = map_init();
 	if (!map)
-		return (NULL);
+		return (close(map_fd), NULL);
 	if (!map_load_scene(map, map_fd, &current_map_row))
 	{
 		empty_gnl(current_map_row, map_fd);
+		close(map_fd);
 		map_free(map);
 		return (NULL);
 	}
 	if (!map_load_grid(map, map_fd, &current_map_row))
 	{
 		empty_gnl(current_map_row, map_fd);
+		close(map_fd);
 		map_free(map);
 		return (NULL);
 	}
+	close(map_fd);
 	return map;
 }
 
@@ -161,36 +164,6 @@ static t_map	*map_init(void)
 /* ---------------------------------- grid ---------------------------------- */
 
 /**
- * @brief Initiates player struct in t_map with players x-y coordinates and viewing direction.
- * 
- * @param map A pointer to the t_map struct that holds the player struct.
-*/
-static void	get_player(t_map *map)
-{
-	int	x;
-	int	y;
-
-	if (!map->grid)
-		return ;
-	y = -1;
-	while (map->grid[++y])
-	{
-		x = -1;
-		while (map->grid[y][++x])
-		{
-			if (map->grid[y][x] == 'N')
-				map->player = (t_player){x, y, 90};
-			else if (map->grid[y][x] == 'S')
-				map->player = (t_player){x, y, 270};
-			else if (map->grid[y][x] == 'E')
-				map->player = (t_player){x, y, 0};
-			else if (map->grid[y][x] == 'W')
-				map->player = (t_player){x, y, 180};
-		}
-	}
-}
-
-/**
  * @brief Reads the grid data from the map file descriptor and populates the t_map structure.
  *
  * @param map A pointer to the t_map structure to populate.
@@ -198,16 +171,30 @@ static void	get_player(t_map *map)
  * @param current_map_row a double pointer of the current map row
  * @return SUCCESS if the grid is read and populated successfully, FAILURE otherwise.
  */
-static	int map_load_grid(t_map *map, int map_fd, char **current_map_row)
+static int	map_load_grid(t_map *map, int map_fd, char **current_map_row)
 {
+	int	y;
+	int	x;
+
 	while (*current_map_row)
 	{
 		if(!map_add_row(*current_map_row, map))
 			return (FAILURE);
 		*current_map_row = get_next_line(map_fd);
 	}
-	get_player(map);
-	if (map_is_enclosed(map, map->player.x_coord, map->player.y_coord))
+	y = -1;
+	while (++y < map->n_rows) //! CLEAN THIS MORE
+	{
+		x = -1;
+		while (map->grid[y][++x])
+		{
+			if (map->grid[y][x] == '1')
+				break ;
+		}
+		if (map->grid[y][++x] == '1')
+			break ;
+	}
+	if (map_is_enclosed(map, x, y))
 		return (SUCCESS);
 	else
 		return (write_error_msg(MAP_NOT_ENCLOSED));
