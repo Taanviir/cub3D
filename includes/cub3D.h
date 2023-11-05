@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/05 22:25:32 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/06 01:01:06 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_map
 #define PLAYER_DIRECTIONS "NSWE"
 
 t_map	*map_load(char *map_path);
-bool	map_grid_validate(t_map *map, int x, int y);
+bool	map_grid_validate(t_map *map);
 
 /* -------------------------------- mlx core -------------------------------- */
 

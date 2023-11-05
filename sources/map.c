@@ -178,8 +178,7 @@ static	int map_load_grid(t_map *map, int map_fd, char **current_map_row)
 			return (FAILURE);
 		*current_map_row = get_next_line(map_fd);
 	}
-	// if (map_is_enclosed(map, map->x, map->y));
-	if (map_grid_validate(map, 1, 1)) // only for debugging
+	if (map_grid_validate(map))
 		return (SUCCESS);
 	else
 		return (FAILURE);

@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 00:45:23 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/06 01:02:28 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,18 @@ static bool	grid_validate_characters(t_map *map);
  * validation process, aggregating checks for character correctness and structural enclosure.
  *
  * @param map A pointer to the t_map structure that represents the map to be validated.
- * @param x The x-coordinate of the player's starting cell for enclosure validation.
- * @param y The y-coordinate of the player's starting cell for enclosure validation.
  *
  * @return true if the map grid passes all validation checks, otherwise false.
  */
-bool	map_grid_validate(t_map *map, int x, int y)
+bool	map_grid_validate(t_map *map)
 {
+	int	x;
+	int	y;
+
 	if (!grid_validate_characters(map))
 		return (false);
+	x = map->player.x_coord;
+	y = map->player.y_coord;
 	if (!grid_is_enclosed(map, x, y))
 		return (write_error_msg(MAP_NOT_ENCLOSED));
 	return (true);
@@ -104,24 +107,28 @@ static bool	grid_is_enclosed(t_map *map, int x, int y)
  */
 static bool	grid_validate_characters(t_map *map)
 {
-	int	i;
-	int	j;
+	int	x;
+	int	y;
 	int	player_count;
 
-	j = 0;
+	y = 0;
 	player_count = 0;
-	while (j < map->n_rows)
+	while (y < map->n_rows)
 	{
-		i = 0;
-		while (map->grid[j][i] != '\n')
+		x = 0;
+		while (map->grid[y][x] != '\n')
 		{
-			if (ft_strchr(PLAYER_DIRECTIONS, map->grid[j][i]))
+			if (ft_strchr(PLAYER_DIRECTIONS, map->grid[y][x]))
+			{
+				map->player.x_coord = x;
+				map->player.y_coord = y;
 				player_count++;
-			if (!ft_strchr(ACCEPTED_CHARACTERS, map->grid[j][i]))
+			}
+			if (!ft_strchr(ACCEPTED_CHARACTERS, map->grid[y][x]))
 				return (write_error_msg(MAP_INVALID_CHARACTER));
-			i++;
+			x++;
 		}
-		j++;
+		y++;
 	}
 	if (player_count != 1)
 		return (write_error_msg(INVALID_PLAYER_COUNT));
