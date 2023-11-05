@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 01:02:28 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/06 02:10:38 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 static bool	grid_is_enclosed(t_map *map, int x, int y);
 static bool	grid_validate_characters(t_map *map);
+static bool	grid_load_player(t_map *map, int x, int y);
 
 /**
  * @brief Validates the entire map grid for a game level.
@@ -95,24 +96,21 @@ static bool	grid_is_enclosed(t_map *map, int x, int y)
 }
 
 /**
- * @brief Validates the characters in the map grid and ensures only one player exists.
+ * @brief Validates map grid for character integrity and initializes player.
  *
- * This function iterates over each row and column of the map grid, checking for valid characters according
- * to the defined character set. It also counts the number of player characters to ensure there is exactly one
- * player on the map.
+ * Iterates over the map grid to ensure all characters are valid and locates the player's
+ * position and direction, enforcing a single player rule.
  *
  * @param map A pointer to the t_map structure containing the grid.
  *
- * @return true if the grid contains only valid characters and one player, false otherwise.
+ * @return true if the grid passes validation with one player present, false otherwise.
  */
 static bool	grid_validate_characters(t_map *map)
 {
 	int	x;
 	int	y;
-	int	player_count;
 
 	y = 0;
-	player_count = 0;
 	while (y < map->n_rows)
 	{
 		x = 0;
@@ -120,9 +118,8 @@ static bool	grid_validate_characters(t_map *map)
 		{
 			if (ft_strchr(PLAYER_DIRECTIONS, map->grid[y][x]))
 			{
-				map->player.x_coord = x;
-				map->player.y_coord = y;
-				player_count++;
+				if (!grid_load_player(map, x, y))
+					return (write_error_msg(INVALID_PLAYER_COUNT));
 			}
 			if (!ft_strchr(ACCEPTED_CHARACTERS, map->grid[y][x]))
 				return (write_error_msg(MAP_INVALID_CHARACTER));
@@ -130,7 +127,33 @@ static bool	grid_validate_characters(t_map *map)
 		}
 		y++;
 	}
+	return (true);
+}
+
+/**
+ * @brief Loads player data and ensures a single instance on the grid.
+ *
+ * Records the player's position and view direction into the map structure.
+ * Uses a static variable to count player instances, returning false if more than one is found.
+ *
+ * @param map A pointer to the t_map structure.
+ * @param x The x-coordinate of the player's position.
+ * @param y The y-coordinate of the player's position.
+ *
+ * @return true if a single player is present, false if multiple players are detected.
+ *
+ * @note not thread safe, but are we multi-threading?? :)
+ */
+
+static bool	grid_load_player(t_map *map, int x, int y)
+{
+	static	int player_count = 0;
+
+	player_count++;
+	map->player.x_coord = x;
+	map->player.y_coord = y;
+	map->player.view_direction = map->grid[y][x];
 	if (player_count != 1)
-		return (write_error_msg(INVALID_PLAYER_COUNT));
+		return (false);
 	return (true);
 }
