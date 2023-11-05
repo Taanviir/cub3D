@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/03 16:49:59 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/05 22:25:32 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_map
 {
 	/* ---------------------------------- grid ---------------------------------- */
 
-	char	**grid;					// Dynamic array of strings to represent the grid.
+	char		**grid;					// Dynamic array of strings to represent the grid.
 	int			n_rows;					// Current number of rows in the grid
 	int			grid_capacity;			// Current capacity of the grid array.
 
@@ -73,8 +73,11 @@ typedef struct s_map
 	t_player	player;
 }	t_map;
 
+#define ACCEPTED_CHARACTERS "10VNSWE\nV " // list of valid map characters
+#define PLAYER_DIRECTIONS "NSWE"
+
 t_map	*map_load(char *map_path);
-bool	map_is_enclosed(t_map *map, int x, int y);
+bool	map_grid_validate(t_map *map, int x, int y);
 
 /* -------------------------------- mlx core -------------------------------- */
 
@@ -133,8 +136,10 @@ void	my_pixel_put(t_img *image, int x, int y, int color);
 # define OPEN_FAIL "failed to open file"
 # define SCENE_FAIL "failed to load scene"
 # define MAP_NOT_ENCLOSED "map is not en-closed"
+# define MAP_INVALID_CHARACTER "map has invalid character"
 # define COLOR_ERROR "color was not set correctly"
 # define EXTENSION_ERROR "wrong file extension"
+# define INVALID_PLAYER_COUNT "wrong number of players"
 
 int		write_error_msg(char *error_msg);
 

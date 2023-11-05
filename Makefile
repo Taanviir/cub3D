@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/11/03 16:51:27 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/11/05 21:37:34 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ else ifeq ($(UNAME), Darwin)
 endif
 
 SRCS_DIR = sources
-SRCS = main.c mlx_core.c utils.c map.c map_validate.c events.c \
+SRCS = main.c mlx_core.c utils.c map.c grid_validate.c events.c \
 	draw_pixel.c
 
 OBJS_DIR = objects

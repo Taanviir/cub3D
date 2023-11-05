@@ -167,6 +167,7 @@ static t_map	*map_init(void)
  * @param map A pointer to the t_map structure to populate.
  * @param map_fd The file descriptor of the map to read from.
  * @param current_map_row a double pointer of the current map row
+ *
  * @return SUCCESS if the grid is read and populated successfully, FAILURE otherwise.
  */
 static	int map_load_grid(t_map *map, int map_fd, char **current_map_row)
@@ -178,10 +179,10 @@ static	int map_load_grid(t_map *map, int map_fd, char **current_map_row)
 		*current_map_row = get_next_line(map_fd);
 	}
 	// if (map_is_enclosed(map, map->x, map->y));
-	if (map_is_enclosed(map, 1, 1)) // only for debugging
+	if (map_grid_validate(map, 1, 1)) // only for debugging
 		return (SUCCESS);
 	else
-		return (write_error_msg(MAP_NOT_ENCLOSED));
+		return (FAILURE);
 }
 
 /**
