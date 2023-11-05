@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/06 01:13:47 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/06 01:22:57 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ static void	create_player(t_map *map, t_mlx *mlx_core)
 			if (map->grid[y][x] == 'N' || map->grid[y][x] == 'S'
 				|| map->grid[y][x] == 'E' || map->grid[y][x] == 'W')
 			{
-				mlx_core->player.x_pos = (x * CELL_SIZE) + 400 + 16;
-				mlx_core->player.y_pos = (y * CELL_SIZE) + 100 + 16;
+				mlx_core->player.x_pos = (x * CELL_SIZE) + X_OFFSET + 16;
+				mlx_core->player.y_pos = (y * CELL_SIZE) + Y_OFFSET + 16;
 				mlx_core->player.view_direction = map->grid[y][x];
 				return ;
 			}

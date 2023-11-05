@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 01:14:10 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/06 01:22:38 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ bool	map_is_enclosed(t_map *map, int x, int y);
 
 # define CELL_SIZE 64
 # define PLAYER_SIZE 32
+# define X_OFFSET 400
+# define Y_OFFSET 100
 
 typedef struct s_player
 {
