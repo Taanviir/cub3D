@@ -84,8 +84,7 @@ t_map	*map_load(char *map_path)
 		map_free(map);
 		return (NULL);
 	}
-	close(map_fd);
-	return map;
+	return (close(map_fd), map);
 }
 
 /* ----------------------------- initialization ----------------------------- */
@@ -180,10 +179,7 @@ static int	map_load_grid(t_map *map, int map_fd, char **current_map_row)
 			return (FAILURE);
 		*current_map_row = get_next_line(map_fd);
 	}
-	if (map_grid_validate(map))
-		return (SUCCESS);
-	else
-		return (FAILURE);
+	return (SUCCESS);
 }
 
 /**

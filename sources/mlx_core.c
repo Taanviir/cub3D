@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/06 15:36:09 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/06 17:32:22 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,6 @@ static t_img	create_image(void *mlx_ptr, int width, int height)
 	return (image);
 }
 
-static void	create_player(t_map *map, t_mlx *mlx_core)
-{
-	int		x;
-	int		y;
-
-	y = -1;
-	while (++y < map->n_rows)
-	{
-		x = -1;
-		while (map->grid[y][++x])
-			if (map->grid[y][x] == 'N' || map->grid[y][x] == 'S'
-				|| map->grid[y][x] == 'E' || map->grid[y][x] == 'W')
-			{
-				mlx_core->player.x_pos = (x * CELL_SIZE) + X_OFFSET + 16;
-				mlx_core->player.y_pos = (y * CELL_SIZE) + Y_OFFSET + 16;
-				mlx_core->player.view_direction = map->grid[y][x];
-				return ;
-			}
-	}
-}
-
 t_mlx	*init_mlx_core(char *map_path)
 {
 	t_mlx	*mlx_core;
@@ -79,12 +58,11 @@ t_mlx	*init_mlx_core(char *map_path)
 			WIN_TITLE);
 	if (!mlx_core->window)
 		return (exit_init(mlx_core, MLX_WIN_FAIL));
-	mlx_core->map = map_load(map_path);
+	mlx_core->map = map_grid_validate(map_load(map_path), &mlx_core->player);
 	if (!mlx_core->map)
 		return (exit_init(mlx_core, NULL));
 	mlx_core->img_data = create_image(mlx_core->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	if (!mlx_core->img_data.addr)
 		return (exit_init(mlx_core, MLX_IMG_FAIL));
-	create_player(mlx_core->map, mlx_core);
 	return (mlx_core);
 }

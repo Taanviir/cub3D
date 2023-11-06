@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grid_validate.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 02:10:38 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/06 17:49:11 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,16 @@
 #include "cub3D.h"
 
 static bool	grid_is_enclosed(t_map *map, int x, int y);
-static bool	grid_validate_characters(t_map *map);
-static bool	grid_load_player(t_map *map, int x, int y);
+static bool	grid_validate_characters(t_map *map, t_player *player);
+
+static void	create_player(t_player *player, int x, int y, char view_direction)
+{
+	player->x = x;
+	player->y = y;
+	player->x_pos = (x * CELL_SIZE) + X_OFFSET + 16;
+	player->y_pos = (y * CELL_SIZE) + Y_OFFSET + 16;
+	player->view_direction = view_direction;
+}
 
 /**
  * @brief Validates the entire map grid for a game level.
@@ -41,18 +49,19 @@ static bool	grid_load_player(t_map *map, int x, int y);
  *
  * @return true if the map grid passes all validation checks, otherwise false.
  */
-bool	map_grid_validate(t_map *map)
+t_map	*map_grid_validate(t_map *map, t_player *player)
 {
-	int	x;
-	int	y;
-
-	if (!grid_validate_characters(map))
-		return (false);
-	x = map->player.x_coord;
-	y = map->player.y_coord;
-	if (!grid_is_enclosed(map, x, y))
-		return (write_error_msg(MAP_NOT_ENCLOSED));
-	return (true);
+	if (!grid_validate_characters(map, player))
+	{
+		map_free(map);
+		return (NULL);
+	}
+	if (!grid_is_enclosed(map, player->x, player->y))
+	{
+		map_free(map);
+		return (write_error_msg(MAP_NOT_ENCLOSED), NULL);
+	}
+	return (map);
 }
 
 /**
@@ -71,26 +80,20 @@ static bool	grid_is_enclosed(t_map *map, int x, int y)
 {
 	char	*current_cell;
 
-	if (x >= (int)ft_strlen(map->grid[y]))
-		return (false);
-	if (x < 0 || y < 0 || y >= map->n_rows)
+	if (x >= (int)ft_strlen(map->grid[y]) || x < 0 || y < 0 || y >= map->n_rows)
 		return (false);
 	current_cell = &map->grid[y][x];
 	if (*current_cell == '1' || *current_cell == 'V')
 		return (true);
-	else if (*current_cell == '0' || *current_cell == 'S')
+	else if (*current_cell == '0'
+		|| ft_strchr(PLAYER_DIRECTIONS, *current_cell))
 		*current_cell = 'V';
 	else if (x == 0 || *current_cell == '\n'
 		|| ft_is_whitespace(*current_cell)
 		|| y == 0 || y == map->n_rows - 1)
 		return (false);
-	if (grid_is_enclosed(map, x + 1, y) == false)
-		return (false);
-	if (grid_is_enclosed(map, x - 1, y) == false)
-		return (false);
-	if (grid_is_enclosed(map, x, y + 1) == false)
-		return (false);
-	if (grid_is_enclosed(map, x, y - 1) == false)
+	if (!grid_is_enclosed(map, x + 1, y) || !grid_is_enclosed(map, x - 1, y)
+		|| !grid_is_enclosed(map, x, y + 1) || !grid_is_enclosed(map, x, y - 1))
 		return (false);
 	return (true);
 }
@@ -105,55 +108,29 @@ static bool	grid_is_enclosed(t_map *map, int x, int y)
  *
  * @return true if the grid passes validation with one player present, false otherwise.
  */
-static bool	grid_validate_characters(t_map *map)
+static bool	grid_validate_characters(t_map *map, t_player *player)
 {
 	int	x;
 	int	y;
+	int	player_count;
 
-	y = 0;
-	while (y < map->n_rows)
+	player_count = 0;
+	y = -1;
+	while (++y < map->n_rows)
 	{
-		x = 0;
-		while (map->grid[y][x] != '\n')
+		x = -1;
+		while (map->grid[y][++x])
 		{
 			if (ft_strchr(PLAYER_DIRECTIONS, map->grid[y][x]))
 			{
-				if (!grid_load_player(map, x, y))
-					return (write_error_msg(INVALID_PLAYER_COUNT));
+				create_player(player, x, y, map->grid[y][x]);
+				player_count++;
 			}
 			if (!ft_strchr(ACCEPTED_CHARACTERS, map->grid[y][x]))
 				return (write_error_msg(MAP_INVALID_CHARACTER));
-			x++;
 		}
-		y++;
 	}
-	return (true);
-}
-
-/**
- * @brief Loads player data and ensures a single instance on the grid.
- *
- * Records the player's position and view direction into the map structure.
- * Uses a static variable to count player instances, returning false if more than one is found.
- *
- * @param map A pointer to the t_map structure.
- * @param x The x-coordinate of the player's position.
- * @param y The y-coordinate of the player's position.
- *
- * @return true if a single player is present, false if multiple players are detected.
- *
- * @note not thread safe, but are we multi-threading?? :)
- */
-
-static bool	grid_load_player(t_map *map, int x, int y)
-{
-	static	int player_count = 0;
-
-	player_count++;
-	map->player.x_coord = x;
-	map->player.y_coord = y;
-	map->player.view_direction = map->grid[y][x];
 	if (player_count != 1)
-		return (false);
+		return (write_error_msg(INVALID_PLAYER_COUNT));
 	return (true);
 }

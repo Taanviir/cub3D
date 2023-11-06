@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 15:32:27 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/06 17:24:12 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,23 @@ enum e_map_color
 typedef struct s_map
 {
 	/* ---------------------------------- grid ---------------------------------- */
-	char		**grid;					// Dynamic array of strings to represent the grid.
-	int			n_rows;					// Current number of rows in the grid.
-	int			grid_capacity;			// Current capacity of the grid array.
+	char	**grid;					// Dynamic array of strings to represent the grid.
+	int		n_rows;					// Current number of rows in the grid.
+	int		grid_capacity;			// Current capacity of the grid array.
 
 	/* ---------------------------------- scene --------------------------------- */
-	int			NO_texture_fd;			// fd for north texture file
-	int			SO_texture_fd;			// fd for south texture file
-	int			WE_texture_fd;			// fd for west texture file
-	int			EA_texture_fd;			// fd for east texture file
-	int			f_color[TOTAL_COLORS];	// floor color
-	int			c_color[TOTAL_COLORS];	// ceiling color
+	int		NO_texture_fd;			// fd for north texture file
+	int		SO_texture_fd;			// fd for south texture file
+	int		WE_texture_fd;			// fd for west texture file
+	int		EA_texture_fd;			// fd for east texture file
+	int		f_color[TOTAL_COLORS];	// floor color
+	int		c_color[TOTAL_COLORS];	// ceiling color
 }	t_map;
 
 #define ACCEPTED_CHARACTERS "10VNSWE\n " // list of valid map characters
 #define PLAYER_DIRECTIONS "NSWE"
 
 t_map	*map_load(char *map_path);
-bool	map_grid_validate(t_map *map);
 
 /* --------------------------------- player --------------------------------- */
 
@@ -77,6 +76,8 @@ bool	map_grid_validate(t_map *map);
 
 typedef struct s_player
 {
+	int		x;
+	int		y;
 	int		x_pos;
 	int		y_pos;
 	char	view_direction;
@@ -111,6 +112,7 @@ t_mlx	*init_mlx_core(char *map_path);
 /* ------------------------------- raycaster -------------------------------- */
 
 void	start_raycaster(t_mlx *mlx_core);
+t_map	*map_grid_validate(t_map *map, t_player *player);
 
 /* --------------------------------- events --------------------------------- */
 
@@ -125,13 +127,14 @@ void	map_free(t_map *map);
 void	my_pixel_put(t_img *image, int x, int y, int color);
 
 /* ------------------------------- debug utils ------------------------------ */
+
 void	print_t_map(t_map *map); //? for debugging only
 
 /* -------------------------------------------------------------------------- */
 /*                               error handling                               */
 /* -------------------------------------------------------------------------- */
 
-/* ------------------------------- return codes ------------------------------ */
+/* ------------------------------ return codes ------------------------------ */
 
 # define SUCCESS 1
 # define FAILURE 0
