@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/06 12:55:04 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/06 15:39:35 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@
 // #if 0 // mlx_core
 // 	t_mlx	*mlx_core;
 
+// 	if (argc != 2)
+// 		return (write_error_msg("Error: args"), -1);
+// 	// verify argv
 // 	mlx_core = init_mlx_core();
 // 	mlx_loop_hook(mlx_core->mlx, no_event, mlx_core);
 // 	// the no event hook, needs to be there idk why, this executes code inside the no event function in case there are no events to handle
@@ -67,6 +70,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (write_error_msg("Error: args"), -1);
+
 	// verify argv
 	mlx_core = init_mlx_core(argv[1]);
 	if (!mlx_core)

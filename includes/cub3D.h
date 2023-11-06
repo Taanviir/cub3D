@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 12:55:44 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/06 15:32:27 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,11 @@ typedef struct s_map
 	int			c_color[TOTAL_COLORS];	// ceiling color
 }	t_map;
 
+#define ACCEPTED_CHARACTERS "10VNSWE\n " // list of valid map characters
+#define PLAYER_DIRECTIONS "NSWE"
+
 t_map	*map_load(char *map_path);
-bool	map_is_enclosed(t_map *map, int x, int y);
+bool	map_grid_validate(t_map *map);
 
 /* --------------------------------- player --------------------------------- */
 
@@ -120,7 +123,9 @@ int		close_mlx_core(t_mlx *mlx_core);
 bool	map_extension_check(char *map_path);
 void	map_free(t_map *map);
 void	my_pixel_put(t_img *image, int x, int y, int color);
-void	print_t_map(t_map *map);
+
+/* ------------------------------- debug utils ------------------------------ */
+void	print_t_map(t_map *map); //? for debugging only
 
 /* -------------------------------------------------------------------------- */
 /*                               error handling                               */
@@ -141,9 +146,10 @@ void	print_t_map(t_map *map);
 # define OPEN_FAIL "Failed to open file."
 # define SCENE_FAIL "Failed to load scene."
 # define MAP_NOT_ENCLOSED "Map is not en-closed."
+# define MAP_INVALID_CHARACTER "Invalid character in map file."
 # define COLOR_ERROR "Color was not set correctly."
 # define EXTENSION_ERROR "Wrong file extension."
-# define INVALID_MAP_ERROR "Invalid character in map file."
+# define INVALID_PLAYER_COUNT "Wrong number of players."
 
 int		write_error_msg(char *error_msg);
 
