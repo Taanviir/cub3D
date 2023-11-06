@@ -183,7 +183,7 @@ static int	map_load_grid(t_map *map, int map_fd, char **current_map_row)
 		*current_map_row = get_next_line(map_fd);
 	}
 	y = -1;
-	while (++y < map->n_rows) //! CLEAN THIS MORE
+	while (++y < map->n_rows) //! THIS PART IS FULLY BROKEN
 	{
 		x = -1;
 		while (map->grid[y][++x])
@@ -194,7 +194,8 @@ static int	map_load_grid(t_map *map, int map_fd, char **current_map_row)
 		if (map->grid[y][++x] == '1')
 			break ;
 	}
-	if (map_is_enclosed(map, x, y))
+	if (map_is_enclosed(map, 1, 1))
+	// if (map_is_enclosed(map, x, y))
 		return (SUCCESS);
 	else
 		return (write_error_msg(MAP_NOT_ENCLOSED));

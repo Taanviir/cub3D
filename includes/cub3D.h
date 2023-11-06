@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 01:22:38 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/06 12:55:44 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int		close_mlx_core(t_mlx *mlx_core);
 bool	map_extension_check(char *map_path);
 void	map_free(t_map *map);
 void	my_pixel_put(t_img *image, int x, int y, int color);
+void	print_t_map(t_map *map);
 
 /* -------------------------------------------------------------------------- */
 /*                               error handling                               */
