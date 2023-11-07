@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 17:24:12 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/08 01:48:24 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef struct s_player
 typedef struct s_img
 {
 	void	*img_ptr;
-	void	*addr;
+	char	*addr;
 	int		bpp;
 	int		line_length;
 	int		endian;
@@ -113,6 +113,11 @@ t_mlx	*init_mlx_core(char *map_path);
 
 void	start_raycaster(t_mlx *mlx_core);
 t_map	*map_grid_validate(t_map *map, t_player *player);
+
+/* -------------------------------- minimap --------------------------------- */
+
+void	draw_minimap(t_mlx *mlx_core);
+void	place_player_on_minimap(t_img *img_data, t_player *player);
 
 /* --------------------------------- events --------------------------------- */
 

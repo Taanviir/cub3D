@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:35:15 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/25 03:03:40 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:11:34 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 // ---------------------- TO-UTILS ---------------------------------------
 int		ft_atoi(const char *str);
+int		ft_atoi_base(const char *str, char *base);
 char	*ft_itoa(int n);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
