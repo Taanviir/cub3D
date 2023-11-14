@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:39:47 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/07 23:29:49 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/14 14:02:52 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,25 @@ static void	draw_cell(int x, int y, char cell_value, t_mlx *mlx_core)
 			else if (cell_value == '1')
 				color = 0xFFFFFF;
 			else
-				break ;
+				color = 0;
 			my_pixel_put(&mlx_core->img_data, x + i, y + j, color);
 		}
 	}
 }
 
-void	place_player_on_minimap(t_img *img_data, t_player *player)
-{
-	int	y;
-	int	x;
+// void	place_player_on_minimap(t_img *img_data, t_player *player)
+// {
+// 	int	y;
+// 	int	x;
 
-	y = -1;
-	while (++y < PLAYER_SIZE)
-	{
-		x = -1;
-		while (++x < PLAYER_SIZE)
-			my_pixel_put(img_data, player->x_pos + y,
-				player->y_pos + x, 0xFF0000);
-	}
-}
+// 	y = -1;
+// 	while (++y < PLAYER_SIZE)
+// 	{
+// 		x = -1;
+// 		while (++x < PLAYER_SIZE)
+			// my_pixel_put(img_data, player->x_pos + x, player->y_pos + y, 0xFF0000);
+	// }
+// }
 
 void	draw_minimap(t_mlx *mlx_core)
 {
@@ -66,6 +65,5 @@ void	draw_minimap(t_mlx *mlx_core)
 		while (mlx_core->map->grid[y][++x])
 			draw_cell(x, y, mlx_core->map->grid[y][x], mlx_core);
 	}
-	place_player_on_minimap(&mlx_core->img_data, &mlx_core->player);
-	// implement player looking direction and FOV
+	// place_player_on_minimap(&mlx_core->img_data, &mlx_core->player);
 }
