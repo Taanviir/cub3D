@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 17:49:11 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/14 02:07:34 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,6 @@
 static bool	grid_is_enclosed(t_map *map, int x, int y);
 static bool	grid_validate_characters(t_map *map, t_player *player);
 
-static void	create_player(t_player *player, int x, int y, char view_direction)
-{
-	player->x = x;
-	player->y = y;
-	player->x_pos = (x * CELL_SIZE) + X_OFFSET + 16;
-	player->y_pos = (y * CELL_SIZE) + Y_OFFSET + 16;
-	player->view_direction = view_direction;
-}
-
 /**
  * @brief Validates the entire map grid for a game level.
  *
@@ -51,12 +42,14 @@ static void	create_player(t_player *player, int x, int y, char view_direction)
  */
 t_map	*map_grid_validate(t_map *map, t_player *player)
 {
+	if (!map)
+		return (NULL);
 	if (!grid_validate_characters(map, player))
 	{
 		map_free(map);
 		return (NULL);
 	}
-	if (!grid_is_enclosed(map, player->x, player->y))
+	if (!grid_is_enclosed(map, player->pos.x, player->pos.y))
 	{
 		map_free(map);
 		return (write_error_msg(MAP_NOT_ENCLOSED), NULL);

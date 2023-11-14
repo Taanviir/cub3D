@@ -6,13 +6,33 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/06 17:32:22 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/14 14:00:34 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
 /* ------------------------------ initializing ------------------------------ */
+void	create_player(t_player *player, int x, int y, char view_direction)
+{
+	player->pos.x = x;
+	player->pos.y = y;
+	player->dir.x = -1;
+	player->dir.y = 0;
+	player->move_speed = 5.0;
+	player->move_speed = 3.0;
+	player->camera_plane.x = 0;
+	player->camera_plane.y = 0.66;
+	if (view_direction == 'E')
+		player->view_angle_rad = 0;
+	else if (view_direction == 'N')
+		player->view_angle_rad = PI / 2;
+	else if (view_direction == 'W')
+		player->view_angle_rad = PI;
+	else if (view_direction == 'S')
+		player->view_angle_rad = (3 * PI) / 2;
+}
+
 static void	*exit_init(t_mlx *mlx_core, char *error_message)
 {
 	if (mlx_core->map && mlx_core->img_data.addr)

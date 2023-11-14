@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/08 01:48:24 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/14 13:55:02 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,38 @@ t_map	*map_load(char *map_path);
 /* --------------------------------- player --------------------------------- */
 
 # define CELL_SIZE 64
-# define PLAYER_SIZE 32
-# define X_OFFSET 400
-# define Y_OFFSET 100
+# define PLAYER_SIZE 10
+# define X_OFFSET 0
+# define Y_OFFSET 0
+# define ONE_ANGLE 0.0174533
+# define PI 3.1415926535
+
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}	t_point;
+
+typedef struct s_vector
+{
+	double	x;
+	double	y;
+}	t_vector;
 
 typedef struct s_player
 {
-	int		x;
-	int		y;
-	int		x_pos;
-	int		y_pos;
-	char	view_direction;
+	t_vector	pos;
+	t_vector	dir;
+	t_vector	camera_plane;
+	double		move_speed;
+	double		rot_speed;
+	double		view_angle_rad;
 }	t_player;
 
 /* -------------------------------- mlx core -------------------------------- */
 
-# define WIN_WIDTH 1920
-# define WIN_HEIGHT 1080
+# define WIN_WIDTH 1024
+# define WIN_HEIGHT 512
 # define WIN_TITLE "cub3D"
 
 typedef struct s_img
@@ -108,11 +123,13 @@ typedef struct s_mlx
 }	t_mlx;
 
 t_mlx	*init_mlx_core(char *map_path);
+void	create_player(t_player *player, int x, int y, char view_direction);
 
 /* ------------------------------- raycaster -------------------------------- */
 
 void	start_raycaster(t_mlx *mlx_core);
 t_map	*map_grid_validate(t_map *map, t_player *player);
+void	draw_rays_3D(char **grid, t_player *player, t_img *img_data);
 
 /* -------------------------------- minimap --------------------------------- */
 
@@ -129,7 +146,8 @@ int		close_mlx_core(t_mlx *mlx_core);
 
 bool	map_extension_check(char *map_path);
 void	map_free(t_map *map);
-void	my_pixel_put(t_img *image, int x, int y, int color);
+void	my_pixel_put(t_img *img_data, int x, int y, int color);
+void	draw_line(t_img *img_data, t_point a, t_point b);
 
 /* ------------------------------- debug utils ------------------------------ */
 
@@ -151,7 +169,7 @@ void	print_t_map(t_map *map); //? for debugging only
 # define MLX_INIT_FAIL "Failed to initialize mlx."
 # define MLX_WIN_FAIL "Failed to start mlx window."
 # define MLX_IMG_FAIL "Failed to create mlx image."
-# define OPEN_FAIL "Failed to open file."
+# define OPEN_FAIL "Failed to open file:"
 # define SCENE_FAIL "Failed to load scene."
 # define MAP_NOT_ENCLOSED "Map is not en-closed."
 # define MAP_INVALID_CHARACTER "Invalid character in map file."
