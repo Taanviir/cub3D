@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grid_validate.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 17:49:11 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/16 20:33:39 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,9 @@
 
 static bool	grid_is_enclosed(t_map *map, int x, int y);
 static bool	grid_validate_characters(t_map *map, t_player *player);
+static void	create_player(t_player *player, int x, int y, char view_direction); //! improve this
 
-static void	create_player(t_player *player, int x, int y, char view_direction)
-{
-	player->x = x;
-	player->y = y;
-	player->x_pos = (x * CELL_SIZE) + X_OFFSET + 16;
-	player->y_pos = (y * CELL_SIZE) + Y_OFFSET + 16;
-	player->view_direction = view_direction;
-}
+
 
 /**
  * @brief Validates the entire map grid for a game level.
@@ -49,14 +43,16 @@ static void	create_player(t_player *player, int x, int y, char view_direction)
  *
  * @return true if the map grid passes all validation checks, otherwise false.
  */
-t_map	*map_grid_validate(t_map *map, t_player *player)
+t_map	*grid_validate(t_map *map, t_player *player)
 {
+	if (!map || !player)
+		return (NULL);
 	if (!grid_validate_characters(map, player))
 	{
 		map_free(map);
 		return (NULL);
 	}
-	if (!grid_is_enclosed(map, player->x, player->y))
+	if (!grid_is_enclosed(map, player->position[X], player->position[Y]))
 	{
 		map_free(map);
 		return (write_error_msg(MAP_NOT_ENCLOSED), NULL);
@@ -83,7 +79,7 @@ static bool	grid_is_enclosed(t_map *map, int x, int y)
 	if (x >= (int)ft_strlen(map->grid[y]) || x < 0 || y < 0 || y >= map->n_rows)
 		return (false);
 	current_cell = &map->grid[y][x];
-	if (*current_cell == '1' || *current_cell == 'V')
+	if (*current_cell == WALL || *current_cell == 'V')
 		return (true);
 	else if (*current_cell == '0'
 		|| ft_strchr(PLAYER_DIRECTIONS, *current_cell))
@@ -133,4 +129,36 @@ static bool	grid_validate_characters(t_map *map, t_player *player)
 	if (player_count != 1)
 		return (write_error_msg(INVALID_PLAYER_COUNT));
 	return (true);
+}
+//! needs alot of work and maybe move it out of here, doesn't belong here
+static void	create_player(t_player *player, int x, int y, char view_direction)
+{
+	player->position[X] = x + 0.5;
+	player->position[Y] = y + 0.5;
+	if (view_direction == 'E')
+	{
+		player->direction[X] = 1;
+		player->cam_plane[Y] = 0.66;
+		player->cam_plane[X] = 0;
+	}
+	else if (view_direction == 'W')
+	{
+		player->direction[X] = -1;
+		player->cam_plane[Y] = 0.66;
+		player->cam_plane[X] = 0;
+	}
+	else if (view_direction == 'N')
+	{
+		player->direction[Y] = -1;
+		player->cam_plane[X] = 0.66;
+		player->cam_plane[Y] = 0;
+	}
+	else if (view_direction == 'S')
+	{
+		player->direction[Y] = 1;
+		player->cam_plane[X] = 0.66;
+		player->cam_plane[Y] = 0;
+	}
+	else
+		write_error_msg(MAP_INVALID_CHARACTER);
 }

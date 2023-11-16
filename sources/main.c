@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/06 15:39:35 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/16 19:49:41 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,23 @@
 // #endif // 0
 // }
 
+
 int	main(int argc, char **argv)
 {
-	t_mlx	*mlx_core;
+	t_mlx	*mlx;
+	char	*map_path;
 
 	if (argc != 2)
 		return (write_error_msg("Error: args"), -1);
-
-	// verify argv
-	mlx_core = init_mlx_core(argv[1]);
-	if (!mlx_core)
+	map_path = argv[1];
+	mlx = init_mlx_data(map_path);
+	if (!mlx)
 		return (-1);
-	start_raycaster(mlx_core);
-
-	mlx_loop_hook(mlx_core->mlx_ptr, no_event, mlx_core);
-	mlx_hook(mlx_core->window, 2, 1L << 0, handle_events, mlx_core);
-	mlx_hook(mlx_core->window, 17, 1L << 17, close_mlx_core, mlx_core);
-	mlx_loop(mlx_core->mlx_ptr);
+	display_background(mlx);
+	ray_cast(&mlx->player, mlx->map, mlx);
+	mlx_loop_hook(mlx->mlx_ptr, no_event, mlx);
+	mlx_hook(mlx->window, 2, 1L << 0, handle_events, mlx);
+	mlx_hook(mlx->window, 17, 1L << 17, close_mlx, mlx);
+	mlx_loop(mlx->mlx_ptr);
 	return (0);
 }

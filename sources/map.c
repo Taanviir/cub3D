@@ -8,7 +8,7 @@ static t_map	*map_init(void);
 /* ---------------------------------- grid ---------------------------------- */
 static int		grid_resize(t_map *map);
 static int		grid_add_row(char *row, t_map *map);
-static int		grid_load(t_map *map, int map_fd, char **current_map_row); //!
+static int		grid_load(t_map *map, int map_fd, char **current_map_row);
 /* ---------------------------------- scene --------------------------------- */
 static char		*scene_get_texture_id(char *current_map_row);
 static void		scene_set_texture(int	*texture_fd, char *current_map_row);
@@ -24,7 +24,7 @@ void			map_free(t_map *map);
 static void		map_close(t_map *map);
 void			map_cleanup(char *current_map_row, int map_fd, t_map *map);
 /* -------------------------------- utilities ------------------------------- */
-bool			map_extension_check(char *map_path);
+static bool			map_extension_check(char *map_path); //! revise the check here
 static int		verify_open(char *map_path, int options);
 static bool		map_row_is_empty(char *current_map_row);
 static char		*map_next_valid_row(int map_fd);
@@ -102,18 +102,14 @@ static t_map	*map_init(void)
 
 	map = ft_calloc(1, sizeof(t_map));
 	if (!map)
-	{
-		write_error_msg(MALLOC_FAIL);
-		return (NULL);
-	}
+		return (write_error_msg(MALLOC_FAIL), NULL);
 	map_init_colors(map);
 	map->grid_capacity = MAP_INITIAL_CAPACITY;
 	map->grid = ft_calloc(map->grid_capacity, sizeof(char *));
 	if (!map->grid)
 	{
-		write_error_msg(MALLOC_FAIL);
 		free (map);
-		return (NULL);
+		return (write_error_msg(MALLOC_FAIL), NULL);
 	}
 	return (map);
 }
@@ -471,11 +467,11 @@ void	map_cleanup(char *current_map_row, int map_fd, t_map *map)
  * @param map_path Pointer to the path of the map file.
  * @return true if the file has a '.cub' extension, false otherwise.
  */
-bool	map_extension_check(char *map_path)
+static bool	map_extension_check(char *map_path)
 {
 	if (!map_path)
 		return (write_error_msg(EXTENSION_ERROR));
-	char *extension = ft_strrchr(map_path, '.');
+	char *extension = ft_strrchr(map_path, '.'); //! redundant check
 	if (!extension)
 		return (write_error_msg(EXTENSION_ERROR));
 	if (ft_strncmp(extension, ".cub", 4))
@@ -540,7 +536,7 @@ static char	*map_next_valid_row(int map_fd)
 {
 	char	*current_map_row;
 
-	current_map_row = ft_calloc(sizeof(char *),1);
+	current_map_row = ft_calloc(1,sizeof(char *));
 	while (current_map_row && map_row_is_empty(current_map_row))
 	{
 		free(current_map_row);

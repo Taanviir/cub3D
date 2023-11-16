@@ -3,12 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/06 17:24:12 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/16 20:35:38 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/* -------------------------------------------------------------------------- */
+/*                                    TODO                                    */
+/* -------------------------------------------------------------------------- */
+// [ ] implement textures
+// [ ] fix collisions, they clip
+// [ ] organize this mess :)
+// [ ] no magic numeros
+// [ ] clean ray_caster.c
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -22,15 +31,36 @@
 # include <stdio.h>
 # include <unistd.h>
 # include "keycodes.h"
+# include "assert.h" //! are we allowed to use assert
 
 # ifdef __LINUX__
 #  include <X11/keysym.h>
 # endif
 
-/* ----------------------------------- map ---------------------------------- */
+/* ----------------------------------- dda ---------------------------------- */
+typedef struct s_dda
+{
+	double	ray[2];
+	int		map_cell[2]; // the cell where the player is located
+	double	delta[2]; // the distance a ray has to travel to  hit the next H or V line
+	double	next_hit[2];
+	double	step[2]; // how much you need to step to get to the next hit (H or V)
+} t_dda;
 
-# define MAP_INITIAL_CAPACITY 1
+typedef struct s_player
+{
+	double	position[2];
+	double	direction[2];
+	double	cam_plane[2];
+}	t_player;
+
+/* ----------------------------------- map ---------------------------------- */
+# define MAP_INITIAL_CAPACITY 5
 # define DOUBLE 2
+
+#define ACCEPTED_CHARACTERS "10VNSWE\n " // list of valid map characters
+#define PLAYER_DIRECTIONS "NSWE"
+#define WALL '1'
 
 enum e_map_color
 {
@@ -62,31 +92,22 @@ typedef struct s_map
 	int		c_color[TOTAL_COLORS];	// ceiling color
 }	t_map;
 
-#define ACCEPTED_CHARACTERS "10VNSWE\n " // list of valid map characters
-#define PLAYER_DIRECTIONS "NSWE"
 
 t_map	*map_load(char *map_path);
-
+t_map	*grid_validate(t_map *map, t_player *player);
 /* --------------------------------- player --------------------------------- */
 
-# define CELL_SIZE 64
-# define PLAYER_SIZE 32
-# define X_OFFSET 400
-# define Y_OFFSET 100
+#define X 0 // coordinates
+#define Y 1 // coordinates
+#define H 0
+#define V 1
 
-typedef struct s_player
-{
-	int		x;
-	int		y;
-	int		x_pos;
-	int		y_pos;
-	char	view_direction;
-}	t_player;
+
 
 /* -------------------------------- mlx core -------------------------------- */
 
-# define WIN_WIDTH 1920
-# define WIN_HEIGHT 1080
+# define WIN_WIDTH 640
+# define WIN_HEIGHT 480
 # define WIN_TITLE "cub3D"
 
 typedef struct s_img
@@ -98,8 +119,7 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
-typedef struct s_mlx
-{
+typedef struct s_mlx {
 	void		*mlx_ptr;
 	void		*window;
 	t_img		img_data;
@@ -107,22 +127,24 @@ typedef struct s_mlx
 	t_player	player;
 }	t_mlx;
 
-t_mlx	*init_mlx_core(char *map_path);
-
+t_mlx	*init_mlx_data(char *map_path);
 /* ------------------------------- raycaster -------------------------------- */
+#define VERY_BIG_NUMBER 453211111.0f
 
-void	start_raycaster(t_mlx *mlx_core);
-t_map	*map_grid_validate(t_map *map, t_player *player);
+
+
+void	ray_cast(t_player *player, t_map *map, t_mlx *mlx);
+void	display_background(t_mlx *mlx_core);
 
 /* --------------------------------- events --------------------------------- */
+#define MOVE 0.05f
 
 int		no_event(void);
 int		handle_events(int keycode, t_mlx *mlx_core);
-int		close_mlx_core(t_mlx *mlx_core);
+int		close_mlx(t_mlx *mlx_core);
 
 /* ---------------------------------- utils --------------------------------- */
 
-bool	map_extension_check(char *map_path);
 void	map_free(t_map *map);
 void	my_pixel_put(t_img *image, int x, int y, int color);
 
