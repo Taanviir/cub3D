@@ -134,7 +134,7 @@ t_mlx	*init_mlx_data(char *map_path);
 
 
 
-void	ray_cast(t_player *player, t_map *map, t_mlx *mlx);
+void	ray_cast(t_mlx *mlx);
 void	display_background(t_mlx *mlx_core);
 
 /* --------------------------------- events --------------------------------- */

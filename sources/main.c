@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/16 19:49:41 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/17 05:10:58 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main(int argc, char **argv)
 	if (!mlx)
 		return (-1);
 	display_background(mlx);
-	ray_cast(&mlx->player, mlx->map, mlx);
+	ray_cast(mlx);
 	mlx_loop_hook(mlx->mlx_ptr, no_event, mlx);
 	mlx_hook(mlx->window, 2, 1L << 0, handle_events, mlx);
 	mlx_hook(mlx->window, 17, 1L << 17, close_mlx, mlx);

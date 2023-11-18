@@ -1,37 +1,42 @@
 #include <cub3D.h>
 
+/* -------------------------------- textures -------------------------------- */
+typedef enum {
+	TWENTY_TWO,
+	SEVENTY_FIFTH
+} e_hitSide;
 
-
+/* -------------------------------- utilities ------------------------------- */
 static int	encode_color(int map_color[TOTAL_COLORS]);
-void		display_background(t_mlx *mlx_core);
+
+static int	ray_dda(t_dda *dda, t_map *map);
+
 void		set_step(t_player *player, t_dda *dda);
-void		draw_slice(t_mlx *mlx, double distance_to_wall, int slice, int *rgb);
+void		draw_slice(t_mlx *mlx, double distance_to_wall, int slice, e_hitSide texture);
 void		set_delta(int *slice, t_dda *dda, t_player *player);
-void		do_the_dda(t_dda *dda, t_map *map, int *side);
 void		display_background(t_mlx *mlx);
 
+#define TEST_COLOR_DARK {44,180,77}
+#define TEST_COLOR_LIGHT {35,144,61}
 
-void	ray_cast(t_player *player, t_map *map, t_mlx *mlx)
+void	ray_cast(t_mlx *mlx)
 {
 	t_dda	dda;
 	int		slice;
 	double	distance_to_wall;
-	int		side;
-	int	rgb1[3] = {44,180,77};
-	int	rgb2[3] = {35,144,61};
+	e_hitSide 	hit_side;
 
 	slice = 0;
-
 	while (slice < WIN_WIDTH)
 	{
-		set_delta(&slice, &dda, player);
-		set_step(player, &dda);
-		do_the_dda(&dda, map, &side);
-		if (side)
+		set_delta(&slice, &dda, &mlx->player);
+		set_step(&mlx->player, &dda);
+		hit_side = ray_dda(&dda, mlx->map);
+		if (hit_side)
 			distance_to_wall = dda.next_hit[H] - dda.delta[H];
 		else
 			distance_to_wall = dda.next_hit[V] - dda.delta[V];
-		draw_slice(mlx, distance_to_wall, slice, (side?rgb1:rgb2)); // ternary
+		draw_slice(mlx, distance_to_wall, slice, hit_side);
 		slice++;
 	}
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->window,
@@ -75,13 +80,13 @@ void	set_step(t_player *player, t_dda *dda)
 		dda->next_hit[H] = (dda->map_cell[Y] + 1 - player->position[Y]) * dda->delta[H];
 	}
 }
-void	draw_slice(t_mlx *mlx, double distance_to_wall, int slice, int *rgb)
+void	draw_slice(t_mlx *mlx, double distance_to_wall, int slice, e_hitSide texture)
 {
 	int	slice_start;
 	int slice_end;
 	int	slice_height;
 	int	max_height;
-	int color = encode_color(rgb);
+	int color[2][3] = {TEST_COLOR_DARK, TEST_COLOR_LIGHT};
 
 	max_height = WIN_HEIGHT;
 	slice_height = (int)(max_height / distance_to_wall);
@@ -93,7 +98,7 @@ void	draw_slice(t_mlx *mlx, double distance_to_wall, int slice, int *rgb)
 	if (slice_end >= max_height)
 		slice_end = max_height - 1;
 	for (int i = slice_start; i < slice_end; i++)
-		my_pixel_put(&mlx->img_data, slice, i, color);
+		my_pixel_put(&mlx->img_data, slice, i, encode_color(color[texture]));
 }
 void	set_delta(int *slice, t_dda *dda, t_player *player)
 {
@@ -106,7 +111,6 @@ void	set_delta(int *slice, t_dda *dda, t_player *player)
 	camera_x = (*slice * cfx) - 1; // [-1, 1]
 	dda->ray[X] = player->direction[X] + (player->cam_plane[X] * camera_x);
 	dda->ray[Y] = player->direction[Y] + (player->cam_plane[Y] * camera_x);
-	// to avoid division by 0
 	if (dda->ray[X])
 		dda->delta[V] = fabs(1/dda->ray[X]);
 	else
@@ -117,10 +121,11 @@ void	set_delta(int *slice, t_dda *dda, t_player *player)
 		dda->delta[H] = VERY_BIG_NUMBER;
 }
 
-void	do_the_dda(t_dda *dda, t_map *map, int *side)
+static int	ray_dda(t_dda *dda, t_map *map)
 {
 	int		current_grid[2];
 	bool	hit;
+	int		hit_side;
 
 	current_grid[X] = dda->map_cell[X];
 	current_grid[Y] = dda->map_cell[Y];
@@ -131,18 +136,19 @@ void	do_the_dda(t_dda *dda, t_map *map, int *side)
 		{
 			dda->next_hit[V] += dda->delta[V];
 			current_grid[X] += dda->step[X];
-			*side = 0; // this needs to be adjusted for faces
+			hit_side = 0; // this needs to be adjusted for faces
 		}
 		else
 		{
 			dda->next_hit[H] += dda->delta[H];
 			current_grid[Y] += dda->step[Y];
-			*side = 1; // this needs to be adjusted for faces
+			hit_side = 1; // this needs to be adjusted for faces
 		}
 		if (map->grid[current_grid[Y]][current_grid[X]] == WALL) {
 			hit = true;
 		}
 	}
+	return (hit_side);
 }
 
 void display_background(t_mlx *mlx)
