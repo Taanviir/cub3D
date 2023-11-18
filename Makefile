@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/11/08 03:21:56 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/11/17 05:14:23 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ else ifeq ($(UNAME), Darwin)
 endif
 
 SRCS_DIR = sources
-SRCS = main.c mlx_core.c utils.c map.c grid_validate.c events.c raycaster_engine.c \
+SRCS = main.c mlx_core.c utils.c map.c grid_validate.c events.c \
 	draw_pixel.c ray_caster.c
 
 OBJS_DIR = objects
@@ -48,7 +48,7 @@ MINILIBX = $(MLX_DIR)libmlx.a
 all : $(NAME)
 
 run : all
-	./$(NAME) test_maps/regular-map.cub
+	./$(NAME) test_maps/split_map.cub
 
 # --------------------------------- debugging -------------------------------- #
 DEBUG_MAP:= ./test_maps/regular-map.cub # need to change this for maps in test_maps/
