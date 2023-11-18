@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/16 20:33:39 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/17 20:44:25 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,25 +138,29 @@ static void	create_player(t_player *player, int x, int y, char view_direction)
 	if (view_direction == 'E')
 	{
 		player->direction[X] = 1;
-		player->cam_plane[Y] = 0.66;
+		player->direction[Y] = 0;
+		player->cam_plane[Y] = -0.66;
 		player->cam_plane[X] = 0;
 	}
 	else if (view_direction == 'W')
 	{
 		player->direction[X] = -1;
+		player->direction[Y] = 0;
 		player->cam_plane[Y] = 0.66;
 		player->cam_plane[X] = 0;
 	}
 	else if (view_direction == 'N')
 	{
 		player->direction[Y] = -1;
+		player->direction[X] = 0;
 		player->cam_plane[X] = 0.66;
 		player->cam_plane[Y] = 0;
 	}
 	else if (view_direction == 'S')
 	{
 		player->direction[Y] = 1;
-		player->cam_plane[X] = 0.66;
+		player->direction[X] = 0;
+		player->cam_plane[X] = -0.66;
 		player->cam_plane[Y] = 0;
 	}
 	else

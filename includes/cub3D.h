@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/16 20:35:38 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/17 21:13:25 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 /*                                    TODO                                    */
 /* -------------------------------------------------------------------------- */
 // [ ] implement textures
+// [ ] when starting south movement is flipped
 // [ ] fix collisions, they clip
 // [ ] organize this mess :)
 // [ ] no magic numeros
@@ -138,6 +139,7 @@ void	display_background(t_mlx *mlx_core);
 
 /* --------------------------------- events --------------------------------- */
 #define MOVE 0.05f
+#define ROTATE_ANGLE 1
 
 int		no_event(void);
 int		handle_events(int keycode, t_mlx *mlx_core);

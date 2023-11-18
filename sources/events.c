@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/16 20:06:35 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/18 05:22:32 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,44 @@ int	close_mlx(t_mlx *mlx)
 	exit(0);
 }
 
+
+void	rotate_player(int keycode, t_mlx *mlx)
+{
+	double *c[2];
+	double *d[2];
+	double old_d[2];
+	double old_c[2];
+	double sin_step = sin((ROTATE_ANGLE * 3.14) / 180.0F);
+	double cos_step = cos((ROTATE_ANGLE * 3.14) / 180.0F);
+
+	d[X] = &mlx->player.direction[X];
+	d[Y] = &mlx->player.direction[Y];
+	c[X] = &mlx->player.cam_plane[X];
+	c[Y] = &mlx->player.cam_plane[Y];
+	old_d[X] = mlx->player.direction[X];
+	old_d[Y] = mlx->player.direction[Y];
+	old_c[X] = mlx->player.cam_plane[X];
+	old_c[Y] = mlx->player.cam_plane[Y];
+	if (keycode == KEYCODE_L_ARROW)
+	{
+		*d[X] = old_d[X] * cos_step + old_d[Y] * sin_step;
+		*c[X] = old_c[X] * cos_step + old_c[Y] * sin_step;
+
+		*d[Y] = -old_d[X] * sin_step + old_d[Y] * cos_step;
+		*c[Y] = -old_c[X] * sin_step + old_c[Y] * cos_step;
+	}
+	else if (keycode == KEYCODE_R_ARROW)
+	{
+		*d[X] = old_d[X] * cos_step - old_d[Y] * sin_step;
+		*c[X] = old_c[X] * cos_step - old_c[Y] * sin_step;
+
+		*d[Y] = old_d[X] * sin_step + old_d[Y] * cos_step;
+		*c[Y] = old_c[X] * sin_step + old_c[Y] * cos_step;
+	}
+	ft_memset(mlx->img_data.addr, 0, (WIN_HEIGHT * WIN_WIDTH * 4));
+	display_background(mlx);
+	ray_cast(mlx);
+}
 
 void	move_player(int keycode, t_mlx *mlx)
 {
@@ -50,6 +88,8 @@ int	handle_events(int keycode, t_mlx *mlx)
 	else if (keycode == KEYCODE_W || keycode == KEYCODE_A
 		|| keycode == KEYCODE_S || keycode == KEYCODE_D)
 		move_player(keycode, mlx);
+	else if (keycode ==  KEYCODE_L_ARROW || keycode == KEYCODE_R_ARROW )
+		rotate_player(keycode, mlx);
 	return (0);
 }
 
