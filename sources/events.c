@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/14 13:56:33 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/19 17:15:42 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,43 +23,58 @@ int	close_mlx_core(t_mlx *mlx_core)
 	exit(0);
 }
 
-void	move_player(int keycode, t_mlx *mlx_core, t_player *player)
+void	rotate_player(int keycode, t_mlx *mlx_core, t_player *player)
+{
+	double	old_dir_x;
+	double	old_plane_x;
+
+	ft_memset(mlx_core->img_data.addr, 0, WIN_WIDTH * WIN_HEIGHT * 4);
+	old_dir_x = player->dir.x;
+	old_plane_x = player->camera_plane.x;
+	if (keycode == KEYCODE_R_ARROW) // look right
+	{
+		//both camera direction and camera plane must be rotated
+		player->dir.x = player->dir.x * cos(-player->rot_speed) - player->dir.y * sin(-player->rot_speed);
+		player->dir.y = old_dir_x * sin(-player->rot_speed) + player->dir.y * cos(-player->rot_speed);
+		player->camera_plane.x = player->camera_plane.x * cos(-player->rot_speed) - player->camera_plane.y * sin(-player->rot_speed);
+		player->camera_plane.y = old_plane_x * sin(-player->rot_speed) + player->camera_plane.y * cos(-player->rot_speed);
+	}
+	else if (keycode == KEYCODE_L_ARROW) // look left
+	{
+		//both camera direction and camera plane must be rotated
+		player->dir.x = player->dir.x * cos(player->rot_speed) - player->dir.y * sin(player->rot_speed);
+		player->dir.y = old_dir_x * sin(player->rot_speed) + player->dir.y * cos(player->rot_speed);
+		player->camera_plane.x = player->camera_plane.x * cos(player->rot_speed) - player->camera_plane.y * sin(player->rot_speed);
+		player->camera_plane.y = old_plane_x * sin(player->rot_speed) + player->camera_plane.y * cos(player->rot_speed);
+	}
+	start_raycaster(mlx_core);
+}
+
+void	move_player(int keycode, t_mlx *mlx_core, t_player *player, char **grid)
 {
 	ft_memset(mlx_core->img_data.addr, 0, WIN_WIDTH * WIN_HEIGHT * 4);
 	if (keycode == KEYCODE_W) // move forward
 	{
-		if (mlx_core->map->grid[(int)(player->pos.x + player->dir.x * player->move_speed)][(int)player->pos.y] != '1')
+		if (grid[(int)(player->pos.x + player->dir.x * player->move_speed)][(int)player->pos.y] != '1')
 			player->pos.x += player->dir.x * player->move_speed;
-		if (mlx_core->map->grid[(int)(player->pos.x)][(int)(player->pos.y + player->dir.y * player->move_speed)] != '1')
+		if (grid[(int)(player->pos.x)][(int)(player->pos.y + player->dir.y * player->move_speed)] != '1')
 			player->pos.y += player->dir.y * player->move_speed;
 	}
 	else if (keycode == KEYCODE_S) // move backward
 	{
-		if (mlx_core->map->grid[(int)(player->pos.x + player->dir.x * player->move_speed)][(int)player->pos.y] != '1')
+		if (grid[(int)(player->pos.x + player->dir.x * player->move_speed)][(int)player->pos.y] != '1')
 			player->pos.x -= player->dir.x * player->move_speed;
-		if (mlx_core->map->grid[(int)(player->pos.x)][(int)(player->pos.y + player->dir.y * player->move_speed)] != '1')
+		if (grid[(int)(player->pos.x)][(int)(player->pos.y + player->dir.y * player->move_speed)] != '1')
 			player->pos.y -= player->dir.y * player->move_speed;
 	}
-	else if (keycode == KEYCODE_A) // look left
-	{
-		//both camera direction and camera plane must be rotated
-		double oldDirX = player->dir.x;
-		player->dir.x = player->dir.x * cos(-player->rot_speed) - player->dir.y * sin(-player->rot_speed);
-		player->dir.y = oldDirX * sin(-player->rot_speed) + player->dir.y * cos(-player->rot_speed);
-		double oldPlaneX = player->camera_plane.x;
-		player->camera_plane.x = player->camera_plane.x * cos(-player->rot_speed) - player->camera_plane.y * sin(-player->rot_speed);
-		player->camera_plane.y = oldPlaneX * sin(-player->rot_speed) + player->camera_plane.y * cos(-player->rot_speed);
-	}
-	else if (keycode == KEYCODE_D) // look right
-	{
-		//both camera direction and camera plane must be rotated
-		double oldDirX = player->dir.x;
-		player->dir.x = player->dir.x * cos(player->rot_speed) - player->dir.y * sin(player->rot_speed);
-		player->dir.y = oldDirX * sin(player->rot_speed) + player->dir.y * cos(player->rot_speed);
-		double oldPlaneX = player->camera_plane.x;
-		player->camera_plane.x = player->camera_plane.x * cos(player->rot_speed) - player->camera_plane.y * sin(player->rot_speed);
-		player->camera_plane.y = oldPlaneX * sin(player->rot_speed) + player->camera_plane.y * cos(player->rot_speed);
-	}
+	// else if (keycode == KEYCODE_D) // move right
+	// {
+		// TODO
+	// }
+	// else if (keycode == KEYCODE_A) // move left
+	// {
+		// TODO
+	// }
 	start_raycaster(mlx_core);
 }
 
@@ -69,8 +84,9 @@ int	handle_events(int keycode, t_mlx *mlx_core)
 		close_mlx_core(mlx_core);
 	else if (keycode == KEYCODE_W || keycode == KEYCODE_A
 		|| keycode == KEYCODE_S || keycode == KEYCODE_D)
-		move_player(keycode, mlx_core, &mlx_core->player);
-	// else if (keycode == KEYCODE_L_ARROW || KEYCODE_R_ARROW)
+		move_player(keycode, mlx_core, &mlx_core->player, mlx_core->map->grid);
+	else if (keycode == KEYCODE_L_ARROW || KEYCODE_R_ARROW)
+		rotate_player(keycode, mlx_core, &mlx_core->player);
 	return (0);
 }
 
