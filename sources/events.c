@@ -6,29 +6,29 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/19 17:15:42 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/19 17:52:12 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	close_mlx_core(t_mlx *mlx_core)
+int	close_mlx(t_mlx *mlx)
 {
-	mlx_destroy_image(mlx_core->mlx_ptr, mlx_core->img_data.img_ptr);
-	mlx_destroy_window(mlx_core->mlx_ptr, mlx_core->window);
-	mlx_destroy_display(mlx_core->mlx_ptr); //! not there in mac
-	map_free(mlx_core->map);
-	free(mlx_core->mlx_ptr);
-	free(mlx_core);
+	mlx_destroy_image(mlx->mlx_ptr, mlx->img_data.img_ptr);
+	mlx_destroy_window(mlx->mlx_ptr, mlx->window);
+	mlx_destroy_display(mlx->mlx_ptr); //! not there in mac
+	map_free(mlx->map);
+	free(mlx->mlx_ptr);
+	free(mlx);
 	exit(0);
 }
 
-void	rotate_player(int keycode, t_mlx *mlx_core, t_player *player)
+void	rotate_player(int keycode, t_mlx *mlx, t_player *player)
 {
 	double	old_dir_x;
 	double	old_plane_x;
 
-	ft_memset(mlx_core->img_data.addr, 0, WIN_WIDTH * WIN_HEIGHT * 4);
+	ft_memset(mlx->img_data.addr, 0, WIN_WIDTH * WIN_HEIGHT * 4);
 	old_dir_x = player->dir.x;
 	old_plane_x = player->camera_plane.x;
 	if (keycode == KEYCODE_R_ARROW) // look right
@@ -47,12 +47,12 @@ void	rotate_player(int keycode, t_mlx *mlx_core, t_player *player)
 		player->camera_plane.x = player->camera_plane.x * cos(player->rot_speed) - player->camera_plane.y * sin(player->rot_speed);
 		player->camera_plane.y = old_plane_x * sin(player->rot_speed) + player->camera_plane.y * cos(player->rot_speed);
 	}
-	start_raycaster(mlx_core);
+	start_raycaster(mlx);
 }
 
-void	move_player(int keycode, t_mlx *mlx_core, t_player *player, char **grid)
+void	move_player(int keycode, t_mlx *mlx, t_player *player, char **grid)
 {
-	ft_memset(mlx_core->img_data.addr, 0, WIN_WIDTH * WIN_HEIGHT * 4);
+	ft_memset(mlx->img_data.addr, 0, WIN_WIDTH * WIN_HEIGHT * 4);
 	if (keycode == KEYCODE_W) // move forward
 	{
 		if (grid[(int)(player->pos.x + player->dir.x * player->move_speed)][(int)player->pos.y] != '1')
@@ -75,18 +75,18 @@ void	move_player(int keycode, t_mlx *mlx_core, t_player *player, char **grid)
 	// {
 		// TODO
 	// }
-	start_raycaster(mlx_core);
+	start_raycaster(mlx);
 }
 
-int	handle_events(int keycode, t_mlx *mlx_core)
+int	handle_events(int keycode, t_mlx *mlx)
 {
 	if (keycode == KEYCODE_ESC)
-		close_mlx_core(mlx_core);
+		close_mlx(mlx);
 	else if (keycode == KEYCODE_W || keycode == KEYCODE_A
 		|| keycode == KEYCODE_S || keycode == KEYCODE_D)
-		move_player(keycode, mlx_core, &mlx_core->player, mlx_core->map->grid);
+		move_player(keycode, mlx, &mlx->player, mlx->map->grid);
 	else if (keycode == KEYCODE_L_ARROW || KEYCODE_R_ARROW)
-		rotate_player(keycode, mlx_core, &mlx_core->player);
+		rotate_player(keycode, mlx, &mlx->player);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/14 14:10:44 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/19 17:53:27 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,25 +122,25 @@ typedef struct s_mlx
 	t_player	player;
 }	t_mlx;
 
-t_mlx	*init_mlx_core(char *map_path);
+t_mlx	*init_mlx_data(char *map_path);
 void	create_player(t_player *player, int x, int y, char view_direction);
 
 /* ------------------------------- raycaster -------------------------------- */
 
-void	start_raycaster(t_mlx *mlx_core);
+void	start_raycaster(t_mlx *mlx);
 t_map	*map_grid_validate(t_map *map, t_player *player);
 void	draw_rays_3D(char **grid, t_player *player, t_img *img_data);
 
 /* -------------------------------- minimap --------------------------------- */
 
-void	draw_minimap(t_mlx *mlx_core);
+void	draw_minimap(t_mlx *mlx);
 void	place_player_on_minimap(t_img *img_data, t_player *player);
 
 /* --------------------------------- events --------------------------------- */
 
 int		no_event(void);
-int		handle_events(int keycode, t_mlx *mlx_core);
-int		close_mlx_core(t_mlx *mlx_core);
+int		handle_events(int keycode, t_mlx *mlx);
+int		close_mlx(t_mlx *mlx);
 
 /* ---------------------------------- utils --------------------------------- */
 

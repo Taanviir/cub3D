@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:39:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/19 17:21:32 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/19 17:57:52 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void draw_vert(t_img *img_data, int x, int y, int height, int color)
 		my_pixel_put(img_data, x, y, color);
 }
 
-void	draw_rays_3D(char **grid, t_player *player, t_img *img_data)
+void	ray_cast(char **grid, t_player *player, t_img *img_data)
 {
 	int		column; // each column of pixels in the window
 	double	camera_x; // x-coordinate in camera space
@@ -105,8 +105,7 @@ void	draw_rays_3D(char **grid, t_player *player, t_img *img_data)
 		if (ray_dir_y)
 			delta_dist_y = fabs(1 / ray_dir_y);
 
-		hit = 0;
-		//calculate step and initial sideDist
+		// calculate step and initial sideDist
 		if (ray_dir_x < 0)
 		{
 			step_x = -1;
@@ -127,6 +126,9 @@ void	draw_rays_3D(char **grid, t_player *player, t_img *img_data)
 			step_y = 1;
 			side_dist_y = (map_y + 1.0 - player->pos.y) * delta_dist_y;
 		}
+
+		// DDA algorithm
+		hit = 0;
 		while (!hit)
 		{
 			//jump to next map square, either in x-direction, or in y-direction
@@ -166,14 +168,13 @@ void	draw_rays_3D(char **grid, t_player *player, t_img *img_data)
 	}
 }
 
-void	start_raycaster(t_mlx *mlx_core)
+void	start_raycaster(t_mlx *mlx)
 {
-	// draw_ceiling_and_floor(&mlx_core->img_data, mlx_core->map->c_color, mlx_core->map->f_color);
-	// draw_minimap(mlx_core);
+	// draw_ceiling_and_floor(&mlx->img_data, mlx->map->c_color, mlx->map->f_color);
+	// draw_minimap(mlx);
 
-	// get rays for horizontal and vertical intersections (DDA)
-	draw_rays_3D(mlx_core->map->grid, &mlx_core->player, &mlx_core->img_data);
+	ray_cast(mlx->map->grid, &mlx->player, &mlx->img_data);
 
-	mlx_put_image_to_window(mlx_core->mlx_ptr, mlx_core->window,
-		mlx_core->img_data.img_ptr, 0, 0);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->window,
+		mlx->img_data.img_ptr, 0, 0);
 }
