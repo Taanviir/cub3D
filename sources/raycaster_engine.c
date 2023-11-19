@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:39:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/14 14:01:17 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/19 17:21:32 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,137 +26,149 @@ void	draw_ceiling_and_floor(t_img *img_data, int *c_color, int *f_color)
 {
 	int	x;
 	int	y;
+	int	endian;
 
 	y = -1;
+	endian = img_data->endian;
 	while (++y < WIN_HEIGHT)
 	{
 		x = -1;
 		while (++x < WIN_WIDTH)
 		{
 			if (y < WIN_HEIGHT / 2)
-				my_pixel_put(img_data, x, y, get_color(c_color, 0, img_data->endian));
+				my_pixel_put(img_data, x, y, get_color(c_color, 0, endian));
 			else
-				my_pixel_put(img_data, x, y, get_color(f_color, 0, img_data->endian));
+				my_pixel_put(img_data, x, y, get_color(f_color, 0, endian));
 		}
 	}
 }
 
-double	rad_to_deg(double i_radians)
-{
-	return (180 * i_radians / PI);
-}
+// double	rad_to_deg(double i_radians)
+// {
+// 	return (180 * i_radians / PI);
+// }
 
-double	deg_to_rad(int a)
-{
-	return (a * PI / 180.0);
-}
+// double	deg_to_rad(int a)
+// {
+// 	return (a * PI / 180.0);
+// }
 
-void draw_vert(t_img *img_data, int x, int y, int height)
+void draw_vert(t_img *img_data, int x, int y, int height, int color)
 {
 	if (x < 0 || x >= WIN_WIDTH || y < 0 || height >= WIN_HEIGHT || y > height)
 		return ;
 	while (++y <= height + 1)
-		my_pixel_put(img_data, x, y, 0xFF0000);
+		my_pixel_put(img_data, x, y, color);
 }
 
 void	draw_rays_3D(char **grid, t_player *player, t_img *img_data)
 {
-	int	x;
-	// double old_time = 0, time = 0;
+	int		column; // each column of pixels in the window
+	double	camera_x; // x-coordinate in camera space
+	double	ray_dir_x; // x-coordinate of ray vector
+	double	ray_dir_y; // y-coordinate of ray vector
+	int		map_x; // x-pos of map coordinate
+	int		map_y; // y-pos of map coordinate
+	double	delta_dist_x; // distance from one x-side to the next x-side
+	double	delta_dist_y; // distance from one y-side to the next y-side
+	double	perp_wall_dist; // length of the ray
 
-	x = -1;
-	while (++x < WIN_WIDTH)
+	double	side_dist_x; // length of ray from current position to next x-side
+	double	side_dist_y; // length of ray from current position to next y-side
+
+	//what direction to step in x or y-direction (either +1 or -1)
+	int		step_x;
+	int		step_y;
+
+	int		side; //was a NS or a EW wall hit?
+	int		hit; //was there a wall hit?
+	int		line_height; // height of the vertical columns
+	int		draw_start; // pixel to start vertical column from
+	int		draw_end; // pixel to stop vertical column at
+
+	delta_dist_x =  1e30;
+	delta_dist_y =  1e30;
+	column = -1;
+	while (++column < WIN_WIDTH)
 	{
 		//calculate ray position and direction
-		double cameraX = 2 * x / (double)(WIN_WIDTH) - 1; //x-coordinate in camera space
-		double rayDirX = player->dir.x + player->camera_plane.x * cameraX;
-		double rayDirY = player->dir.y + player->camera_plane.y * cameraX;
+		camera_x = 2 * column / (double)(WIN_WIDTH) - 1;
+		ray_dir_x = player->dir.x + player->camera_plane.x * camera_x;
+		ray_dir_y = player->dir.y + player->camera_plane.y * camera_x;
+
 		//which box of the map we're in
-		int mapX = (int)player->pos.x;
-		int mapY = (int)player->pos.y;
-
-		//length of ray from current position to next x or y-side
-		double sideDistX;
-		double sideDistY;
-
+		map_x = (int)player->pos.x;
+		map_y = (int)player->pos.y;
 		//length of ray from one x or y-side to next x or y-side
-		double deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
-		double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
-		double perpWallDist;
+		if (ray_dir_x)
+			delta_dist_x = fabs(1 / ray_dir_x);
+		if (ray_dir_y)
+			delta_dist_y = fabs(1 / ray_dir_y);
 
-		//what direction to step in x or y-direction (either +1 or -1)
-		int stepX;
-		int stepY;
-
-		int hit = 0; //was there a wall hit?
+		hit = 0;
 		//calculate step and initial sideDist
-		if (rayDirX < 0)
+		if (ray_dir_x < 0)
 		{
-			stepX = -1;
-			sideDistX = (player->pos.x - mapX) * deltaDistX;
+			step_x = -1;
+			side_dist_x = (player->pos.x - map_x) * delta_dist_x;
 		}
 		else
 		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - player->pos.x) * deltaDistX;
+			step_x = 1;
+			side_dist_x = (map_x + 1.0 - player->pos.x) * delta_dist_x;
 		}
-		if (rayDirY < 0)
+		if (ray_dir_y < 0)
 		{
-			stepY = -1;
-			sideDistY = (player->pos.y - mapY) * deltaDistY;
+			step_y = -1;
+			side_dist_y = (player->pos.y - map_y) * delta_dist_y;
 		}
 		else
 		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - player->pos.y) * deltaDistY;
+			step_y = 1;
+			side_dist_y = (map_y + 1.0 - player->pos.y) * delta_dist_y;
 		}
-		int side; //was a NS or a EW wall hit?
 		while (!hit)
 		{
 			//jump to next map square, either in x-direction, or in y-direction
-			if (sideDistX < sideDistY)
+			if (side_dist_x < side_dist_y)
 			{
-				sideDistX += deltaDistX;
-				mapX += stepX;
+				side_dist_x += delta_dist_x;
+				map_x += step_x;
 				side = 0;
 			}
 			else
 			{
-				sideDistY += deltaDistY;
-				mapY += stepY;
+				side_dist_y += delta_dist_y;
+				map_y += step_y;
 				side = 1;
 			}
 			//Check if ray has hit a wall
-			hit = (grid[mapX][mapY] == '1');
+			hit = (grid[map_x][map_y] == '1');
 		}
+
 		if (!side)
-			perpWallDist = (sideDistX - deltaDistX);
+			perp_wall_dist = (side_dist_x - delta_dist_x);
 		else
-			perpWallDist = (sideDistY - deltaDistY);
+			perp_wall_dist = (side_dist_y - delta_dist_y);
 
-		//Calculate height of line to draw on screen
-		int lineHeight = (int)(WIN_HEIGHT / perpWallDist);
+		// calculate height of line to draw on screen
+		line_height = (int)(WIN_HEIGHT / perp_wall_dist);
 
-		//calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + WIN_HEIGHT / 2;
-		if (drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + WIN_HEIGHT / 2;
-		if (drawEnd >= WIN_HEIGHT)
-			drawEnd = WIN_HEIGHT - 1;
+		// calculate lowest and highest pixel to fill in current stripe
+		draw_start = (-line_height + WIN_HEIGHT) / 2;
+		if (draw_start < 0)
+			draw_start = 0;
+		draw_end = (line_height + WIN_HEIGHT) / 2;
+		if (draw_end >= WIN_HEIGHT)
+			draw_end = WIN_HEIGHT - 1;
 
-		draw_vert(img_data, x, drawStart, drawEnd);
+		draw_vert(img_data, column, draw_start, draw_end, 0x00FF0000);
 	}
-	// old_time = time;
-	// time = ;
-	// double	frame_time = (time - old_time) / 1000.0;
-	// player->move_speed = frame_time * 5.0;
-	// player->rot_speed = frame_time * 3.0;
 }
 
 void	start_raycaster(t_mlx *mlx_core)
 {
-	draw_ceiling_and_floor(&mlx_core->img_data, mlx_core->map->c_color, mlx_core->map->f_color);
+	// draw_ceiling_and_floor(&mlx_core->img_data, mlx_core->map->c_color, mlx_core->map->f_color);
 	// draw_minimap(mlx_core);
 
 	// get rays for horizontal and vertical intersections (DDA)
