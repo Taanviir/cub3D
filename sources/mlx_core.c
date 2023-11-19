@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/14 14:00:34 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/19 15:36:19 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	create_player(t_player *player, int x, int y, char view_direction)
 	player->pos.y = y;
 	player->dir.x = -1;
 	player->dir.y = 0;
-	player->move_speed = 5.0;
-	player->move_speed = 3.0;
+	player->move_speed = 0.03;
+	player->rot_speed = 0.03;
 	player->camera_plane.x = 0;
 	player->camera_plane.y = 0.66;
 	if (view_direction == 'E')
