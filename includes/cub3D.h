@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/14 13:55:02 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/14 14:10:44 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_map	*map_load(char *map_path);
 # define PLAYER_SIZE 10
 # define X_OFFSET 0
 # define Y_OFFSET 0
-# define ONE_ANGLE 0.0174533
+// # define ONE_ANGLE 0.0174533
 # define PI 3.1415926535
 
 typedef struct s_point
@@ -100,8 +100,8 @@ typedef struct s_player
 
 /* -------------------------------- mlx core -------------------------------- */
 
-# define WIN_WIDTH 1024
-# define WIN_HEIGHT 512
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 1080
 # define WIN_TITLE "cub3D"
 
 typedef struct s_img
