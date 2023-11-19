@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/18 05:22:32 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/20 03:42:25 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,36 @@ void	rotate_player(int keycode, t_mlx *mlx)
 		*d[Y] = old_d[X] * sin_step + old_d[Y] * cos_step;
 		*c[Y] = old_c[X] * sin_step + old_c[Y] * cos_step;
 	}
-	ft_memset(mlx->img_data.addr, 0, (WIN_HEIGHT * WIN_WIDTH * 4));
-	display_background(mlx);
 	ray_cast(mlx);
 }
 
 void	move_player(int keycode, t_mlx *mlx)
 {
-	double *p[2];
+	double *pos[2];
+	double move[3];
 
-	p[X] = &mlx->player.position[X];
-	p[Y] = &mlx->player.position[Y];
-	if (keycode == KEYCODE_W && mlx->map->grid[(int)(*p[Y] - MOVE)][(int)(*p[X])] != WALL)
-		*p[Y] -= MOVE;
-	else if (keycode == KEYCODE_A  && mlx->map->grid[(int)(*p[Y])][(int)(*p[X] - MOVE)] != WALL)
-		*p[X] -= MOVE;
-	else if (keycode == KEYCODE_S && mlx->map->grid[(int)(*p[Y] + MOVE)][(int)(*p[X])] != WALL)
-		*p[Y] += MOVE;
-	else if (keycode == KEYCODE_D && mlx->map->grid[(int)(*p[Y])][(int)(*p[X] + MOVE)] != WALL)
-		*p[X] += MOVE;
-	ft_memset(mlx->img_data.addr, 0, (WIN_HEIGHT * WIN_WIDTH * 4));
-	display_background(mlx);
-	ray_cast(&mlx->player, mlx->map, mlx);
+	move[ANGLE] = atan2(mlx->player.direction[Y],  mlx->player.direction[X]);
+	move[SIN] = MOVE * sin(move[ANGLE]);
+	move[COS] = MOVE * cos(move[ANGLE]);
+	pos[X] = &mlx->player.position[X];
+	pos[Y] = &mlx->player.position[Y];
+	if (keycode == KEYCODE_W && mlx->map->grid[(int)(*pos[Y] + move[SIN])][(int)(*pos[X] + move[COS])] != WALL) {
+		*pos[Y] += move[SIN];
+		*pos[X] += move[COS];
+	}
+	else if (keycode == KEYCODE_A  && mlx->map->grid[(int)(*pos[Y] - move[COS])][(int)(*pos[X] + move[SIN])] != WALL) {
+		*pos[Y] -= move[COS];
+		*pos[X] += move[SIN];
+	}
+	else if (keycode == KEYCODE_S && mlx->map->grid[(int)(*pos[Y] - move[SIN])][(int)(*pos[X] - move[COS])] != WALL) {
+		*pos[Y] -= move[SIN];
+		*pos[X] -= move[COS];
+	}
+	else if (keycode == KEYCODE_D && mlx->map->grid[(int)(*pos[Y] + move[COS])][(int)(*pos[X] - move[SIN])] != WALL) {
+		*pos[Y] += move[COS];
+		*pos[X] -= move[SIN];
+	}
+	ray_cast(mlx);
 }
 
 int	handle_events(int keycode, t_mlx *mlx)

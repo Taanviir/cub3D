@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_pixel.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 17:46:40 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/01 20:18:04 by tanas            ###   ########.fr       */
+/*   Updated: 2023/11/18 19:52:52 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,3 +18,4 @@ void	my_pixel_put(t_img *image, int x, int y, int color)
 		*(unsigned int *)(image->addr + \
 			(y * image->line_length + x * (image->bpp / 8))) = color;
 }
+

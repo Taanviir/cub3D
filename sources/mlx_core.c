@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/16 20:30:29 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:34:52 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_mlx	*init_mlx_data(char *map_path)
 {
 	t_mlx	*mlx;
 
-	mlx = malloc(sizeof(t_mlx));
+	mlx = ft_calloc(1, sizeof(t_mlx));
 	if (!mlx)
 		return (write_error_msg(MALLOC_FAIL), NULL);
 	mlx->mlx_ptr = mlx_init();

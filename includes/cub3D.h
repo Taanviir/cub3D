@@ -6,19 +6,20 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/17 21:13:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/20 03:43:18 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* -------------------------------------------------------------------------- */
 /*                                    TODO                                    */
 /* -------------------------------------------------------------------------- */
+
+// [ ] clean ray_caster.c
 // [ ] implement textures
-// [ ] when starting south movement is flipped
 // [ ] fix collisions, they clip
 // [ ] organize this mess :)
 // [ ] no magic numeros
-// [ ] clean ray_caster.c
+// [x] when starting south movement is flipped
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -39,6 +40,12 @@
 # endif
 
 /* ----------------------------------- dda ---------------------------------- */
+
+#define X 0 // coordinates
+#define Y 1 // coordinates
+#define H 0
+#define V 1
+
 typedef struct s_dda
 {
 	double	ray[2];
@@ -96,14 +103,6 @@ typedef struct s_map
 
 t_map	*map_load(char *map_path);
 t_map	*grid_validate(t_map *map, t_player *player);
-/* --------------------------------- player --------------------------------- */
-
-#define X 0 // coordinates
-#define Y 1 // coordinates
-#define H 0
-#define V 1
-
-
 
 /* -------------------------------- mlx core -------------------------------- */
 
@@ -132,14 +131,18 @@ t_mlx	*init_mlx_data(char *map_path);
 /* ------------------------------- raycaster -------------------------------- */
 #define VERY_BIG_NUMBER 453211111.0f
 
-
-
 void	ray_cast(t_mlx *mlx);
 void	display_background(t_mlx *mlx_core);
 
 /* --------------------------------- events --------------------------------- */
 #define MOVE 0.05f
 #define ROTATE_ANGLE 1
+
+typedef enum e_movement {
+	ANGLE = 0,
+	SIN,
+	COS
+}t_movement;
 
 int		no_event(void);
 int		handle_events(int keycode, t_mlx *mlx_core);

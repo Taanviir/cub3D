@@ -27,6 +27,7 @@ void	ray_cast(t_mlx *mlx)
 	e_hitSide 	hit_side;
 
 	slice = 0;
+	display_background(mlx);
 	while (slice < WIN_WIDTH)
 	{
 		set_delta(&slice, &dda, &mlx->player);
@@ -80,6 +81,7 @@ void	set_step(t_player *player, t_dda *dda)
 		dda->next_hit[H] = (dda->map_cell[Y] + 1 - player->position[Y]) * dda->delta[H];
 	}
 }
+
 void	draw_slice(t_mlx *mlx, double distance_to_wall, int slice, e_hitSide texture)
 {
 	int	slice_start;
@@ -87,18 +89,23 @@ void	draw_slice(t_mlx *mlx, double distance_to_wall, int slice, e_hitSide textur
 	int	slice_height;
 	int	max_height;
 	int color[2][3] = {TEST_COLOR_DARK, TEST_COLOR_LIGHT};
+	int current_color;
+
+	//////////////////////////
+	current_color = encode_color(color[texture]);
+	//////////////////////////
 
 	max_height = WIN_HEIGHT;
 	slice_height = (int)(max_height / distance_to_wall);
-
 	slice_start = (-slice_height / 2) + (max_height / 2);
 	if (slice_start < 0)
 		slice_start = 0;
 	slice_end = (slice_height / 2) + (max_height / 2);
 	if (slice_end >= max_height)
 		slice_end = max_height - 1;
-	for (int i = slice_start; i < slice_end; i++)
-		my_pixel_put(&mlx->img_data, slice, i, encode_color(color[texture]));
+	for (int i = slice_start; i < slice_end; i++) {
+		my_pixel_put(&mlx->img_data, slice, i, current_color);
+	}
 }
 void	set_delta(int *slice, t_dda *dda, t_player *player)
 {
@@ -167,6 +174,6 @@ void display_background(t_mlx *mlx)
 		if (row >= WIN_HEIGHT/2)
 			current_color = floor_color;
 	}
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->window,
-		mlx->img_data.img_ptr, 0, 0);
+	// mlx_put_image_to_window(mlx->mlx_ptr, mlx->window,
+	// 	mlx->img_data.img_ptr, 0, 0);
 }
