@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/17 18:34:52 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/24 19:53:19 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 /* ------------------------------ initializing ------------------------------ */
 static void	*exit_init(t_mlx *mlx, char *error_message)
 {
-	if (mlx->map && mlx->img_data.addr)
-		mlx_destroy_image(mlx->mlx_ptr, mlx->img_data.addr);
+	if (mlx->map && mlx->img_data.img_ptr)
+		mlx_destroy_image(mlx->mlx_ptr, mlx->img_data.img_ptr);
 	if (mlx->window)
 		mlx_destroy_window(mlx->mlx_ptr, mlx->window);
 	if (mlx->map)
@@ -64,5 +64,7 @@ t_mlx	*init_mlx_data(char *map_path)
 	mlx->img_data = create_image(mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	if (!mlx->img_data.addr)
 		return (exit_init(mlx, MLX_IMG_FAIL));
+	if (!load_textures(mlx->map, mlx)) //! test when this function fails
+		return (exit_init(mlx, TEXTURE_FAIL));
 	return (mlx);
 }
