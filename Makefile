@@ -44,22 +44,26 @@ OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT = libft/libft.a
 MINILIBX = $(MLX_DIR)libmlx.a
 
+MAP:= ./test_maps/wolf.cub
+
 # ---------------------------------- targets --------------------------------- #
 all : $(NAME)
 
 run : all
-	./$(NAME) test_maps/split_map.cub
+	./$(NAME) $(MAP)
 
 # --------------------------------- debugging -------------------------------- #
-DEBUG_MAP:= ./test_maps/regular-map.cub # need to change this for maps in test_maps/
 
 valgrind: CFLAGS += -DDEBUG -ggdb3
 valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./$(NAME) $(DEBUG_MAP)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./$(NAME) $(MAP)
 
-debug: CFLAGS += -fsanitize=address -ggdb3
+sanitize: CFLAGS += -fsanitize=address -ggdb3
+sanitize: re
+
+debug: CFLAGS += -ggdb3
 debug: re
-	./$(NAME) $(DEBUG_MAP)
+	./$(NAME) $(MAP)
 
 $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LIBRARY_FLAGS)
