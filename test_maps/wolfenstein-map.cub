@@ -1,7 +1,7 @@
-NO ./test_maps/textures/t0.xpm
-SO ./test_maps/textures/t1.xpm
-WE ./test_maps/textures/t2.xpm
-EA ./test_maps/textures/t3.xpm
+NO ./test_maps/textures/bluestone.xpm
+SO ./test_maps/textures/wood.xpm
+WE ./test_maps/textures/redbrick.xpm
+EA ./test_maps/textures/purplestone.xpm
 
 
 F 115,115,115
