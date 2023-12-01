@@ -1,16 +1,16 @@
-NO ./test_maps/textures/t0.xpm
-SO ./test_maps/textures/t1.xpm
-WE ./test_maps/textures/t2.xpm
-EA ./test_maps/textures/t3.xpm
+NO ./test_maps/textures/bluestone.xpm
+SO ./test_maps/textures/wood.xpm
+WE ./test_maps/textures/redbrick.xpm
+EA ./test_maps/textures/purplestone.xpm
 
 
 F 220,100,0
 C 225,30,0
 
 1111111111
-1S00000001
 1000000001
 1000000001
+100S000001
 1000000001
 1000000001
 1000000001
