@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/12/01 22:33:24 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/12/02 05:05:18 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ endif
 
 SRCS_DIR = sources
 SRCS = main.c mlx_core.c utils.c map.c grid_validate.c events.c \
-	draw_pixel.c ray_caster.c
+	ray_caster.c
 
 OBJS_DIR = objects
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
