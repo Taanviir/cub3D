@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/17 20:44:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/01 23:49:31 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,9 @@ t_map	*grid_validate(t_map *map, t_player *player)
 	if (!map || !player)
 		return (NULL);
 	if (!grid_validate_characters(map, player))
-	{
-		map_free(map);
-		return (NULL);
-	}
+		return (map_free(map));
 	if (!grid_is_enclosed(map, player->position[X], player->position[Y]))
-	{
-		map_free(map);
-		return (write_error_msg(MAP_NOT_ENCLOSED), NULL);
-	}
+		return (map_free(map));
 	return (map);
 }
 
@@ -77,7 +71,7 @@ static bool	grid_is_enclosed(t_map *map, int x, int y)
 	char	*current_cell;
 
 	if (x >= (int)ft_strlen(map->grid[y]) || x < 0 || y < 0 || y >= map->n_rows)
-		return (false);
+		return (write_error_msg(MAP_NOT_ENCLOSED));
 	current_cell = &map->grid[y][x];
 	if (*current_cell == WALL || *current_cell == 'V')
 		return (true);
@@ -87,10 +81,10 @@ static bool	grid_is_enclosed(t_map *map, int x, int y)
 	else if (x == 0 || *current_cell == '\n'
 		|| ft_is_whitespace(*current_cell)
 		|| y == 0 || y == map->n_rows - 1)
-		return (false);
+		return (write_error_msg(MAP_NOT_ENCLOSED));
 	if (!grid_is_enclosed(map, x + 1, y) || !grid_is_enclosed(map, x - 1, y)
 		|| !grid_is_enclosed(map, x, y + 1) || !grid_is_enclosed(map, x, y - 1))
-		return (false);
+		return (write_error_msg(MAP_NOT_ENCLOSED));
 	return (true);
 }
 
@@ -139,29 +133,29 @@ static void	create_player(t_player *player, int x, int y, char view_direction)
 	{
 		player->direction[X] = 1;
 		player->direction[Y] = 0;
-		player->cam_plane[Y] = -0.66;
-		player->cam_plane[X] = 0;
+		player->camera_plane[Y] = -0.66;
+		player->camera_plane[X] = 0;
 	}
 	else if (view_direction == 'W')
 	{
 		player->direction[X] = -1;
 		player->direction[Y] = 0;
-		player->cam_plane[Y] = 0.66;
-		player->cam_plane[X] = 0;
+		player->camera_plane[Y] = 0.66;
+		player->camera_plane[X] = 0;
 	}
 	else if (view_direction == 'N')
 	{
 		player->direction[Y] = -1;
 		player->direction[X] = 0;
-		player->cam_plane[X] = 0.66;
-		player->cam_plane[Y] = 0;
+		player->camera_plane[X] = 0.66;
+		player->camera_plane[Y] = 0;
 	}
 	else if (view_direction == 'S')
 	{
 		player->direction[Y] = 1;
 		player->direction[X] = 0;
-		player->cam_plane[X] = -0.66;
-		player->cam_plane[Y] = 0;
+		player->camera_plane[X] = -0.66;
+		player->camera_plane[Y] = 0;
 	}
 	else
 		write_error_msg(MAP_INVALID_CHARACTER);
