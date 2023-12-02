@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/11/17 05:14:23 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/12/01 22:33:24 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,9 +60,14 @@ valgrind: re
 
 sanitize: CFLAGS += -fsanitize=address -ggdb3
 sanitize: re
+	./$(NAME) $(MAP)
 
-debug: CFLAGS += -ggdb3
+debug: CFLAGS += -ggdb3 -pg
 debug: re
+	./$(NAME) $(MAP)
+
+fastasfuckboy: CFLAGS += -O3
+fastasfuckboy: re
 	./$(NAME) $(MAP)
 
 $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
