@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/20 03:42:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/01 23:49:31 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@
 
 int	close_mlx(t_mlx *mlx)
 {
+	int	i;
+
+	i = 0;
 	mlx_destroy_image(mlx->mlx_ptr, mlx->img_data.img_ptr);
+	while (i < TOTAL_TEXTURES && mlx->textures[i].img_ptr)
+		mlx_destroy_image(mlx->mlx_ptr, mlx->textures[i++].img_ptr);
 	mlx_destroy_window(mlx->mlx_ptr, mlx->window);
-	mlx_destroy_display(mlx->mlx_ptr); //! not there in mac
+	mlx_destroy_display(mlx->mlx_ptr);
 	map_free(mlx->map);
 	free(mlx->mlx_ptr);
 	free(mlx);
@@ -35,12 +40,12 @@ void	rotate_player(int keycode, t_mlx *mlx)
 
 	d[X] = &mlx->player.direction[X];
 	d[Y] = &mlx->player.direction[Y];
-	c[X] = &mlx->player.cam_plane[X];
-	c[Y] = &mlx->player.cam_plane[Y];
+	c[X] = &mlx->player.camera_plane[X];
+	c[Y] = &mlx->player.camera_plane[Y];
 	old_d[X] = mlx->player.direction[X];
 	old_d[Y] = mlx->player.direction[Y];
-	old_c[X] = mlx->player.cam_plane[X];
-	old_c[Y] = mlx->player.cam_plane[Y];
+	old_c[X] = mlx->player.camera_plane[X];
+	old_c[Y] = mlx->player.camera_plane[Y];
 	if (keycode == KEYCODE_L_ARROW)
 	{
 		*d[X] = old_d[X] * cos_step + old_d[Y] * sin_step;
