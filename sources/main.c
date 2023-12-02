@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/20 03:29:26 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/11/26 19:57:32by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,5 @@ int	main(int argc, char **argv)
 	mlx_loop(mlx->mlx_ptr);
 	return (0);
 }
+
+

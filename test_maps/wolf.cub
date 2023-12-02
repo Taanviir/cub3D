@@ -1,6 +1,6 @@
-NO ./test_maps/textures/wood.xpm
-SO ./test_maps/textures/redbrick.xpm
-WE ./test_maps/textures/redbrick.xpm
+NO ./test_maps/textures/mossy.xpm
+SO ./test_maps/textures/mossy.xpm
+WE ./test_maps/textures/mossy.xpm
 EA ./test_maps/textures/mossy.xpm
 
 
