@@ -11,7 +11,7 @@ static int		grid_add_row(char *row, t_map *map);
 static int		grid_load(t_map *map, int map_fd, char **current_map_row);
 /* ---------------------------------- scene --------------------------------- */
 static char		*scene_get_texture_id(char *current_map_row);
-static void		scene_set_texture(int	*texture_fd, char *current_map_row);
+static void		scene_set_texture(char **texture, char *current_map_row);
 static bool		scene_validate_color(char *color_string);
 static void		scene_set_color(int *map_color, char *current_map_row);
 static int		scene_set(t_map *map, char *texture_id, char *current_map_row);
@@ -20,9 +20,8 @@ static int		scene_load(t_map *map, int map_fd, char **current_map_row);
 
 /* -------------------------------- clean-up -------------------------------- */
 static void		empty_gnl(char *current_map_row, int map_fd);
-void			map_free(t_map *map);
-static void		map_close(t_map *map);
-void			map_cleanup(char *current_map_row, int map_fd, t_map *map);
+void			*map_free(t_map *map);
+void			*map_cleanup(char *current_map_row, int map_fd, t_map *map);
 /* -------------------------------- utilities ------------------------------- */
 static bool			map_extension_check(char *map_path); //! revise the check here
 static int		verify_open(char *map_path, int options);
@@ -55,15 +54,9 @@ t_map	*map_load(char *map_path)
 	if (!map)
 		return (close(map_fd), NULL);
 	if (!scene_load(map, map_fd, &current_map_row))
-	{
-		map_cleanup(current_map_row, map_fd, map);
-		return (NULL);
-	}
+		return(map_cleanup(current_map_row, map_fd, map));
 	if (!grid_load(map, map_fd, &current_map_row))
-	{
-		map_cleanup(current_map_row, map_fd, map);
-		return (NULL);
-	}
+		return(map_cleanup(current_map_row, map_fd, map));
 	return (close(map_fd), map);
 }
 
@@ -216,18 +209,14 @@ static char	*scene_get_texture_id(char *current_map_row)
  *
  * This function extracts the texture path from the current map row starting at index 3, then attempts to open the file to set the file descriptor. It also handles failures by writing an error message.
  *
- * @param texture_fd A pointer to the file descriptor to be set.
+ * @param texture A pointer to the file_path to be set
  * @param current_map_row A pointer to the string containing the current map row from which the texture path is to be extracted.
  */
-static void	scene_set_texture(int	*texture_fd, char *current_map_row)
+static void	scene_set_texture(char **texture, char *current_map_row)
 {
-	char	*texture_path;
-
-	texture_path= ft_substr(current_map_row, 3, ft_strlen(current_map_row) - 3);
-	*texture_fd = verify_open(texture_path, O_RDONLY);
+	*texture = ft_substr(current_map_row, 3, ft_strlen(current_map_row) - 3);
 	free(current_map_row);
-	free(texture_path);
-	if (*texture_fd == FAILURE)
+	if (*texture == FAILURE)
 		write_error_msg(SCENE_FAIL);
 }
 
@@ -307,13 +296,13 @@ static int	scene_set(t_map *map, char *texture_id, char *current_map_row)
 	if (!texture_id)
 		return (write_error_msg(SCENE_FAIL));
 	if (!ft_strncmp(texture_id, "NO", 2))
-		scene_set_texture(&map->NO_texture_fd, current_map_row);
+		scene_set_texture(&map->texture[NO], current_map_row);
 	else if (!ft_strncmp(texture_id, "SO", 2))
-		scene_set_texture(&map->SO_texture_fd, current_map_row);
+		scene_set_texture(&map->texture[SO], current_map_row);
 	else if (!ft_strncmp(texture_id, "WE", 2))
-		scene_set_texture(&map->WE_texture_fd, current_map_row);
+		scene_set_texture(&map->texture[WE], current_map_row);
 	else if (!ft_strncmp(texture_id, "EA", 2))
-		scene_set_texture(&map->EA_texture_fd, current_map_row);
+		scene_set_texture(&map->texture[EA], current_map_row);
 	else if (!ft_strncmp(texture_id, "F", 1))
 		scene_set_color(map->f_color, current_map_row);
 	else if (!ft_strncmp(texture_id, "C", 1))
@@ -385,8 +374,8 @@ static int	scene_load(t_map *map, int map_fd, char **current_map_row)
 		}
 		free(texture_id);
 	}
-	if (!map->EA_texture_fd || !map->SO_texture_fd || !map->WE_texture_fd
-		|| !map->EA_texture_fd || !scene_verify_colors(map))
+	if (!map->texture[NO] || !map->texture[SO] || !map->texture[WE]
+		|| !map->texture[EA] || !scene_verify_colors(map))
 		return (FAILURE);
 	return (SUCCESS);
 }
@@ -410,36 +399,26 @@ static void empty_gnl(char *current_map_row, int map_fd)
 }
 
 /**
- * @brief Closes texture file descriptors if they were opened
- *
- * @param map A pointer to the t_map structure whose file descriptors are to be closed
- */
-void	map_close(t_map *map)
-{
-	if (map->NO_texture_fd)
-		close (map->NO_texture_fd);
-	if (map->SO_texture_fd)
-		close (map->SO_texture_fd);
-	if (map->WE_texture_fd)
-		close (map->WE_texture_fd);
-	if (map->EA_texture_fd)
-		close (map->EA_texture_fd);
-}
-
-/**
  * @brief Frees all dynamically allocated resources associated with the given t_map structure.
  *
  * @param map A pointer to the t_map structure whose resources are to be freed.
+ *
+ * @return null
  */
-void	map_free(t_map *map)
+void	*map_free(t_map *map)
 {
+	int	i;
+
+	i = 0;
 	if (map)
 	{
-		map_close(map);
+		while (i < TOTAL_TEXTURES)
+			free(map->texture[i++]);
 		ft_free_double((void **)map->grid);
 		free(map);
 		map = NULL;
 	}
+	return (NULL);
 }
 
 /**
@@ -449,13 +428,14 @@ void	map_free(t_map *map)
  * @param map_fd The map's open fd for closing
  * @param map A pointer to the map struct
  *
- * @return
+ * @return null
  */
-void	map_cleanup(char *current_map_row, int map_fd, t_map *map)
+void	*map_cleanup(char *current_map_row, int map_fd, t_map *map)
 {
 	empty_gnl(current_map_row, map_fd);
 	close(map_fd);
 	map_free(map);
+	return (NULL);
 }
 
 /* -------------------------------- utilities ------------------------------- */
