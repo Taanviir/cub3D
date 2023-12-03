@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/11/19 17:54:23 by tanas            ###   ########.fr        #
+#    Updated: 2023/12/02 17:48:38 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ else ifeq ($(UNAME), Darwin)
 endif
 
 SRCS_DIR = sources
-SRCS = main.c init_mlx.c utils.c map.c grid_validate.c events.c raycaster_engine.c draw_pixel.c draw_minimap.c
+SRCS = main.c init_mlx.c utils.c map.c grid_validate.c events.c raycaster_engine.c draw_minimap.c
 
 OBJS_DIR = objects
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
