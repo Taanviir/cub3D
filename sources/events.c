@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/19 17:52:12 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/05 13:23:14 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,43 @@ void	rotate_player(int keycode, t_mlx *mlx, t_player *player)
 
 void	move_player(int keycode, t_mlx *mlx, t_player *player, char **grid)
 {
+	t_vector	new_pos;
+
 	ft_memset(mlx->img_data.addr, 0, WIN_WIDTH * WIN_HEIGHT * 4);
-	if (keycode == KEYCODE_W) // move forward
+	if (keycode == KEYCODE_W || keycode == KEYCODE_S) // move forward
 	{
-		if (grid[(int)(player->pos.x + player->dir.x * player->move_speed)][(int)player->pos.y] != '1')
-			player->pos.x += player->dir.x * player->move_speed;
-		if (grid[(int)(player->pos.x)][(int)(player->pos.y + player->dir.y * player->move_speed)] != '1')
-			player->pos.y += player->dir.y * player->move_speed;
+		if (keycode == KEYCODE_W)
+		{
+			new_pos.x = player->pos.x + (player->dir.x * player->move_speed);
+			new_pos.y = player->pos.y + (player->dir.y * player->move_speed);
+		}
+		else
+		{
+			new_pos.x = player->pos.x - (player->dir.x * player->move_speed);
+			new_pos.y = player->pos.y - (player->dir.y * player->move_speed);
+		}
+		if (grid[(int)new_pos.x][(int)player->pos.y] != '1' && grid[(int)(player->pos.x)][(int)new_pos.y] != '1')
+			player->pos = new_pos;
 	}
-	else if (keycode == KEYCODE_S) // move backward
+	else if (keycode == KEYCODE_D || keycode == KEYCODE_A)
 	{
-		if (grid[(int)(player->pos.x + player->dir.x * player->move_speed)][(int)player->pos.y] != '1')
-			player->pos.x -= player->dir.x * player->move_speed;
-		if (grid[(int)(player->pos.x)][(int)(player->pos.y + player->dir.y * player->move_speed)] != '1')
-			player->pos.y -= player->dir.y * player->move_speed;
+		if (keycode == KEYCODE_D)
+		{
+			new_pos.x = player->pos.x + player->camera_plane.x * player->move_speed;
+			new_pos.y = player->pos.y + player->camera_plane.y * player->move_speed;
+		}
+		else // KEYCODE_A
+		{
+			new_pos.x = player->pos.x - player->camera_plane.x * player->move_speed;
+			new_pos.y = player->pos.y - player->camera_plane.y * player->move_speed;
+		}
+
+		if (grid[(int)new_pos.x][(int)player->pos.y] != '1' && grid[(int)player->pos.x][(int)new_pos.y] != '1')
+		{
+			player->pos.x = new_pos.x;
+			player->pos.y = new_pos.y;
+		}
 	}
-	// else if (keycode == KEYCODE_D) // move right
-	// {
-		// TODO
-	// }
-	// else if (keycode == KEYCODE_A) // move left
-	// {
-		// TODO
-	// }
 	start_raycaster(mlx);
 }
 
