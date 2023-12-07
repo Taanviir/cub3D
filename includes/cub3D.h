@@ -15,15 +15,17 @@
 /* -------------------------------------------------------------------------- */
 
 // [ ] double free on multiple players
-// [ ] fix error handling in map.c:225
+// [-] fix error handling in map.c:225
 	// [-] double commas
 	// [-] invalid free on invalid textures, (weird.map)
-// [x] validating texture path
 // [ ] clean ray_caster.c
 // [ ] norminette
-// [ ] no magic numeros
+// [-] no magic numeros
+// [x] validating texture path
 // [x] player spawns in wall segfault, EW
 	// [x] directions inverted for EW
+// [ ] increase hitbox
+// [ ] error message empty file
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -175,7 +177,7 @@ int		close_mlx(t_mlx *mlx_core);
 
 /* ---------------------------------- utils --------------------------------- */
 
-void	*map_free(t_map *map);
+void	map_free(t_map *map);
 
 /* ------------------------------- debug utils ------------------------------ */
 

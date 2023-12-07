@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/07 15:39:17 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:08:11 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 int	close_mlx(t_mlx *mlx)
 {
 	int	i;
+	t_map *map;
 
+	map = mlx->map;
 	i = 0;
 	mlx_destroy_image(mlx->mlx_ptr, mlx->img_data.img_ptr);
 	while (i < TOTAL_TEXTURES && mlx->textures[i].img_ptr)
@@ -24,10 +26,10 @@ int	close_mlx(t_mlx *mlx)
 	#ifdef __LINUX__
 	mlx_destroy_display(mlx->mlx_ptr);
 	#endif
-	map_free(mlx->map);
 	free(mlx->mlx_ptr);
 	free(mlx);
-	exit(0);
+	map_free(map);
+	return (SUCCESS);
 }
 
 

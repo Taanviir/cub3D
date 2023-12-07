@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/07 14:40:16 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:02:47 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ t_map	*grid_validate(t_map *map, t_player *player)
 	if (!map || !player)
 		return (NULL);
 	if (!grid_validate_characters(map, player))
-		return (map_free(map));
+		map_free(map);
 	if (!grid_is_enclosed(map, player->position[X], player->position[Y]))
-		return (map_free(map));
+		map_free(map);
 	return (map);
 }
 

@@ -20,7 +20,7 @@ static int		scene_load(t_map *map, int map_fd, char **current_map_row);
 
 /* -------------------------------- clean-up -------------------------------- */
 static void		empty_gnl(char *current_map_row, int map_fd);
-void			*map_free(t_map *map);
+void			map_free(t_map *map);
 void			*map_cleanup(char *current_map_row, int map_fd, t_map *map);
 /* -------------------------------- utilities ------------------------------- */
 static bool		map_extension_check(char *map_path, char *target);
@@ -283,7 +283,7 @@ static bool	scene_set_color(int *map_color, char *current_map_row)
 		if (map_color[i] > 255 || map_color[i] < 0)
 		{
 			map_color[i] = NOT_SET;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -418,7 +418,7 @@ static void empty_gnl(char *current_map_row, int map_fd)
  *
  * @return null
  */
-void	*map_free(t_map *map)
+void	map_free(t_map *map)
 {
 	int	i;
 
@@ -431,7 +431,7 @@ void	*map_free(t_map *map)
 		free(map);
 		map = NULL;
 	}
-	return (NULL);
+	exit(FAILURE);
 }
 
 /**
