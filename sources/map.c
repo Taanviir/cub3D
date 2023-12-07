@@ -12,8 +12,8 @@ static int		grid_load(t_map *map, int map_fd, char **current_map_row);
 /* ---------------------------------- scene --------------------------------- */
 static char		*scene_get_texture_id(char *current_map_row);
 static bool		scene_set_texture(char **texture, char *current_map_row);
-static bool		scene_validate_color(char *color_string);
-static bool		scene_set_color(int *map_color, char *current_map_row);
+static int		scene_validate_color(char *color_string);
+static int		scene_set_color(int *map_color, char *current_map_row);
 static int		scene_set(t_map *map, char *texture_id, char *current_map_row);
 static int		scene_verify_colors(t_map *map);
 static int		scene_load(t_map *map, int map_fd, char **current_map_row);
@@ -202,7 +202,7 @@ static char	*scene_get_texture_id(char *current_map_row)
 	while (current_map_row[id_length] && current_map_row[id_length] != ' ')
 		id_length++;
 	if (id_length != 2 && id_length != 1)
-		return (NULL);
+		return (FAILURE);
 	return (ft_substr(current_map_row, 0, id_length));
 }
 
@@ -225,7 +225,7 @@ static bool	scene_set_texture(char **texture, char *current_map_row)
 	if(!map_extension_check(*texture, ".xpm"))
 		return (FAILURE);
 	if (*texture == FAILURE)
-		write_error_msg(SCENE_FAIL);
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -329,6 +329,7 @@ static int	scene_set(t_map *map, char *texture_id, char *current_map_row)
 	else
 		return (FAILURE);
 }
+
 /**
  * @brief Verifies that all color components for the floor and ceiling have been properly set.
  *
@@ -347,19 +348,13 @@ static int	scene_verify_colors(t_map *map)
 	while (i < TOTAL_COLORS)
 	{
 		if (map->f_color[i++] == NOT_SET)
-		{
-			write_error_msg(COLOR_ERROR);
 			return (FAILURE);
-		}
 	}
 	i = 0;
 	while (i < TOTAL_COLORS)
 	{
 		if (map->c_color[i++] == NOT_SET)
-		{
-			write_error_msg(COLOR_ERROR);
 			return (FAILURE);
-		}
 	}
 	return (SUCCESS);
 }
@@ -389,13 +384,13 @@ static int	scene_load(t_map *map, int map_fd, char **current_map_row)
 		if(!scene_set(map, texture_id, *current_map_row))
 		{
 			free(texture_id);
-			return(FAILURE);
+			return(write_error_msg(SCENE_FAIL));
 		}
 		free(texture_id);
 	}
 	if (!map->texture[NO] || !map->texture[SO] || !map->texture[WE]
 		|| !map->texture[EA] || !scene_verify_colors(map))
-		return (FAILURE);
+		return (write_error_msg(SCENE_FAIL));
 	return (SUCCESS);
 }
 
