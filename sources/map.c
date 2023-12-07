@@ -235,23 +235,30 @@ static bool	scene_set_texture(char **texture, char *current_map_row)
  * This function checks that each character in the string is either a digit or a comma, ensuring that it can be safely used as a color specification string.
  *
  * @param color_string A pointer to the string that needs to be validated.
- * @return Returns true if the string is a valid representation of a color, otherwise returns false.
+ *
+ * @return An integer indicating success (SUCCESS) or failure (FAILURE).
  */
-static bool scene_validate_color(char *color_string)
+static int scene_validate_color(char *color_string)
 {
 	size_t	i;
+	size_t	comma_counter;
 
 	i = 0;
+	comma_counter = 0;
 	if (!color_string || !*color_string)
-		return (false);
+		return (FAILURE);
 	while (color_string[i])
 	{
+		if (color_string[i] == ',')
+			comma_counter++;
 		if (!ft_is_digit(color_string[i])
 			&& color_string[i] != ',')
-		return (false);
+		return (FAILURE);
 		i++;
 	}
-	return (true);
+	if (comma_counter != 2)
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 /**
