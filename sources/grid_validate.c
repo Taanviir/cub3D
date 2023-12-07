@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grid_validate.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/01 23:49:31 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/07 14:40:16 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ static bool	grid_validate_characters(t_map *map, t_player *player)
 		return (write_error_msg(INVALID_PLAYER_COUNT));
 	return (true);
 }
+
 //! needs alot of work and maybe move it out of here, doesn't belong here
 static void	create_player(t_player *player, int x, int y, char view_direction)
 {
@@ -132,30 +133,22 @@ static void	create_player(t_player *player, int x, int y, char view_direction)
 	if (view_direction == 'E')
 	{
 		player->direction[X] = 1;
-		player->direction[Y] = 0;
-		player->camera_plane[Y] = -0.66;
-		player->camera_plane[X] = 0;
+		player->camera_plane[Y] = 0.66;
 	}
 	else if (view_direction == 'W')
 	{
 		player->direction[X] = -1;
-		player->direction[Y] = 0;
-		player->camera_plane[Y] = 0.66;
-		player->camera_plane[X] = 0;
+		player->camera_plane[Y] = -0.66;
 	}
 	else if (view_direction == 'N')
 	{
 		player->direction[Y] = -1;
-		player->direction[X] = 0;
 		player->camera_plane[X] = 0.66;
-		player->camera_plane[Y] = 0;
 	}
 	else if (view_direction == 'S')
 	{
 		player->direction[Y] = 1;
-		player->direction[X] = 0;
 		player->camera_plane[X] = -0.66;
-		player->camera_plane[Y] = 0;
 	}
 	else
 		write_error_msg(MAP_INVALID_CHARACTER);
