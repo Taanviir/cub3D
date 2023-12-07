@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:39:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/01 23:01:22 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/05 13:36:03 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@ void	draw_ceiling_and_floor(t_img *img_data, int *c_color, int *f_color)
 	}
 }
 
-// double	rad_to_deg(double i_radians)
-// {
-// 	return (180 * i_radians / PI);
-// }
-
-// double	deg_to_rad(int a)
-// {
-// 	return (a * PI / 180.0);
-// }
-
 void draw_vert(t_img *img_data, int x, int y, int height, int color)
 {
 	if (x < 0 || x >= WIN_WIDTH || y < 0 || height >= WIN_HEIGHT || y > height)
@@ -71,8 +61,8 @@ void	ray_cast(char **grid, t_player *player, t_img *img_data)
 	t_vector	side_dist;
 	t_point		step; // x-y step direction
 
-	int			side; //was a NS or a EW wall hit?
-	int			hit; //was there a wall hit?
+	int			side; // was a NS or a EW wall hit?
+	int			hit; // was there a wall hit?
 	double		perp_wall_dist; // length of the ray
 	int			wall_height; // height of the vertical columns
 	int			draw_start; // pixel to start vertical column from
@@ -156,7 +146,8 @@ void	ray_cast(char **grid, t_player *player, t_img *img_data)
 		if (draw_end >= WIN_HEIGHT)
 			draw_end = WIN_HEIGHT - 1;
 
-		draw_vert(img_data, column, draw_start, draw_end, 0x00FF0000);
+		if (draw_end > draw_start)
+			draw_vert(img_data, column, draw_start, draw_end, 0x00FF0000);
 	}
 }
 

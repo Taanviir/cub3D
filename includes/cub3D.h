@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/19 17:53:27 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/05 13:25:22 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ t_map	*map_load(char *map_path);
 # define PLAYER_SIZE 10
 # define X_OFFSET 0
 # define Y_OFFSET 0
-// # define ONE_ANGLE 0.0174533
 # define PI 3.1415926535
 
 typedef struct s_point
@@ -129,7 +128,6 @@ void	create_player(t_player *player, int x, int y, char view_direction);
 
 void	start_raycaster(t_mlx *mlx);
 t_map	*map_grid_validate(t_map *map, t_player *player);
-void	draw_rays_3D(char **grid, t_player *player, t_img *img_data);
 
 /* -------------------------------- minimap --------------------------------- */
 
@@ -147,11 +145,6 @@ int		close_mlx(t_mlx *mlx);
 bool	map_extension_check(char *map_path);
 void	map_free(t_map *map);
 void	my_pixel_put(t_img *img_data, int x, int y, int color);
-void	draw_line(t_img *img_data, t_point a, t_point b);
-
-/* ------------------------------- debug utils ------------------------------ */
-
-void	print_t_map(t_map *map); //? for debugging only
 
 /* -------------------------------------------------------------------------- */
 /*                               error handling                               */
