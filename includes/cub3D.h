@@ -14,14 +14,13 @@
 /*                                    TODO                                    */
 /* -------------------------------------------------------------------------- */
 
-// [ ] clean ray_caster.c
 // [ ] fix error handling in map.c:225
+	// [-] double commas
+	// [-] invalid free on invalid textures, (weird.map)
+// [x] validating texture path
+// [ ] clean ray_caster.c
+// [ ] norminette
 // [ ] no magic numeros
-// [ ] impelement .png
-// [x] when starting south movement is flipped
-// [x] implement textures
-// [x] impelement .xpm
-// [x] fix collisions, they clip
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -35,7 +34,6 @@
 # include <stdio.h>
 # include <unistd.h>
 # include "keycodes.h"
-# include "assert.h" //! are we allowed to use assert
 
 # ifdef __LINUX__
 #  include <X11/keysym.h>
