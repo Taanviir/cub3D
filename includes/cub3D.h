@@ -14,7 +14,8 @@
 /*                                    TODO                                    */
 /* -------------------------------------------------------------------------- */
 
-// [ ] double free on multiple players
+// [ ] increase hitbox
+// [ ] error message empty file
 // [-] fix error handling in map.c:225
 	// [-] double commas
 	// [-] invalid free on invalid textures, (weird.map)
@@ -24,8 +25,7 @@
 // [x] validating texture path
 // [x] player spawns in wall segfault, EW
 	// [x] directions inverted for EW
-// [ ] increase hitbox
-// [ ] error message empty file
+// [x] double free on multiple players
 
 #ifndef CUB3D_H
 # define CUB3D_H

@@ -264,33 +264,32 @@ static bool scene_validate_color(char *color_string)
  *
  * @return An integer indicating success (SUCCESS) or failure (FAILURE).
  */
-static bool	scene_set_color(int *map_color, char *current_map_row)
+static int	scene_set_color(int *map_color, char *current_map_row)
 {
 	char	*color_string;
 	char	**rgb_color_strings;
 	int		i;
+	int		status;
 
 	i = 0;
+	status = SUCCESS;
 	color_string = ft_substr(current_map_row, 2, ft_strlen(current_map_row) - 2);
 	if (!scene_validate_color(color_string))
-		i = TOTAL_COLORS;
+		return (FAILURE);
 	rgb_color_strings = ft_split(color_string, ',');
 	while (i < TOTAL_COLORS)
 	{
-		if (!rgb_color_strings[i])
-			break ;
+		// if (!rgb_color_strings[i])
+		// 	break ;
 		map_color[i] = ft_atoi(rgb_color_strings[i]);
 		if (map_color[i] > 255 || map_color[i] < 0)
-		{
-			map_color[i] = NOT_SET;
-			break ;
-		}
+			status = FAILURE;
 		i++;
 	}
 	ft_free_double((void **)rgb_color_strings);
 	free(color_string);
 	free(current_map_row);
-	return (SUCCESS);
+	return (status);
 }
 
 /**
