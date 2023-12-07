@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_caster.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 23:42:55 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/02 04:49:00 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/07 15:34:07 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,20 @@ static void	raycast_set_step(const t_player *player, t_dda *dda)
 		dda->side[H] = NO;
 	}
 }
-//returns the color of a texel :)
+
+// returns the color of a texel :)
 inline static unsigned int get_texel_color(t_img *image, int x, int y, bool dark)
 {
-	unsigned int current_color = *((unsigned int *)(image->addr
-				+ (y * image->line_length + x * (image->bpp / 8) )));
+	unsigned int	current_color;
+
+	if (y >= 0 && x >= 0 && x < image->img_width && y < image->img_height)
+		current_color = *((unsigned int *)(image->addr
+					+ (y * image->line_length + x * (image->bpp / 8) )));
 	if (dark)
 		current_color = (current_color >> 1) & 8355711;
 	return (current_color);
 }
+
 
 static void	find_column_height(double *column, int max_height, double distance_to_wall)
 {
