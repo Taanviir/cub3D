@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/12/02 05:05:18 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/12/06 15:27:04 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ sanitize: CFLAGS += -fsanitize=address -ggdb3
 sanitize: re
 	./$(NAME) $(MAP)
 
-debug: CFLAGS += -ggdb3 -pg
+debug: CFLAGS += -ggdb3
 debug: re
 	./$(NAME) $(MAP)
 
