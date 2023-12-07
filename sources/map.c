@@ -11,9 +11,9 @@ static int		grid_add_row(char *row, t_map *map);
 static int		grid_load(t_map *map, int map_fd, char **current_map_row);
 /* ---------------------------------- scene --------------------------------- */
 static char		*scene_get_texture_id(char *current_map_row);
-static void		scene_set_texture(char **texture, char *current_map_row);
+static bool		scene_set_texture(char **texture, char *current_map_row);
 static bool		scene_validate_color(char *color_string);
-static void		scene_set_color(int *map_color, char *current_map_row);
+static bool		scene_set_color(int *map_color, char *current_map_row);
 static int		scene_set(t_map *map, char *texture_id, char *current_map_row);
 static int		scene_verify_colors(t_map *map);
 static int		scene_load(t_map *map, int map_fd, char **current_map_row);
@@ -23,7 +23,7 @@ static void		empty_gnl(char *current_map_row, int map_fd);
 void			*map_free(t_map *map);
 void			*map_cleanup(char *current_map_row, int map_fd, t_map *map);
 /* -------------------------------- utilities ------------------------------- */
-static bool			map_extension_check(char *map_path); //! revise the check here
+static bool		map_extension_check(char *map_path, char *target);
 static int		verify_open(char *map_path, int options);
 static bool		map_row_is_empty(char *current_map_row);
 static char		*map_next_valid_row(int map_fd);
@@ -45,7 +45,7 @@ t_map	*map_load(char *map_path)
 	char	*current_map_row;
 	int		map_fd;
 
-	if (!map_extension_check(map_path))
+	if (!map_extension_check(map_path, ".cub"))
 		return (NULL);
 	map_fd = verify_open(map_path, O_RDONLY);
 	if (map_fd == FAILURE)
@@ -68,6 +68,8 @@ t_map	*map_load(char *map_path)
  * This function sets all the elements of `f_color` and `c_color` arrays in the t_map structure to NOT_SET. These are later checked to see if they have been set.
  *
  * @param map A pointer to the t_map structure containing the color arrays to be initialized.
+ *
+ * @return (SUCCESS);
  */
 static void map_init_colors(t_map *map)
 {
@@ -204,6 +206,8 @@ static char	*scene_get_texture_id(char *current_map_row)
 	return (ft_substr(current_map_row, 0, id_length));
 }
 
+#define PATH_START 3 //path should start after the 3rd character of the map row
+
 /**
  * @brief Sets the file descriptor for a texture based on its path extracted from the current map row.
  *
@@ -211,13 +215,18 @@ static char	*scene_get_texture_id(char *current_map_row)
  *
  * @param texture A pointer to the file_path to be set
  * @param current_map_row A pointer to the string containing the current map row from which the texture path is to be extracted.
+ *
+ * @return true, if pass failed if not
  */
-static void	scene_set_texture(char **texture, char *current_map_row)
+static bool	scene_set_texture(char **texture, char *current_map_row)
 {
-	*texture = ft_substr(current_map_row, 3, ft_strlen(current_map_row) - 3);
+	*texture = ft_substr(current_map_row, PATH_START, ft_strlen(current_map_row) - PATH_START);
 	free(current_map_row);
+	if(!map_extension_check(*texture, ".xpm"))
+		return (FAILURE);
 	if (*texture == FAILURE)
 		write_error_msg(SCENE_FAIL);
+	return (SUCCESS);
 }
 
 /**
@@ -252,8 +261,10 @@ static bool scene_validate_color(char *color_string)
  *
  * @param map_color A pointer to an array of integers representing the RGB color values for the map.
  * @param current_map_row A pointer to the current line in the map file, which contains the color information.
+ *
+ * @return An integer indicating success (SUCCESS) or failure (FAILURE).
  */
-static void	scene_set_color(int *map_color, char *current_map_row)
+static bool	scene_set_color(int *map_color, char *current_map_row)
 {
 	char	*color_string;
 	char	**rgb_color_strings;
@@ -279,6 +290,7 @@ static void	scene_set_color(int *map_color, char *current_map_row)
 	ft_free_double((void **)rgb_color_strings);
 	free(color_string);
 	free(current_map_row);
+	return (SUCCESS);
 }
 
 /**
@@ -289,6 +301,7 @@ static void	scene_set_color(int *map_color, char *current_map_row)
  * @param map A pointer to the t_map structure where the scene settings will be stored.
  * @param texture_id A pointer to the string identifier for the texture or color.
  * @param current_map_row A pointer to the current line in the map file, containing texture or color information.
+ *
  * @return An integer indicating success (SUCCESS) or failure (FAILURE).
  */
 static int	scene_set(t_map *map, char *texture_id, char *current_map_row)
@@ -296,20 +309,19 @@ static int	scene_set(t_map *map, char *texture_id, char *current_map_row)
 	if (!texture_id)
 		return (write_error_msg(SCENE_FAIL));
 	if (!ft_strncmp(texture_id, "NO", 2))
-		scene_set_texture(&map->texture[NO], current_map_row);
+		return (scene_set_texture(&map->texture[NO], current_map_row));
 	else if (!ft_strncmp(texture_id, "SO", 2))
-		scene_set_texture(&map->texture[SO], current_map_row);
+		return (scene_set_texture(&map->texture[SO], current_map_row));
 	else if (!ft_strncmp(texture_id, "WE", 2))
-		scene_set_texture(&map->texture[WE], current_map_row);
+		return (scene_set_texture(&map->texture[WE], current_map_row));
 	else if (!ft_strncmp(texture_id, "EA", 2))
-		scene_set_texture(&map->texture[EA], current_map_row);
+		return (scene_set_texture(&map->texture[EA], current_map_row));
 	else if (!ft_strncmp(texture_id, "F", 1))
-		scene_set_color(map->f_color, current_map_row);
+		return (scene_set_color(map->f_color, current_map_row));
 	else if (!ft_strncmp(texture_id, "C", 1))
-		scene_set_color(map->c_color, current_map_row);
+		return(scene_set_color(map->c_color, current_map_row));
 	else
-		return (write_error_msg(SCENE_FAIL));
-	return (SUCCESS);
+		return (FAILURE);
 }
 /**
  * @brief Verifies that all color components for the floor and ceiling have been properly set.
@@ -318,6 +330,7 @@ static int	scene_set(t_map *map, char *texture_id, char *current_map_row)
  * checking to ensure that none of the color components have been left unset.
  *
  * @param map A pointer to the t_map structure containing the color settings.
+ *
  * @return An integer indicating success (SUCCESS) or failure (FAILURE).
  */
 static int	scene_verify_colors(t_map *map)
@@ -447,14 +460,14 @@ void	*map_cleanup(char *current_map_row, int map_fd, t_map *map)
  * @param map_path Pointer to the path of the map file.
  * @return true if the file has a '.cub' extension, false otherwise.
  */
-static bool	map_extension_check(char *map_path)
+static bool	map_extension_check(char *map_path, char *target)
 {
 	if (!map_path)
 		return (write_error_msg(EXTENSION_ERROR));
 	char *extension = ft_strrchr(map_path, '.'); //! redundant check
 	if (!extension)
 		return (write_error_msg(EXTENSION_ERROR));
-	if (ft_strncmp(extension, ".cub", 4))
+	if (ft_strncmp(extension, target, ft_strlen(target)))
 		return (write_error_msg(EXTENSION_ERROR));
 	else
 		return (true);
