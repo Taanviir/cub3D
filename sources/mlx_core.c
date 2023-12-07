@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_core.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/29 02:40:45 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/07 15:39:13 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ static void	*exit_init(t_mlx *mlx, char *error_message)
 		map_free(mlx->map);
 	if (mlx->mlx_ptr)
 	{
+		#ifdef __LINUX__
 		mlx_destroy_display(mlx->mlx_ptr);
+		#endif
 		free(mlx->mlx_ptr);
 	}
 	free(mlx);

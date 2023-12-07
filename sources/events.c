@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/01 23:49:31 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/07 15:39:17 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	close_mlx(t_mlx *mlx)
 	while (i < TOTAL_TEXTURES && mlx->textures[i].img_ptr)
 		mlx_destroy_image(mlx->mlx_ptr, mlx->textures[i++].img_ptr);
 	mlx_destroy_window(mlx->mlx_ptr, mlx->window);
+	#ifdef __LINUX__
 	mlx_destroy_display(mlx->mlx_ptr);
+	#endif
 	map_free(mlx->map);
 	free(mlx->mlx_ptr);
 	free(mlx);
