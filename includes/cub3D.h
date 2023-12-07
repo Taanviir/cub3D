@@ -14,6 +14,7 @@
 /*                                    TODO                                    */
 /* -------------------------------------------------------------------------- */
 
+// [ ] double free on multiple players
 // [ ] fix error handling in map.c:225
 	// [-] double commas
 	// [-] invalid free on invalid textures, (weird.map)
@@ -21,6 +22,8 @@
 // [ ] clean ray_caster.c
 // [ ] norminette
 // [ ] no magic numeros
+// [x] player spawns in wall segfault, EW
+	// [x] directions inverted for EW
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -202,6 +205,7 @@ void	*map_free(t_map *map);
 # define EXTENSION_ERROR "Wrong file extension."
 # define INVALID_PLAYER_COUNT "Wrong number of players."
 # define TEXTURE_FAIL "Failed to load texture"
+# define INVALID_ARGS "invalid number of args"
 
 int		write_error_msg(char *error_msg);
 

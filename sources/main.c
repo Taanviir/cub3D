@@ -18,7 +18,7 @@ int	main(int argc, char **argv)
 	char	*map_path;
 
 	if (argc != 2)
-		return (write_error_msg("Error: args"), -1);
+		return (write_error_msg(INVALID_ARGS));
 	map_path = argv[1];
 	mlx = init_mlx_data(map_path);
 	if (!mlx)

@@ -95,6 +95,6 @@ t_mlx	*init_mlx_data(char *map_path)
 	if (!mlx->img_data.addr)
 		return (exit_init(mlx, MLX_IMG_FAIL));
 	if (!load_textures(mlx))
-		return (exit_init(mlx, TEXTURE_FAIL));
+		return (exit_init(mlx, NULL));
 	return (mlx);
 }
