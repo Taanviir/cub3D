@@ -314,17 +314,17 @@ static int	scene_set(t_map *map, char *texture_id, char *current_map_row)
 {
 	if (!texture_id)
 		return (write_error_msg(SCENE_FAIL));
-	if (!ft_strncmp(texture_id, "NO", 2))
+	if (!ft_strncmp(texture_id, "NO", 2) && !map->texture[NO])
 		return (scene_set_texture(&map->texture[NO], current_map_row));
-	else if (!ft_strncmp(texture_id, "SO", 2))
+	else if (!ft_strncmp(texture_id, "SO", 2) && !map->texture[SO])
 		return (scene_set_texture(&map->texture[SO], current_map_row));
-	else if (!ft_strncmp(texture_id, "WE", 2))
+	else if (!ft_strncmp(texture_id, "WE", 2) && !map->texture[WE])
 		return (scene_set_texture(&map->texture[WE], current_map_row));
-	else if (!ft_strncmp(texture_id, "EA", 2))
+	else if (!ft_strncmp(texture_id, "EA", 2) && !map->texture[EA])
 		return (scene_set_texture(&map->texture[EA], current_map_row));
-	else if (!ft_strncmp(texture_id, "F", 1))
+	else if (!ft_strncmp(texture_id, "F", 1) && map->f_color[0] == NOT_SET)
 		return (scene_set_color(map->f_color, current_map_row));
-	else if (!ft_strncmp(texture_id, "C", 1))
+	else if (!ft_strncmp(texture_id, "C", 1) && map->c_color[0] == NOT_SET)
 		return(scene_set_color(map->c_color, current_map_row));
 	else
 		return (FAILURE);
