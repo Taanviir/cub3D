@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/12/06 15:27:04 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/12/07 18:49:09 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT = libft/libft.a
 MINILIBX = $(MLX_DIR)libmlx.a
 
-MAP:= ./test_maps/wolf.cub
+MAP:= ./test_maps/split-map.cub
 
 # ---------------------------------- targets --------------------------------- #
 all : $(NAME)
