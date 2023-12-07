@@ -1,7 +1,7 @@
-NO ./test_maps/textures/t0.xpm
-SO ./test_maps/textures/t1.xpm
-WE ./test_maps/textures/t2.xpm
-EA ./test_maps/textures/t3.xpm
+NO ./test_maps/textures/wood.xpm
+SO ./test_maps/textures/redbrick.xpm
+WE ./test_maps/textures/colorstone.xpm
+EA ./test_maps/textures/mossy.xpm
 
 
 F 139,69,19
