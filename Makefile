@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/12/02 17:48:38 by tanas            ###   ########.fr        #
+#    Updated: 2023/12/05 13:08:25 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ RESET := "\033[0m"
 
 # --------------------------------- variables -------------------------------- #
 NAME := cub3D
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -O3
 UNAME := $(shell uname)
 LIBRARY_FLAGS := -Llibft/ -lft -lm -lz -lmlx -Llibft/
 INCLUDES := -Iincludes/ -Ilibft/includes
