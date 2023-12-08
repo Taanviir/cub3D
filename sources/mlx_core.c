@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_core.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/07 15:39:13 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/08 10:23:40 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static bool load_textures(t_mlx *mlx)
 			return (write_error_msg(TEXTURE_FAIL));
 		*address = mlx_get_data_addr(texture, &mlx->textures[i].bpp,
 			&mlx->textures[i].line_length, &mlx->textures[i].endian);
+		free(*texture);
 		if (!address)
 			return (write_error_msg(TEXTURE_FAIL));
 	}
