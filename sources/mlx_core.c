@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 16:45:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/08 10:23:40 by sabdelra         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/12/08 10:44:29 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "cub3D.h"
 
@@ -55,6 +56,7 @@ static bool load_textures(t_mlx *mlx)
 		*address = mlx_get_data_addr(texture, &mlx->textures[i].bpp,
 			&mlx->textures[i].line_length, &mlx->textures[i].endian);
 		free(*texture);
+		free(texture);
 		if (!address)
 			return (write_error_msg(TEXTURE_FAIL));
 	}
