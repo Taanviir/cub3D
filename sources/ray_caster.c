@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 23:42:55 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/10 01:12:58 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 02:07:42 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ static void	draw_slice(t_mlx *mlx, t_dda *dda, int slice)
 	while (i < column[BOT])
 	{
 		texel[COLOR] = get_texel_color(&mlx->textures[dda->hit], texel[X],
-										texel[Y], dark);
+				texel[Y], dark);
 		my_pixel_put(&mlx->img_data, slice, i, texel[COLOR]);
 		texel[Y] += texel[STEP];
 		i++;
@@ -285,7 +285,7 @@ static void	display_background(t_mlx *mlx)
 		while (x < WIN_WIDTH)
 			my_pixel_put(&mlx->img_data, x++, y, current_color);
 		if (y >= WIN_HEIGHT / 2)
-				current_color = floor_color;
+			current_color = floor_color;
 		y++;
 	}
 }
