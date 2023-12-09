@@ -137,8 +137,9 @@ static void	find_column_height(double *column, int max_height, double distance_t
 
 // sets the texture X, Y and step papremeters and returns whether it should
 // be a dark shade based on whether it hit a vertical wall or a horizontal one
+static bool	set_texel(t_mlx *mlx, t_dda *dda, double *texel, double *column)
 {
-	double	wallX;
+	double	wall_x;
 	bool	dark;
 	t_img	texture;
 
@@ -146,17 +147,18 @@ static void	find_column_height(double *column, int max_height, double distance_t
 	texel[STEP] = 1.0 * texture.img_height / column[HEIGHT];
 	if (dda->hit == NO || dda->hit == SO)
 	{
-		wallX = mlx->player.pos[X] + dda->distance_to_wall * dda->ray[X];
+		wall_x = mlx->player.pos[X] + dda->distance_to_wall * dda->ray[X];
 		dark = false;
 	}
 	else
 	{
-		wallX = mlx->player.pos[Y] + dda->distance_to_wall * dda->ray[Y];
+		wall_x = mlx->player.pos[Y] + dda->distance_to_wall * dda->ray[Y];
 		dark = true;
 	}
-	wallX -= (int)wallX;
-	texel[X] = (int)(wallX * (double)texture.img_width);
-	texel[Y] = (double)(column[TOP] - (WIN_HEIGHT/2) + column[HEIGHT] / 2) * texel[STEP];
+	wall_x -= (int)wall_x;
+	texel[X] = (int)(wall_x * (double)texture.img_width);
+	texel[Y] = (double)((column[TOP] - (WIN_HEIGHT / 2) + column[HEIGHT] / 2)
+			* texel[STEP]);
 	if ((dda->hit == NO || dda->hit == SO) && dda->ray[Y] > 0)
 		texel[X] = texture.img_width - texel[X] - 1;
 	if ((dda->hit == WE || dda->hit == EA) && dda->ray[X] < 0)
