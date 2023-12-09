@@ -27,7 +27,7 @@
  * and is ready for gameplay.
  */
 
-#include "cub3D.h"
+#include "../includes/cub3D.h"
 
 static bool	grid_is_enclosed(const t_map *map, const int x, const int y);
 static bool	grid_validate_characters(t_map *map, t_player *player);

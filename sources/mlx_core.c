@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "cub3D.h"
+#include "../includes/cub3D.h"
 
 /* ------------------------------ initializing ------------------------------ */
 static void	*exit_init(t_mlx *mlx, char *error_message)

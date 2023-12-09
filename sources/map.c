@@ -1,4 +1,4 @@
-#include "cub3D.h"
+#include "../includes/cub3D.h"
 
 /* ------------------------------ main function ----------------------------- */
 t_map			*map_load(char *map_path);
