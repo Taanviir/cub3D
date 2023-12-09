@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/09 15:25:11 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/09 20:20:08 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	close_mlx(t_mlx *mlx)
 {
-	int	i;
-	t_map *map;
+	int		i;
+	t_map	*map;
 
 	map = mlx->map;
 	i = 0;
@@ -32,15 +32,14 @@ int	close_mlx(t_mlx *mlx)
 	return (SUCCESS);
 }
 
-
 void	rotate_player(int keycode, t_mlx *mlx)
 {
-	double *c[2];
-	double *d[2];
-	double old_d[2];
-	double old_c[2];
-	double sin_step = sin((ROTATE_ANGLE * 3.14) / 180.0F);
-	double cos_step = cos((ROTATE_ANGLE * 3.14) / 180.0F);
+	double	*c[2];
+	double	*d[2];
+	double	old_d[2];
+	double	old_c[2];
+	double	sin_step;
+	double	cos_step;
 
 	d[X] = &mlx->player.direction[X];
 	d[Y] = &mlx->player.direction[Y];
@@ -50,11 +49,12 @@ void	rotate_player(int keycode, t_mlx *mlx)
 	old_d[Y] = mlx->player.direction[Y];
 	old_c[X] = mlx->player.camera_plane[X];
 	old_c[Y] = mlx->player.camera_plane[Y];
+	sin_step = sin((ROTATE_ANGLE * 3.14) / 180.0F);
+	cos_step = cos((ROTATE_ANGLE * 3.14) / 180.0F);
 	if (keycode == KEYCODE_L_ARROW)
 	{
 		*d[X] = old_d[X] * cos_step + old_d[Y] * sin_step;
 		*c[X] = old_c[X] * cos_step + old_c[Y] * sin_step;
-
 		*d[Y] = -old_d[X] * sin_step + old_d[Y] * cos_step;
 		*c[Y] = -old_c[X] * sin_step + old_c[Y] * cos_step;
 	}
@@ -62,7 +62,6 @@ void	rotate_player(int keycode, t_mlx *mlx)
 	{
 		*d[X] = old_d[X] * cos_step - old_d[Y] * sin_step;
 		*c[X] = old_c[X] * cos_step - old_c[Y] * sin_step;
-
 		*d[Y] = old_d[X] * sin_step + old_d[Y] * cos_step;
 		*c[Y] = old_c[X] * sin_step + old_c[Y] * cos_step;
 	}
@@ -117,7 +116,7 @@ int	handle_events(int keycode, t_mlx *mlx)
 	else if (keycode == KEYCODE_W || keycode == KEYCODE_A
 		|| keycode == KEYCODE_S || keycode == KEYCODE_D)
 		move_player(keycode, mlx);
-	else if (keycode ==  KEYCODE_L_ARROW || keycode == KEYCODE_R_ARROW )
+	else if (keycode == KEYCODE_L_ARROW || keycode == KEYCODE_R_ARROW)
 		rotate_player(keycode, mlx);
 	return (0);
 }
