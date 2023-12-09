@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/12/07 18:49:09 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/12/09 15:32:34 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,8 +66,8 @@ debug: CFLAGS += -ggdb3
 debug: re
 	./$(NAME) $(MAP)
 
-fastasfuckboy: CFLAGS += -O3
-fastasfuckboy: re
+fast: CFLAGS += -O2
+fast: re
 	./$(NAME) $(MAP)
 
 $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
