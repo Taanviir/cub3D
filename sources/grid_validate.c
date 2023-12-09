@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/09 18:54:02 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 00:53:49 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_map	*grid_validate(t_map *map, t_player *player)
 		return (NULL);
 	if (!grid_validate_characters(map, player))
 		map_free(map);
-	if (!grid_is_enclosed(map, player->position[X], player->position[Y]))
+	if (!grid_is_enclosed(map, player->pos[X], player->pos[Y]))
 	{
 		write_error_msg(MAP_NOT_ENCLOSED);
 		map_free(map);
@@ -139,8 +139,8 @@ static bool	grid_validate_characters(t_map *map, t_player *player)
 //! needs alot of work and maybe move it out of here, doesn't belong here
 static void	create_player(t_player *player, int x, int y, char view_direction)
 {
-	player->position[X] = x + 0.5;
-	player->position[Y] = y + 0.5;
+	player->pos[X] = x + 0.5;
+	player->pos[Y] = y + 0.5;
 	if (view_direction == 'E')
 	{
 		player->direction[X] = 1;

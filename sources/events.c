@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/09 20:20:08 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 00:53:56 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	move_player(int keycode, t_mlx *mlx)
 	move[ANGLE] = atan2(mlx->player.direction[Y],  mlx->player.direction[X]);
 	move[SIN] = MOVE * sin(move[ANGLE]);
 	move[COS] = MOVE * cos(move[ANGLE]);
-	pos[X] = &mlx->player.position[X];
-	pos[Y] = &mlx->player.position[Y];
+	pos[X] = &mlx->player.pos[X];
+	pos[Y] = &mlx->player.pos[Y];
 	if (keycode == KEYCODE_W)
 	{
 		if (mlx->map->grid[(int)(*pos[Y] + move[SIN])][(int)(*pos[X])] != WALL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_caster.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 23:42:55 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/09 12:54:40 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/10 00:55:46 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	ray_cast(t_mlx *mlx)
 
 	slice = 0;
 	ncf = 2 / (double)WIN_WIDTH;
-	dda.map_cell[X] = (int)mlx->player.position[X]; // optimization
-	dda.map_cell[Y] = (int)mlx->player.position[Y]; // optimization
+	dda.map_cell[X] = (int)mlx->player.pos[X]; // optimization
+	dda.map_cell[Y] = (int)mlx->player.pos[Y]; // optimization
 	display_background(mlx);
 	while (slice < WIN_WIDTH)
 	{
@@ -86,25 +86,25 @@ static void	raycast_set_step(const t_player *player, t_dda *dda)
 	if (dda->ray[X] < 0)
 	{
 		dda->step[X] = -1;
-		dda->next_hit[V] = (player->position[X] - dda->map_cell[X]) * dda->delta[V];
+		dda->next_hit[V] = (player->pos[X] - dda->map_cell[X]) * dda->delta[V];
 		dda->side[V] = WE;
 	}
 	else
 	{
 		dda->step[X] = 1;
-		dda->next_hit[V] = (dda->map_cell[X] + 1 - player->position[X]) * dda->delta[V];
+		dda->next_hit[V] = (dda->map_cell[X] + 1 - player->pos[X]) * dda->delta[V];
 		dda->side[V] = EA;
 	}
 	if (dda->ray[Y] < 0)
 	{
 		dda->step[Y] = -1;
-		dda->next_hit[H] = (player->position[Y] - dda->map_cell[Y]) * dda->delta[H];
+		dda->next_hit[H] = (player->pos[Y] - dda->map_cell[Y]) * dda->delta[H];
 		dda->side[H] = SO;
 	}
 	else
 	{
 		dda->step[Y] = 1;
-		dda->next_hit[H] = (dda->map_cell[Y] + 1 - player->position[Y]) * dda->delta[H];
+		dda->next_hit[H] = (dda->map_cell[Y] + 1 - player->pos[Y]) * dda->delta[H];
 		dda->side[H] = NO;
 	}
 }
@@ -145,12 +145,12 @@ static bool set_texel(t_mlx *mlx, t_dda *dda, double *texel, double *column)
 	texel[STEP] = 1.0 * texture.img_height / column[HEIGHT];
 	if (dda->hit == NO || dda->hit == SO)
 	{
-		wallX = mlx->player.position[X] + dda->distance_to_wall * dda->ray[X];
+		wallX = mlx->player.pos[X] + dda->distance_to_wall * dda->ray[X];
 		dark = false;
 	}
 	else
 	{
-		wallX = mlx->player.position[Y] + dda->distance_to_wall * dda->ray[Y];
+		wallX = mlx->player.pos[Y] + dda->distance_to_wall * dda->ray[Y];
 		dark = true;
 	}
 	wallX -= (int)wallX;

@@ -71,7 +71,7 @@ typedef struct s_dda
 
 typedef struct s_player
 {
-	double	position[2];
+	double	pos[2];
 	double	direction[2];
 	double	camera_plane[2];
 }	t_player;
