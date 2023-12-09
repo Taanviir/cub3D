@@ -173,6 +173,7 @@ int		close_mlx(t_mlx *mlx_core);
 
 /* ---------------------------------- utils --------------------------------- */
 
+void	my_pixel_put(t_img *image, int x, int y, int color);
 void	map_free(t_map *map);
 
 /* ------------------------------- debug utils ------------------------------ */

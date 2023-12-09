@@ -27,7 +27,7 @@ static void			draw_slice(t_mlx *mlx, t_dda *dda, int slice);
 static bool			set_texel(t_mlx *mlx, t_dda *dda, double *texel, double *column);
 static void			find_col_height(double *col, int max_height, double dist_to_wall);
 inline static unsigned int	get_texel_color(t_img *image, int x, int y, bool dark);
-inline static void	my_pixel_put(t_img *image, int x, int y, int color);
+
 
 void	ray_cast(t_mlx *mlx)
 {
@@ -288,11 +288,4 @@ static void	display_background(t_mlx *mlx)
 			current_color = floor_color;
 		y++;
 	}
-}
-
-inline static void	my_pixel_put(t_img *image, int x, int y, int color)
-{
-	if (y >= 0 && x >= 0 && x < WIN_WIDTH && y < WIN_HEIGHT)
-		*(unsigned int *)(image->addr + \
-			(y * image->line_length + x * (image->bpp >> 3))) = color;
 }
