@@ -88,11 +88,7 @@ t_mlx	*init_mlx_data(char *map_path)
 	if (!mlx->window)
 		return (exit_init(mlx, MLX_WIN_FAIL));
 	mlx->map = map_load(map_path);
-	if (!mlx->map)
-		return (exit_init(mlx, NULL));
 	if(!grid_validate(mlx->map, &mlx->player))
-		return (exit_init(mlx, NULL));
-	if (!mlx->map)
 		return (exit_init(mlx, NULL));
 	mlx->img_data = create_image(mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	if (!mlx->img_data.addr)
