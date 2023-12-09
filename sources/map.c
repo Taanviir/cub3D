@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/09 20:31:45 by tanas             #+#    #+#             */
+/*   Updated: 2023/12/10 01:31:46 by tanas            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3D.h"
 
 /* ------------------------------ main function ----------------------------- */
@@ -221,9 +233,9 @@ static char	*scene_get_texture_id(char *current_map_row)
 static bool	scene_set_texture(char **texture, char *current_map_row)
 {
 	*texture = ft_substr(current_map_row, PATH_START, ft_strlen(current_map_row) - PATH_START);
-	free(current_map_row);
 	if(!map_extension_check(*texture, ".xpm"))
 		return (FAILURE);
+	free(current_map_row);
 	if (*texture == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
