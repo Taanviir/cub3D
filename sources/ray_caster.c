@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_caster.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 23:42:55 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/08 10:59:01 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/09 12:54:40 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,9 @@ inline static unsigned int get_texel_color(t_img *image, int x, int y, bool dark
 {
 	unsigned int	current_color;
 
-	current_color = *((unsigned int *)(image->addr
-				+ (y * image->line_length + x * (image->bpp / 8) )));
+	if (y >= 0 && x >= 0 && x < image->img_width && y < image->img_height)
+		current_color = *((unsigned int *)(image->addr
+					+ (y * image->line_length + x * (image->bpp / 8) )));
 	if (dark)
 		current_color = (current_color >> 1) & 8355711;
 	return (current_color);
