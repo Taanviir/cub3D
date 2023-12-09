@@ -180,14 +180,14 @@ static void	draw_slice(t_mlx *mlx, t_dda *dda, int slice)
 	i = column[TOP];
 	while (i < column[BOT])
 	{
-		texel[COLOR] = get_texel_color(&mlx->textures[dda->hit],
-										texel[X],
+		texel[COLOR] = get_texel_color(&mlx->textures[dda->hit], texel[X],
 										texel[Y], dark);
 		my_pixel_put(&mlx->img_data, slice, i, texel[COLOR]);
 		texel[Y] += texel[STEP];
 		i++;
 	}
 }
+
 /**
  * @brief Computes ray direction and delta distances for DDA.
  *
