@@ -154,6 +154,7 @@ typedef enum {
 
 #define VERY_BIG_NUMBER 453211111.0f
 
+void	draw_slice(t_mlx *mlx, t_dda *dda, int slice);
 void	display_background(t_mlx *mlx);
 void	ray_cast(t_mlx *mlx);
 
