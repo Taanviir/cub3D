@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
+#include "../includes/cub3D.h"
 
 /* ------------------------------ general utils ----------------------------- */
 static int			encode_color(int map_color[TOTAL_COLORS]);
@@ -60,7 +60,8 @@ void	ray_cast(t_mlx *mlx)
 /**
  * @brief Stores a color into a single int
  *
- * Encodes a 3 int array representing the RGB color code, into a single color int for use int mlx functions
+ * Encodes a 3 int array representing the RGB color code, into a
+ * single color int for use int mlx functions
  *
  * @param map_color a 3 int array RGB
  *
@@ -74,9 +75,10 @@ static int encode_color(int map_color[TOTAL_COLORS])
 /**
  * @brief Sets step direction and initial hit points for raycasting in DDA.
  *
- * Determines the X and Y step directions based on the ray's direction and calculates
- * initial grid cell hit points. It also identifies the first wall side (East, West, North, South)
- * the ray encounters for wall collision detection in the DDA algorithm.
+ * Determines the X and Y step directions based on the ray's direction and
+ * calculates initial grid cell hit points. It also identifies the
+ * first wall side (East, West, North, South) the ray encounters for
+ * wall collision detection in the DDA algorithm.
  *
  * @param pos Pointer to the player's x and y positions.
  * @param dda Pointer to the DDA structure for raycasting data.
@@ -134,8 +136,8 @@ static void	find_column_height(double *column, int max_height, double distance_t
 		column[BOT] = max_height - 1;
 }
 
-// sets the texture X, Y and step papremeters and returns whether it should be a dark shade based on whether it hit a vertical wall or a horizontala one
-static bool set_texel(t_mlx *mlx, t_dda *dda, double *texel, double *column)
+// sets the texture X, Y and step papremeters and returns whether it should
+// be a dark shade based on whether it hit a vertical wall or a horizontal one
 {
 	double	wallX;
 	bool	dark;
@@ -188,13 +190,17 @@ static void	draw_slice(t_mlx *mlx, t_dda *dda, int slice)
 /**
  * @brief Computes ray direction and delta distances for DDA.
  *
- * Translates slice index to camera space, adjusting the ray based on the player's direction and camera plane.
- * Computes delta distances for X and Y directions, used in the DDA algorithm for wall collision detection.
+ * Translates slice index to camera space, adjusting the ray based on the
+ * player's direction and camera plane.
+ * Computes delta distances for X and Y directions, used in the DDA algorithm
+ * for wall collision detection.
  *
  * @param dda Pointer to the DDA structure containing raycasting data.
- * @param player Pointer to the player structure containing position and direction data.
+ * @param player Pointer to the player structure containing position and
+ * direction data.
  * @param slice Pointer to the current slice index being processed.
- * @param ncf normalized camera factor used to translate the camera plane into a [-1, 1] range
+ * @param ncf normalized camera factor used to translate the camera plane into
+ * a [-1, 1] range
  */
 static void	raycast_set_delta(t_dda *dda, const t_player *player,
 	const int *slice, const double ncf)
@@ -219,7 +225,8 @@ static void	raycast_set_delta(t_dda *dda, const t_player *player,
 /**
  * @brief Executes DDA algorithm for raycasting.
  *
- * Steps through the map grid based on the ray's direction to find the first wall hit.
+ * Steps through the map grid based on the ray's direction to find the
+ * first wall hit.
  * Updates ray's hit information for texture determination and wall rendering.
  *
  * @param dda Pointer to the DDA structure with raycasting data.
