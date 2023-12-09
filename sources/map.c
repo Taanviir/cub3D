@@ -100,7 +100,7 @@ static t_map	*map_init(void)
 		return (write_error_msg(MALLOC_FAIL), NULL);
 	map_init_colors(map);
 	map->grid_capacity = MAP_INITIAL_CAPACITY;
-	map->grid = ft_calloc(map->grid_capacity, sizeof(char *));
+	map->grid = ft_calloc(map->grid_capacity + 1, sizeof(char *));
 	if (!map->grid)
 	{
 		free (map);
@@ -146,7 +146,7 @@ static int grid_resize(t_map *map)
 	row_index = 0;
 	old_grid = map->grid;
 	map->grid_capacity *= DOUBLE;
-	map->grid = ft_calloc(sizeof(char *), map->grid_capacity);
+	map->grid = ft_calloc(map->grid_capacity + 1, sizeof(char *));
 	if(!map->grid)
 	{
 		write_error_msg(MALLOC_FAIL);
