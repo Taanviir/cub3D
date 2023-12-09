@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 16:44:34 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/26 19:57:32by sabdelra         ###   ########.fr       */
+/*   Created: 2023/12/09 16:01:24 by tanas             #+#    #+#             */
+/*   Updated: 2023/12/09 16:01:32 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,3 @@ int	main(int argc, char **argv)
 	mlx_loop(mlx->mlx_ptr);
 	return (0);
 }
-
-
