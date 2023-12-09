@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 23:42:55 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/10 02:17:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 02:20:56 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static void			raycast_set_step(const double *pos, t_dda *dda);
 static e_texture	raycast_dda(t_dda *dda, const t_map *map);
 static void			raycast_set_delta(t_dda *dda, const t_player *player,
-			const int *slice, const double ncf);
+						const int *slice, const double ncf);
 
 void	ray_cast(t_mlx *mlx)
 {
