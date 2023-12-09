@@ -14,18 +14,14 @@
 /*                                    TODO                                    */
 /* -------------------------------------------------------------------------- */
 
-// [ ] increase hitbox
-// [ ] error message empty file
-// [-] fix error handling in map.c:225
-	// [-] double commas
-	// [-] invalid free on invalid textures, (weird.map)
-// [ ] clean ray_caster.c
 // [ ] norminette
+// [ ] clean ray_caster.c
 // [-] no magic numeros
 // [x] validating texture path
 // [x] player spawns in wall segfault, EW
 	// [x] directions inverted for EW
 // [x] double free on multiple players
+// [-] fix error handling in map.c:225
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -163,7 +159,7 @@ void	ray_cast(t_mlx *mlx);
 
 /* --------------------------------- events --------------------------------- */
 #define MOVE 0.05f
-#define ROTATE_ANGLE 1
+#define ROTATE_ANGLE 2
 
 typedef enum e_movement {
 	ANGLE = 0,
