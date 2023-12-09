@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/07 19:02:47 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/09 13:50:20 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 #include "cub3D.h"
 
-static bool	grid_is_enclosed(t_map *map, int x, int y);
+static bool	grid_is_enclosed(const t_map *map, const int x,const int y);
 static bool	grid_validate_characters(t_map *map, t_player *player);
 static void	create_player(t_player *player, int x, int y, char view_direction); //! improve this
 
@@ -50,7 +50,10 @@ t_map	*grid_validate(t_map *map, t_player *player)
 	if (!grid_validate_characters(map, player))
 		map_free(map);
 	if (!grid_is_enclosed(map, player->position[X], player->position[Y]))
+	{
+		write_error_msg(MAP_NOT_ENCLOSED);
 		map_free(map);
+	}
 	return (map);
 }
 
@@ -66,12 +69,12 @@ t_map	*grid_validate(t_map *map, t_player *player)
  * @return Returns true if the starting cell is completely enclosed by '1', else returns false.
  * @note the grid cell value is changed to V, to indicate visited
  */
-static bool	grid_is_enclosed(t_map *map, int x, int y)
+static bool	grid_is_enclosed(const t_map *map, const int x, const int y)
 {
 	char	*current_cell;
 
 	if (x >= (int)ft_strlen(map->grid[y]) || x < 0 || y < 0 || y >= map->n_rows)
-		return (write_error_msg(MAP_NOT_ENCLOSED));
+		return (FAILURE);
 	current_cell = &map->grid[y][x];
 	if (*current_cell == WALL || *current_cell == 'V')
 		return (true);
@@ -81,10 +84,10 @@ static bool	grid_is_enclosed(t_map *map, int x, int y)
 	else if (x == 0 || *current_cell == '\n'
 		|| ft_is_whitespace(*current_cell)
 		|| y == 0 || y == map->n_rows - 1)
-		return (write_error_msg(MAP_NOT_ENCLOSED));
+		return (FAILURE);
 	if (!grid_is_enclosed(map, x + 1, y) || !grid_is_enclosed(map, x - 1, y)
 		|| !grid_is_enclosed(map, x, y + 1) || !grid_is_enclosed(map, x, y - 1))
-		return (write_error_msg(MAP_NOT_ENCLOSED));
+		return (FAILURE);
 	return (true);
 }
 
