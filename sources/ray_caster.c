@@ -206,19 +206,19 @@ static void	draw_slice(t_mlx *mlx, t_dda *dda, int slice)
 static void	raycast_set_delta(t_dda *dda, const t_player *player,
 	const int *slice, const double ncf)
 {
-	double	camera_x_position;
+	double	camera_x_pos;
 
-	camera_x_position = (*slice * ncf) - 1;
+	camera_x_pos = (*slice * ncf) - 1;
 	dda->ray[X] = player->direction[X]
-			+ (player->camera_plane[X] * camera_x_position);
+		+ (player->camera_plane[X] * camera_x_pos);
 	dda->ray[Y] = player->direction[Y]
-			+ (player->camera_plane[Y] * camera_x_position);
+		+ (player->camera_plane[Y] * camera_x_pos);
 	if (dda->ray[X])
-		dda->delta[V] = fabs(1/dda->ray[X]);
+		dda->delta[V] = fabs(1 / dda->ray[X]);
 	else
 		dda->delta[V] = VERY_BIG_NUMBER;
 	if (dda->ray[Y])
-		dda->delta[H] = fabs(1/dda->ray[Y]);
+		dda->delta[H] = fabs(1 / dda->ray[Y]);
 	else
 		dda->delta[H] = VERY_BIG_NUMBER;
 }
