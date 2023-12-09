@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 23:42:55 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/10 00:55:46 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 01:12:58 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int			encode_color(int map_color[TOTAL_COLORS]);
 
 /* ---------------------------- ray cast helpers ---------------------------- */
 static void			display_background(t_mlx *mlx);
-static void			raycast_set_step(const t_player *player, t_dda *dda);
+static void			raycast_set_step(const double *pos, t_dda *dda);
 static e_texture	raycast_dda(t_dda *dda, const t_map *map);
 static void			raycast_set_delta(t_dda *dda, const t_player *player,
 			const int *slice, const double ncf);
@@ -44,7 +44,7 @@ void	ray_cast(t_mlx *mlx)
 	while (slice < WIN_WIDTH)
 	{
 		raycast_set_delta(&dda, &mlx->player, &slice, ncf);
-		raycast_set_step(&mlx->player, &dda);
+		raycast_set_step(mlx->player.pos, &dda);
 		hit = raycast_dda(&dda, mlx->map);
 		if (hit == dda.side[H])
 			dda.distance_to_wall = dda.next_hit[H] - dda.delta[H];
@@ -78,33 +78,33 @@ static int encode_color(int map_color[TOTAL_COLORS])
  * initial grid cell hit points. It also identifies the first wall side (East, West, North, South)
  * the ray encounters for wall collision detection in the DDA algorithm.
  *
- * @param player Pointer to the player's position.
+ * @param pos Pointer to the player's x and y positions.
  * @param dda Pointer to the DDA structure for raycasting data.
  */
-static void	raycast_set_step(const t_player *player, t_dda *dda)
+static void	raycast_set_step(const double *pos, t_dda *dda)
 {
 	if (dda->ray[X] < 0)
 	{
 		dda->step[X] = -1;
-		dda->next_hit[V] = (player->pos[X] - dda->map_cell[X]) * dda->delta[V];
+		dda->next_hit[V] = (pos[X] - dda->map_cell[X]) * dda->delta[V];
 		dda->side[V] = WE;
 	}
 	else
 	{
 		dda->step[X] = 1;
-		dda->next_hit[V] = (dda->map_cell[X] + 1 - player->pos[X]) * dda->delta[V];
+		dda->next_hit[V] = (dda->map_cell[X] + 1 - pos[X]) * dda->delta[V];
 		dda->side[V] = EA;
 	}
 	if (dda->ray[Y] < 0)
 	{
 		dda->step[Y] = -1;
-		dda->next_hit[H] = (player->pos[Y] - dda->map_cell[Y]) * dda->delta[H];
+		dda->next_hit[H] = (pos[Y] - dda->map_cell[Y]) * dda->delta[H];
 		dda->side[H] = SO;
 	}
 	else
 	{
 		dda->step[Y] = 1;
-		dda->next_hit[H] = (dda->map_cell[Y] + 1 - player->pos[Y]) * dda->delta[H];
+		dda->next_hit[H] = (dda->map_cell[Y] + 1 - pos[Y]) * dda->delta[H];
 		dda->side[H] = NO;
 	}
 }
