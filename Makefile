@@ -36,7 +36,7 @@ endif
 
 SRCS_DIR = sources
 SRCS = main.c mlx_core.c utils.c map.c grid_validate.c events.c \
-	ray_caster.c
+	ray_caster.c display_background.c
 
 OBJS_DIR = objects
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)

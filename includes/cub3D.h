@@ -154,8 +154,8 @@ typedef enum {
 
 #define VERY_BIG_NUMBER 453211111.0f
 
+void	display_background(t_mlx *mlx);
 void	ray_cast(t_mlx *mlx);
-// void	__display_background(t_mlx *mlx_core);
 
 /* --------------------------------- events --------------------------------- */
 #define MOVE 0.05f

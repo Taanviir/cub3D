@@ -12,11 +12,7 @@
 
 #include "../includes/cub3D.h"
 
-/* ------------------------------ general utils ----------------------------- */
-static int			encode_color(int map_color[TOTAL_COLORS]);
-
 /* ---------------------------- ray cast helpers ---------------------------- */
-static void			display_background(t_mlx *mlx);
 static void			raycast_set_step(const double *pos, t_dda *dda);
 static e_texture	raycast_dda(t_dda *dda, const t_map *map);
 static void			raycast_set_delta(t_dda *dda, const t_player *player,
@@ -55,21 +51,6 @@ void	ray_cast(t_mlx *mlx)
 	}
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->window,
 		mlx->img_data.img_ptr, 0, 0);
-}
-
-/**
- * @brief Stores a color into a single int
- *
- * Encodes a 3 int array representing the RGB color code, into a
- * single color int for use int mlx functions
- *
- * @param map_color a 3 int array RGB
- *
- * @return returns the int
- */
-static int	encode_color(int map_color[TOTAL_COLORS])
-{
-	return ((map_color[R] << 16 | map_color[G] << 8 | map_color[B]));
 }
 
 /**
@@ -259,33 +240,4 @@ static e_texture	raycast_dda(t_dda *dda, const t_map *map)
 			break ;
 	}
 	return (dda->hit);
-}
-
-/**
- * @brief displays the background image, splitting the window into
- *  two halves ceiling and a floor
- *
- * @param mlx a pointer to the mlx data structure
- */
-static void	display_background(t_mlx *mlx)
-{
-	int		current_color;
-	int		ceiling_color;
-	int		floor_color;
-	int		y;
-	int		x;
-
-	ceiling_color = encode_color(mlx->map->c_color);
-	floor_color = encode_color(mlx->map->f_color);
-	current_color = ceiling_color;
-	y = 0;
-	while (y < WIN_HEIGHT)
-	{
-		x = 0;
-		while (x < WIN_WIDTH)
-			my_pixel_put(&mlx->img_data, x++, y, current_color);
-		if (y >= WIN_HEIGHT / 2)
-			current_color = floor_color;
-		y++;
-	}
 }
