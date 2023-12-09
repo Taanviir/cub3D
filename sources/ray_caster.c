@@ -112,13 +112,13 @@ static void	raycast_set_step(const double *pos, t_dda *dda)
 }
 
 // returns the color of a texel :)
-inline static unsigned int	get_texel_color(t_img *image, int x, int y, bool dark)
+inline static unsigned int	get_texel_color(t_img *img, int x, int y, bool dark)
 {
 	unsigned int	current_color;
 
-	if (y >= 0 && x >= 0 && x < image->img_width && y < image->img_height)
-		current_color = *((unsigned int *)(image->addr
-					+ (y * image->line_length + x * (image->bpp / 8))));
+	if (y >= 0 && x >= 0 && x < img->img_width && y < img->img_height)
+		current_color = *((unsigned int *)(img->addr
+					+ (y * img->line_length + x * (img->bpp / 8))));
 	if (dark)
 		current_color = (current_color >> 1) & 8355711;
 	return (current_color);
