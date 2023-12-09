@@ -67,7 +67,7 @@ void	ray_cast(t_mlx *mlx)
  *
  * @return returns the int
  */
-static int encode_color(int map_color[TOTAL_COLORS])
+static int	encode_color(int map_color[TOTAL_COLORS])
 {
 	return ((map_color[R] << 16 | map_color[G] << 8 | map_color[B]));
 }
@@ -112,26 +112,25 @@ static void	raycast_set_step(const double *pos, t_dda *dda)
 }
 
 // returns the color of a texel :)
-inline static unsigned int get_texel_color(t_img *image, int x, int y, bool dark)
+inline static unsigned int	get_texel_color(t_img *image, int x, int y, bool dark)
 {
 	unsigned int	current_color;
 
 	if (y >= 0 && x >= 0 && x < image->img_width && y < image->img_height)
 		current_color = *((unsigned int *)(image->addr
-					+ (y * image->line_length + x * (image->bpp / 8) )));
+					+ (y * image->line_length + x * (image->bpp / 8))));
 	if (dark)
 		current_color = (current_color >> 1) & 8355711;
 	return (current_color);
 }
 
-
 static void	find_column_height(double *column, int max_height, double distance_to_wall)
 {
 	column[HEIGHT] = max_height / distance_to_wall;
-	column[TOP]= (-column[HEIGHT] / 2) + (max_height / 2);
+	column[TOP] = (-column[HEIGHT] / 2) + (max_height / 2);
 	if (column[TOP] < 0)
 		column[TOP] = 0;
-	column[BOT] = (column[HEIGHT]/ 2) + (max_height / 2);
+	column[BOT] = (column[HEIGHT] / 2) + (max_height / 2);
 	if (column[BOT] >= max_height)
 		column[BOT] = max_height - 1;
 }
@@ -234,7 +233,7 @@ static void	raycast_set_delta(t_dda *dda, const t_player *player,
  *
  * @return wall side hit by the ray.
  */
-static e_texture raycast_dda(t_dda *dda, const t_map *map)
+static e_texture	raycast_dda(t_dda *dda, const t_map *map)
 {
 	int			current_grid[2];
 
@@ -255,7 +254,7 @@ static e_texture raycast_dda(t_dda *dda, const t_map *map)
 			dda->hit = dda->side[H];
 		}
 		if (map->grid[current_grid[Y]][current_grid[X]] == WALL)
-			break;
+			break ;
 	}
 	return (dda->hit);
 }
@@ -266,7 +265,7 @@ static e_texture raycast_dda(t_dda *dda, const t_map *map)
  *
  * @param mlx a pointer to the mlx data structure
  */
-static void display_background(t_mlx *mlx)
+static void	display_background(t_mlx *mlx)
 {
 	int		current_color;
 	int		ceiling_color;
@@ -288,6 +287,7 @@ static void display_background(t_mlx *mlx)
 		y++;
 	}
 }
+
 inline static void	my_pixel_put(t_img *image, int x, int y, int color)
 {
 	if (y >= 0 && x >= 0 && x < WIN_WIDTH && y < WIN_HEIGHT)
