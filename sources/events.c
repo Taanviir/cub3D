@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/07 19:08:11 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/09 15:25:11 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,21 +79,33 @@ void	move_player(int keycode, t_mlx *mlx)
 	move[COS] = MOVE * cos(move[ANGLE]);
 	pos[X] = &mlx->player.position[X];
 	pos[Y] = &mlx->player.position[Y];
-	if (keycode == KEYCODE_W && mlx->map->grid[(int)(*pos[Y] + move[SIN])][(int)(*pos[X] + move[COS])] != WALL) {
-		*pos[Y] += move[SIN];
-		*pos[X] += move[COS];
+	if (keycode == KEYCODE_W)
+	{
+		if (mlx->map->grid[(int)(*pos[Y] + move[SIN])][(int)(*pos[X])] != WALL)
+			*pos[Y] += move[SIN];
+		if (mlx->map->grid[(int)(*pos[Y])][(int)(*pos[X] + move[COS])] != WALL)
+			*pos[X] += move[COS];
 	}
-	else if (keycode == KEYCODE_A  && mlx->map->grid[(int)(*pos[Y] - move[COS])][(int)(*pos[X] + move[SIN])] != WALL) {
-		*pos[Y] -= move[COS];
-		*pos[X] += move[SIN];
+	else if (keycode == KEYCODE_A)
+	{
+		if (mlx->map->grid[(int)(*pos[Y] - move[COS])][(int)(*pos[X])] != WALL)
+			*pos[Y] -= move[COS];
+		if (mlx->map->grid[(int)(*pos[Y])][(int)(*pos[X] + move[SIN])] != WALL)
+			*pos[X] += move[SIN];
 	}
-	else if (keycode == KEYCODE_S && mlx->map->grid[(int)(*pos[Y] - move[SIN])][(int)(*pos[X] - move[COS])] != WALL) {
-		*pos[Y] -= move[SIN];
-		*pos[X] -= move[COS];
+	else if (keycode == KEYCODE_S)
+	{
+		if (mlx->map->grid[(int)(*pos[Y] - move[SIN])][(int)(*pos[X])] != WALL)
+			*pos[Y] -= move[SIN];
+		if (mlx->map->grid[(int)(*pos[Y])][(int)(*pos[X] - move[COS])] != WALL)
+			*pos[X] -= move[COS];
 	}
-	else if (keycode == KEYCODE_D && mlx->map->grid[(int)(*pos[Y] + move[COS])][(int)(*pos[X] - move[SIN])] != WALL) {
-		*pos[Y] += move[COS];
-		*pos[X] -= move[SIN];
+	else if (keycode == KEYCODE_D)
+	{
+		if (mlx->map->grid[(int)(*pos[Y] + move[COS])][(int)(*pos[X])] != WALL)
+			*pos[Y] += move[COS];
+		if (mlx->map->grid[(int)(*pos[Y])][(int)(*pos[X] - move[SIN])] != WALL)
+			*pos[X] -= move[SIN];
 	}
 	ray_cast(mlx);
 }
