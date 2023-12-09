@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/11/05 21:37:34 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/12/09 15:32:34 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ endif
 
 SRCS_DIR = sources
 SRCS = main.c mlx_core.c utils.c map.c grid_validate.c events.c \
-	draw_pixel.c
+	ray_caster.c
 
 OBJS_DIR = objects
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
@@ -44,22 +44,31 @@ OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT = libft/libft.a
 MINILIBX = $(MLX_DIR)libmlx.a
 
+MAP:= ./test_maps/split-map.cub
+
 # ---------------------------------- targets --------------------------------- #
 all : $(NAME)
 
 run : all
-	./$(NAME)
+	./$(NAME) $(MAP)
 
 # --------------------------------- debugging -------------------------------- #
-DEBUG_MAP:= ./test_maps/regular-map.cub # need to change this for maps in test_maps/
 
 valgrind: CFLAGS += -DDEBUG -ggdb3
 valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=definite --track-origins=yes --track-fds=yes ./$(NAME) $(DEBUG_MAP)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./$(NAME) $(MAP)
 
-debug: CFLAGS += -fsanitize=address -ggdb3
+sanitize: CFLAGS += -fsanitize=address -ggdb3
+sanitize: re
+	./$(NAME) $(MAP)
+
+debug: CFLAGS += -ggdb3
 debug: re
-	./$(NAME) $(DEBUG_MAP)
+	./$(NAME) $(MAP)
+
+fast: CFLAGS += -O2
+fast: re
+	./$(NAME) $(MAP)
 
 $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LIBRARY_FLAGS)

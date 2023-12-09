@@ -24,12 +24,11 @@ $(NAME): $(MODULE_OBJ) $(OBJ) $(C_OBJ)
 
 
 %.o: %.swift
-	swiftc $(OPTI) $(INC)  -suppress-warnings -parse-as-library -c $< -o $@
+	swiftc $(OPTI) $(INC) -suppress-warnings -parse-as-library -c $< -o $@
 
 %.swiftmodule: %.swift
-	swiftc $(OPTI) $(INC) -parse-as-library  -suppress-warnings -c $< -o $@ -emit-module -module-name $(patsubst %.swift,%,$<) -module-link-name $(patsubst %.swift,%,$<)
+	swiftc $(OPTI) $(INC) -suppress-warnings -parse-as-library -c $< -o $@ -emit-module -module-name $(patsubst %.swift,%,$<) -module-link-name $(patsubst %.swift,%,$<)
 
 clean:
 	rm -f $(NAME) $(OBJ) $(MODULE_OBJ) $(C_OBJ) *.swiftdoc *~
 
-.SILENT:
