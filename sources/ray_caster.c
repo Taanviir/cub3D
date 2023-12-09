@@ -32,14 +32,14 @@ inline static void	my_pixel_put(t_img *image, int x, int y, int color);
 void	ray_cast(t_mlx *mlx)
 {
 	t_dda		dda;
-	e_texture 	hit;
+	e_texture	hit;
 	int			slice;
 	double		ncf;
 
 	slice = 0;
 	ncf = 2 / (double)WIN_WIDTH;
-	dda.map_cell[X] = (int)mlx->player.pos[X]; // optimization
-	dda.map_cell[Y] = (int)mlx->player.pos[Y]; // optimization
+	dda.map_cell[X] = (int)mlx->player.pos[X];
+	dda.map_cell[Y] = (int)mlx->player.pos[Y];
 	display_background(mlx);
 	while (slice < WIN_WIDTH)
 	{
