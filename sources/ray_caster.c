@@ -25,7 +25,7 @@ static void			draw_slice(t_mlx *mlx, t_dda *dda, int slice);
 
 /* --------------------------- draw slice helpers --------------------------- */
 static bool			set_texel(t_mlx *mlx, t_dda *dda, double *texel, double *column);
-static void			find_column_height(double *column, int max_height, double distance_to_wall);
+static void			find_col_height(double *col, int max_height, double dist_to_wall);
 inline static unsigned int	get_texel_color(t_img *image, int x, int y, bool dark);
 inline static void	my_pixel_put(t_img *image, int x, int y, int color);
 
@@ -124,15 +124,15 @@ inline static unsigned int	get_texel_color(t_img *img, int x, int y, bool dark)
 	return (current_color);
 }
 
-static void	find_column_height(double *column, int max_height, double distance_to_wall)
+static void	find_col_height(double *col, int max_height, double dist_to_wall)
 {
-	column[HEIGHT] = max_height / distance_to_wall;
-	column[TOP] = (-column[HEIGHT] / 2) + (max_height / 2);
-	if (column[TOP] < 0)
-		column[TOP] = 0;
-	column[BOT] = (column[HEIGHT] / 2) + (max_height / 2);
-	if (column[BOT] >= max_height)
-		column[BOT] = max_height - 1;
+	col[HEIGHT] = max_height / dist_to_wall;
+	col[TOP] = (-col[HEIGHT] / 2) + (max_height / 2);
+	if (col[TOP] < 0)
+		col[TOP] = 0;
+	col[BOT] = (col[HEIGHT] / 2) + (max_height / 2);
+	if (col[BOT] >= max_height)
+		col[BOT] = max_height - 1;
 }
 
 // sets the texture X, Y and step papremeters and returns whether it should
@@ -173,7 +173,7 @@ static void	draw_slice(t_mlx *mlx, t_dda *dda, int slice)
 	double	texel[4];
 	int		i;
 
-	find_column_height(column, WIN_HEIGHT, dda->distance_to_wall);
+	find_col_height(column, WIN_HEIGHT, dda->distance_to_wall);
 	texel[X] = 0;
 	texel[Y] = 0;
 	dark = set_texel(mlx, dda, texel, column);
