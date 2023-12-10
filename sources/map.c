@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 20:31:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 11:19:43 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 12:34:05 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,8 @@ static char	*scene_get_texture_id(char *current_map_row)
  */
 static bool	scene_set_texture(char **texture, char *current_map_row)
 {
-	*texture = ft_substr(current_map_row, PATH_START, ft_strlen(current_map_row) - PATH_START);
+	*texture = ft_substr(current_map_row, PATH_START,
+			ft_strlen(current_map_row) - PATH_START);
 	if (!map_extension_check(*texture, ".xpm"))
 		return (FAILURE);
 	free(current_map_row);
@@ -295,6 +296,8 @@ static int	scene_validate_color(char *color_string)
 	return (SUCCESS);
 }
 
+#define COLOR_START 2
+
 /**
  * @brief Sets the color components of a map using the information from the
  * current row of the map file.
@@ -318,7 +321,8 @@ static int	scene_set_color(int *map_color, char *current_map_row)
 
 	i = 0;
 	status = SUCCESS;
-	color_string = ft_substr(current_map_row, 2, ft_strlen(current_map_row) - 2);
+	color_string = ft_substr(current_map_row, COLOR_START,
+			ft_strlen(current_map_row) - COLOR_START);
 	if (!scene_validate_color(color_string))
 		return (FAILURE);
 	rgb_color_strings = ft_split(color_string, ',');
