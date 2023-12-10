@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 00:53:56 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 17:18:57 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,36 +34,36 @@ int	close_mlx(t_mlx *mlx)
 
 void	rotate_player(int keycode, t_mlx *mlx)
 {
-	double	*c[2];
-	double	*d[2];
-	double	old_d[2];
-	double	old_c[2];
+	double	*camera[2];
+	double	*direction[2];
+	double	old_direction[2];
+	double	old_camera[2];
 	double	sin_step;
 	double	cos_step;
 
-	d[X] = &mlx->player.direction[X];
-	d[Y] = &mlx->player.direction[Y];
-	c[X] = &mlx->player.camera_plane[X];
-	c[Y] = &mlx->player.camera_plane[Y];
-	old_d[X] = mlx->player.direction[X];
-	old_d[Y] = mlx->player.direction[Y];
-	old_c[X] = mlx->player.camera_plane[X];
-	old_c[Y] = mlx->player.camera_plane[Y];
+	direction[X] = &mlx->player.direction[X];
+	direction[Y] = &mlx->player.direction[Y];
+	camera[X] = &mlx->player.camera_plane[X];
+	camera[Y] = &mlx->player.camera_plane[Y];
+	old_direction[X] = mlx->player.direction[X];
+	old_direction[Y] = mlx->player.direction[Y];
+	old_camera[X] = mlx->player.camera_plane[X];
+	old_camera[Y] = mlx->player.camera_plane[Y];
 	sin_step = sin((ROTATE_ANGLE * 3.14) / 180.0F);
 	cos_step = cos((ROTATE_ANGLE * 3.14) / 180.0F);
 	if (keycode == KEYCODE_L_ARROW)
 	{
-		*d[X] = old_d[X] * cos_step + old_d[Y] * sin_step;
-		*c[X] = old_c[X] * cos_step + old_c[Y] * sin_step;
-		*d[Y] = -old_d[X] * sin_step + old_d[Y] * cos_step;
-		*c[Y] = -old_c[X] * sin_step + old_c[Y] * cos_step;
+		*direction[X] = old_direction[X] * cos_step + old_direction[Y] * sin_step;
+		*camera[X] = old_camera[X] * cos_step + old_camera[Y] * sin_step;
+		*direction[Y] = -old_direction[X] * sin_step + old_direction[Y] * cos_step;
+		*camera[Y] = -old_camera[X] * sin_step + old_camera[Y] * cos_step;
 	}
 	else if (keycode == KEYCODE_R_ARROW)
 	{
-		*d[X] = old_d[X] * cos_step - old_d[Y] * sin_step;
-		*c[X] = old_c[X] * cos_step - old_c[Y] * sin_step;
-		*d[Y] = old_d[X] * sin_step + old_d[Y] * cos_step;
-		*c[Y] = old_c[X] * sin_step + old_c[Y] * cos_step;
+		*direction[X] = old_direction[X] * cos_step - old_direction[Y] * sin_step;
+		*camera[X] = old_camera[X] * cos_step - old_camera[Y] * sin_step;
+		*direction[Y] = old_direction[X] * sin_step + old_direction[Y] * cos_step;
+		*camera[Y] = old_camera[X] * sin_step + old_camera[Y] * cos_step;
 	}
 	ray_cast(mlx);
 }
