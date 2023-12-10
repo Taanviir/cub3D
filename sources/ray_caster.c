@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 23:42:55 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/10 02:20:56 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 14:14:34 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,24 @@
 static void			raycast_set_step(const double *pos, t_dda *dda);
 static e_texture	raycast_dda(t_dda *dda, const t_map *map);
 static void			raycast_set_delta(t_dda *dda, const t_player *player,
-						const int *slice, const double ncf);
+						const int *slice,
+						const double normalized_camera_factor);
 
 void	ray_cast(t_mlx *mlx)
 {
 	t_dda		dda;
 	e_texture	hit;
 	int			slice;
-	double		ncf;
+	double		normalized_camera_factor;
 
 	slice = 0;
-	ncf = 2 / (double)WIN_WIDTH;
+	normalized_camera_factor = 2 / (double)WIN_WIDTH;
 	dda.map_cell[X] = (int)mlx->player.pos[X];
 	dda.map_cell[Y] = (int)mlx->player.pos[Y];
 	display_background(mlx);
 	while (slice < WIN_WIDTH)
 	{
-		raycast_set_delta(&dda, &mlx->player, &slice, ncf);
+		raycast_set_delta(&dda, &mlx->player, &slice, normalized_camera_factor);
 		raycast_set_step(mlx->player.pos, &dda);
 		hit = raycast_dda(&dda, mlx->map);
 		if (hit == dda.side[H])
@@ -97,15 +98,15 @@ static void	raycast_set_step(const double *pos, t_dda *dda)
  * @param player Pointer to the player structure containing position and
  * direction data.
  * @param slice Pointer to the current slice index being processed.
- * @param ncf normalized camera factor used to translate the camera plane into
- * a [-1, 1] range
+ * @param normalized_camera_factor normalized camera factor used to
+ * translate the camera plane into a [-1, 1] range
  */
 static void	raycast_set_delta(t_dda *dda, const t_player *player,
-	const int *slice, const double ncf)
+	const int *slice, const double normalized_camera_factor)
 {
 	double	camera_x_pos;
 
-	camera_x_pos = (*slice * ncf) - 1;
+	camera_x_pos = (*slice * normalized_camera_factor) - 1;
 	dda->ray[X] = player->direction[X]
 		+ (player->camera_plane[X] * camera_x_pos);
 	dda->ray[Y] = player->direction[Y]
