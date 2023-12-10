@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_caster.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 23:42:55 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/10 14:14:34 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 19:34:48 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* ---------------------------- ray cast helpers ---------------------------- */
 static void			raycast_set_step(const double *pos, t_dda *dda);
-static e_texture	raycast_dda(t_dda *dda, const t_map *map);
+static t_texture	raycast_dda(t_dda *dda, const t_map *map);
 static void			raycast_set_delta(t_dda *dda, const t_player *player,
 						const int *slice,
 						const double normalized_camera_factor);
@@ -22,7 +22,7 @@ static void			raycast_set_delta(t_dda *dda, const t_player *player,
 void	ray_cast(t_mlx *mlx)
 {
 	t_dda		dda;
-	e_texture	hit;
+	t_texture	hit;
 	int			slice;
 	double		normalized_camera_factor;
 
@@ -133,7 +133,7 @@ static void	raycast_set_delta(t_dda *dda, const t_player *player,
  *
  * @return wall side hit by the ray.
  */
-static e_texture	raycast_dda(t_dda *dda, const t_map *map)
+static t_texture	raycast_dda(t_dda *dda, const t_map *map)
 {
 	int			current_grid[2];
 
