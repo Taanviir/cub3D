@@ -103,8 +103,6 @@ static bool	scene_set_texture(char **texture, char *current_map_row)
  */
 static int	scene_set(t_map *map, char *texture_id, char *current_map_row)
 {
-	if (!texture_id)
-		return (write_error_msg(SCENE_FAIL));
 	if (!ft_strncmp(texture_id, "NO", 2) && !map->texture[NO])
 		return (scene_set_texture(&map->texture[NO], current_map_row));
 	else if (!ft_strncmp(texture_id, "SO", 2) && !map->texture[SO])
@@ -177,6 +175,8 @@ int	scene_load(t_map *map, int map_fd, char **current_map_row)
 		if (!*current_map_row || !ft_is_alpha(*current_map_row[0]))
 			break ;
 		texture_id = scene_get_texture_id(*current_map_row);
+		if (!texture_id)
+			return (write_error_msg(SCENE_FAIL));
 		if (!scene_set(map, texture_id, *current_map_row))
 		{
 			free(texture_id);
