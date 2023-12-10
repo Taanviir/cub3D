@@ -34,22 +34,23 @@ static void	*exit_init(t_mlx *mlx, char *error_message)
 	return (NULL);
 }
 
-static bool load_textures(t_mlx *mlx)
+static bool	load_textures(t_mlx *mlx)
 {
-	char	*texture_path;
+	char	*tex_path;
 	void	**texture;
 	char	**address;
-	int		*width;
-	int		*height;
+	int		*dim[2];
+	int		i;
 
-	for(int i = 0; i < TOTAL_TEXTURES; i++)
+	i = -1;
+	while (++i < TOTAL_TEXTURES)
 	{
 		texture = &(mlx->textures[i].img_ptr);
 		address = &(mlx->textures[i].addr);
-		texture_path = mlx->map->texture[i];
-		width = &mlx->textures[i].img_width;
-		height = &mlx->textures[i].img_height;
-		texture = mlx_xpm_file_to_image(mlx->mlx_ptr, texture_path, width, height);
+		tex_path = mlx->map->texture[i];
+		dim[0] = &mlx->textures[i].img_width;
+		dim[1] = &mlx->textures[i].img_height;
+		texture = mlx_xpm_file_to_image(mlx->mlx_ptr, tex_path, dim[0], dim[1]);
 		if (!texture)
 			return (write_error_msg(TEXTURE_FAIL));
 		*address = mlx_get_data_addr(texture, &mlx->textures[i].bpp,
