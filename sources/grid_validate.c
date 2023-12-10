@@ -136,7 +136,6 @@ static bool	grid_validate_characters(t_map *map, t_player *player)
 	return (true);
 }
 
-//! needs alot of work and maybe move it out of here, doesn't belong here
 static void	create_player(t_player *player, int x, int y, char view_direction)
 {
 	player->pos[X] = x + 0.5;
