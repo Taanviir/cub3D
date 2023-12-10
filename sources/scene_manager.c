@@ -36,24 +36,24 @@ static int	scene_set_color(int *map_color, char *current_map_row)
 	int		i;
 	int		status;
 
-	i = 0;
+	i = -1;
 	status = SUCCESS;
 	color_string = ft_substr(current_map_row, COLOR_START,
 			ft_strlen(current_map_row) - COLOR_START);
 	if (!scene_validate_color(color_string))
 		return (FAILURE);
 	rgb_color_strings = ft_split(color_string, ',');
-	while (i < TOTAL_COLORS)
+	while (++i < TOTAL_COLORS)
 	{
 		if (!rgb_color_strings[i])
 			break ;
 		map_color[i] = ft_atoi(rgb_color_strings[i]);
 		if (map_color[i] > 255 || map_color[i] < 0)
 			status = FAILURE;
-		i++;
 	}
 	ft_free_double((void **)rgb_color_strings);
 	free(color_string);
+	if (status)
 	free(current_map_row);
 	return (status);
 }

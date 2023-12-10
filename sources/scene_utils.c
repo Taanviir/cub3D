@@ -59,8 +59,7 @@ int	scene_validate_color(char *color_string)
 	{
 		if (color_string[i] == ',')
 			comma_counter++;
-		if (!ft_is_digit(color_string[i])
-			&& color_string[i] != ',')
+		if (!ft_is_digit(color_string[i]) && color_string[i] != ',')
 			return (FAILURE);
 		i++;
 	}
