@@ -474,9 +474,11 @@ void	*map_cleanup(char *current_map_row, int map_fd, t_map *map)
  */
 static bool	map_extension_check(char *map_path, char *target)
 {
+	char	*extension;
+
 	if (!map_path)
 		return (write_error_msg(EXTENSION_ERROR));
-	char *extension = ft_strrchr(map_path, '.'); //! redundant check
+	extension = ft_strrchr(map_path, '.'); //! redundant check
 	if (!extension)
 		return (write_error_msg(EXTENSION_ERROR));
 	if (ft_strncmp(extension, target, ft_strlen(target)))
