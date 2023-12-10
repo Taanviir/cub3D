@@ -36,7 +36,6 @@ void			map_free(t_map *map);
 void			*map_cleanup(char *current_map_row, int map_fd, t_map *map);
 /* -------------------------------- utilities ------------------------------- */
 static bool		map_extension_check(char *map_path, char *target);
-static int		verify_open(char *map_path, int options);
 static bool		map_row_is_empty(char *current_map_row);
 static char		*map_next_valid_row(int map_fd);
 
@@ -59,9 +58,9 @@ t_map	*map_load(char *map_path)
 
 	if (!map_extension_check(map_path, ".cub"))
 		return (NULL);
-	map_fd = verify_open(map_path, O_RDONLY);
-	if (map_fd == FAILURE)
-		return (NULL);
+	map_fd = open(map_path, O_RDONLY);
+	if (map_fd == -1)
+		return (write_error_msg(OPEN_FAIL), NULL);
 	map = map_init();
 	if (!map)
 		return (close(map_fd), NULL);
@@ -484,27 +483,6 @@ static bool	map_extension_check(char *map_path, char *target)
 		return (write_error_msg(EXTENSION_ERROR));
 	else
 		return (true);
-}
-/**
- * @brief Opens and verifies a file was opened successfully, prints an error message if not
- *
- * @param file_path The file path to open
- * @param options The options passed to open call
- *
- * @return The file descriptor for the opened file, or 0 if the file cannot be opened.
- */
-static int	verify_open(char *file_path, int options)
-{
-	int	fd;
-
-	fd = open(file_path, options);
-	if (fd == -1)
-	{
-		write_error_msg(OPEN_FAIL);
-		ft_putendl_fd(file_path, 2);
-		return (FAILURE);
-	}
-	return (fd);
 }
 
 /**
