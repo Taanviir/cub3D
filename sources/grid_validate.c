@@ -49,8 +49,6 @@ static void	create_player(t_player *player, int x, int y, char view_direction);
  */
 t_map	*grid_validate(t_map *map, t_player *player)
 {
-	if (!map || !player)
-		return (NULL);
 	if (!grid_validate_characters(map, player))
 		map_free(map);
 	if (!grid_is_enclosed(map, player->pos[X], player->pos[Y]))
