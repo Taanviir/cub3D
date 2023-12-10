@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 17:18:57 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/10 19:52:59 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,6 @@ int	close_mlx(t_mlx *mlx)
 	map_free(map);
 	return (SUCCESS);
 }
-
-
-#define COS 0
-#define SIN 1
 
 void turn(t_mlx *mlx, t_rot rotation)
 {

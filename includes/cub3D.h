@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 13:42:16 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 19:45:24 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/10 19:53:25 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef enum e_texture
 
 typedef struct s_dda
 {
-	double		ray[2];
 	int			map_cell[2]; // the cell where the player is located
 	double		ray[2];
 	double		delta[2]; // the distance a ray has to travel to  hit the next H or V line
@@ -179,9 +178,9 @@ typedef enum e_rot
 
 typedef enum e_movement
 {
-	ANGLE = 0,
-	SIN,
-	COS
+	SIN = 0,
+	COS,
+	ANGLE
 } t_movement;
 
 int		no_event(void);
