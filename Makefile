@@ -71,6 +71,11 @@ fast: CFLAGS += -O2
 fast: re
 	./$(NAME) $(MAP)
 
+
+faster: CFLAGS += -O3
+faster: re
+	./$(NAME) $(MAP)
+
 $(NAME) : $(LIBFT) $(MINILIBX) $(OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LIBRARY_FLAGS)
 	@echo $(GREEN)"cub3D ready for play."$(RESET)
