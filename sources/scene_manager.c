@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 13:24:22 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 13:28:27 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 14:49:24 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static int	scene_set_color(int *map_color, char *current_map_row)
 	rgb_color_strings = ft_split(color_string, ',');
 	while (i < TOTAL_COLORS)
 	{
-		// if (!rgb_color_strings[i])
-		// 	break ;
+		if (!rgb_color_strings[i])
+			break ;
 		map_color[i] = ft_atoi(rgb_color_strings[i]);
 		if (map_color[i] > 255 || map_color[i] < 0)
 			status = FAILURE;
