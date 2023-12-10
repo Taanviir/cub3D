@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/06 23:59:37 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/11/29 01:36:58y sabdelra         ###   ########.fr       */
+/*   Created: 2023/12/10 13:42:16 by tanas             #+#    #+#             */
+/*   Updated: 2023/12/10 13:42:21 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,13 @@ typedef struct s_map
 
 
 t_map	*map_load(char *map_path);
+int		grid_load(t_map *map, int map_fd, char **current_map_row);
+int		scene_load(t_map *map, int map_fd, char **current_map_row);
+int		scene_validate_color(char *color_string);
+char	*scene_get_texture_id(char *current_map_row);
+char	*map_next_valid_row(int map_fd);
+bool	map_extension_check(char *map_path, char *target);
+void	*map_cleanup(char *current_map_row, int map_fd, t_map *map);
 t_map	*grid_validate(t_map *map, t_player *player);
 
 /* -------------------------------- mlx core -------------------------------- */
