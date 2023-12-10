@@ -80,20 +80,22 @@ t_mlx	*init_mlx_data(char *map_path)
 	mlx = ft_calloc(1, sizeof(t_mlx));
 	if (!mlx)
 		return (write_error_msg(MALLOC_FAIL), NULL);
+	mlx->map = map_load(map_path);
+	if (!mlx->map)
+		return (NULL);
+	if (!grid_validate(mlx->map, &mlx->player))
+		return (exit_init(mlx, NULL));
 	mlx->mlx_ptr = mlx_init();
 	if (!mlx->mlx_ptr)
 		return (exit_init(mlx, MLX_INIT_FAIL));
+	if (!load_textures(mlx))
+		return (exit_init(mlx, NULL));
 	mlx->window = mlx_new_window(mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT,
 			WIN_TITLE);
 	if (!mlx->window)
 		return (exit_init(mlx, MLX_WIN_FAIL));
-	mlx->map = map_load(map_path);
-	if(!grid_validate(mlx->map, &mlx->player))
-		return (exit_init(mlx, NULL));
 	mlx->img_data = create_image(mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	if (!mlx->img_data.addr)
 		return (exit_init(mlx, MLX_IMG_FAIL));
-	if (!load_textures(mlx))
-		return (exit_init(mlx, NULL));
 	return (mlx);
 }
