@@ -32,14 +32,17 @@ int	close_mlx(t_mlx *mlx)
 	return (SUCCESS);
 }
 
-void	rotate_player(int keycode, t_mlx *mlx)
+
+#define COS 0
+#define SIN 1
+
+void turn(t_mlx *mlx, t_rot rotation)
 {
 	double	*camera[2];
 	double	*direction[2];
 	double	old_direction[2];
 	double	old_camera[2];
-	double	sin_step;
-	double	cos_step;
+	double	angle_step[2];
 
 	direction[X] = &mlx->player.direction[X];
 	direction[Y] = &mlx->player.direction[Y];
@@ -49,22 +52,24 @@ void	rotate_player(int keycode, t_mlx *mlx)
 	old_direction[Y] = mlx->player.direction[Y];
 	old_camera[X] = mlx->player.camera_plane[X];
 	old_camera[Y] = mlx->player.camera_plane[Y];
-	sin_step = sin((ROTATE_ANGLE * 3.14) / 180.0F);
-	cos_step = cos((ROTATE_ANGLE * 3.14) / 180.0F);
+	angle_step[SIN] = sin((ROTATE_ANGLE * 3.14) / 180.0F);
+	angle_step[COS] = cos((ROTATE_ANGLE * 3.14) / 180.0F);
+	*direction[X] = old_direction[X] * angle_step[COS]
+		- (rotation * old_direction[Y]) * angle_step[SIN];
+	*camera[X] = old_camera[X] * angle_step[COS]
+		- (rotation * old_camera[Y]) * angle_step[SIN];
+	*direction[Y] = (rotation * old_direction[X]) * angle_step[SIN]
+		+ old_direction[Y] * angle_step[COS];
+	*camera[Y] = (rotation * old_camera[X]) * angle_step[SIN]
+		+ old_camera[Y] * angle_step[COS];
+}
+
+void	rotate_player(int keycode, t_mlx *mlx)
+{
 	if (keycode == KEYCODE_L_ARROW)
-	{
-		*direction[X] = old_direction[X] * cos_step + old_direction[Y] * sin_step;
-		*camera[X] = old_camera[X] * cos_step + old_camera[Y] * sin_step;
-		*direction[Y] = -old_direction[X] * sin_step + old_direction[Y] * cos_step;
-		*camera[Y] = -old_camera[X] * sin_step + old_camera[Y] * cos_step;
-	}
+		turn(mlx, LEFT);
 	else if (keycode == KEYCODE_R_ARROW)
-	{
-		*direction[X] = old_direction[X] * cos_step - old_direction[Y] * sin_step;
-		*camera[X] = old_camera[X] * cos_step - old_camera[Y] * sin_step;
-		*direction[Y] = old_direction[X] * sin_step + old_direction[Y] * cos_step;
-		*camera[Y] = old_camera[X] * sin_step + old_camera[Y] * cos_step;
-	}
+		turn(mlx, RIGHT);
 	ray_cast(mlx);
 }
 
