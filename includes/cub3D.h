@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 13:42:16 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 13:42:21 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/10 19:45:24 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,26 @@
 #define V 1 // vertical
 
 // hit side determines the texture to load
-typedef enum {
+typedef enum e_texture
+{
 	NO = 0,
 	WE,
 	EA,
 	SO,
 	TOTAL_TEXTURES
-} e_texture;
+} t_texture;
+
 typedef struct s_dda
 {
 	double		ray[2];
 	int			map_cell[2]; // the cell where the player is located
+	double		ray[2];
 	double		delta[2]; // the distance a ray has to travel to  hit the next H or V line
 	double		next_hit[2];
 	double		step[2]; // how much you need to step to get to the next hit (H or V)
 	double		distance_to_wall;
-	e_texture		hit;
-	e_texture		side[2]; // 2 textures either horizontal or vertical
+	t_texture	hit;
+	t_texture	side[2]; // 2 textures either horizontal or vertical
 } t_dda;
 
 typedef struct s_player
@@ -84,15 +87,13 @@ typedef struct s_player
 #define PLAYER_DIRECTIONS "NSWE"
 #define WALL '1'
 
-
-
-enum e_map_color
+typedef enum e_map_color
 {
 	R = 0,
 	G,
 	B,
 	TOTAL_COLORS
-};
+} t_map_color;
 
 /**
  * @brief Structure to hold map data including the grid and its metadata.
@@ -153,11 +154,12 @@ typedef struct s_mlx {
 t_mlx	*init_mlx_data(char *map_path);
 /* ------------------------------- raycaster -------------------------------- */
 
-typedef enum {
+typedef enum e_slice
+{
 	TOP = 0,
 	BOT,
 	HEIGHT
-} e_slice;
+} t_slice;
 
 #define VERY_BIG_NUMBER 453211111.0f
 
@@ -169,11 +171,18 @@ void	ray_cast(t_mlx *mlx);
 #define MOVE 0.05f
 #define ROTATE_ANGLE 2
 
-typedef enum e_movement {
+typedef enum e_rot
+{
+	LEFT = -1,
+	RIGHT = 1
+} t_rot;
+
+typedef enum e_movement
+{
 	ANGLE = 0,
 	SIN,
 	COS
-}t_movement;
+} t_movement;
 
 int		no_event(void);
 int		handle_events(int keycode, t_mlx *mlx_core);
