@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/11 13:16:18 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/11 13:39:43by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,44 +81,44 @@ void	rotate_player(t_mlx *mlx, t_rot rotation)
 	ray_cast(mlx);
 }
 
+void	calculate_delta_move(int keycode, t_mlx *mlx, double *move)
+{
+
+	move[ANGLE] = atan2(mlx->player.direction[Y], mlx->player.direction[X]);
+	if (keycode == KEYCODE_W)
+	{
+		move[Y] = MOVE * sin(move[ANGLE]);
+		move[X] = MOVE * cos(move[ANGLE]);
+	}
+	else if (keycode == KEYCODE_S)
+	{
+		move[Y] = -1 * (MOVE * sin(move[ANGLE]));
+		move[X] = -1 * (MOVE * cos(move[ANGLE]));
+	}
+	else if (keycode == KEYCODE_A)
+	{
+		move[X] = MOVE * sin(move[ANGLE]);
+		move[Y] = -1 * (MOVE * cos(move[ANGLE]));
+	}
+	else if (keycode == KEYCODE_D)
+	{
+		move[X] = -1 * (MOVE * sin(move[ANGLE]));
+		move[Y] = MOVE * cos(move[ANGLE]);
+	}
+}
+
 void	move_player(int keycode, t_mlx *mlx)
 {
 	double	*pos[2];
 	double	move[3];
 
-	move[ANGLE] = atan2(mlx->player.direction[Y], mlx->player.direction[X]);
-	move[SIN] = MOVE * sin(move[ANGLE]);
-	move[COS] = MOVE * cos(move[ANGLE]);
 	pos[X] = &mlx->player.pos[X];
 	pos[Y] = &mlx->player.pos[Y];
-	if (keycode == KEYCODE_W)
-	{
-		if (mlx->map->grid[(int)(*pos[Y] + move[SIN])][(int)(*pos[X])] != WALL)
-			*pos[Y] += move[SIN];
-		if (mlx->map->grid[(int)(*pos[Y])][(int)(*pos[X] + move[COS])] != WALL)
-			*pos[X] += move[COS];
-	}
-	else if (keycode == KEYCODE_A)
-	{
-		if (mlx->map->grid[(int)(*pos[Y] - move[COS])][(int)(*pos[X])] != WALL)
-			*pos[Y] -= move[COS];
-		if (mlx->map->grid[(int)(*pos[Y])][(int)(*pos[X] + move[SIN])] != WALL)
-			*pos[X] += move[SIN];
-	}
-	else if (keycode == KEYCODE_S)
-	{
-		if (mlx->map->grid[(int)(*pos[Y] - move[SIN])][(int)(*pos[X])] != WALL)
-			*pos[Y] -= move[SIN];
-		if (mlx->map->grid[(int)(*pos[Y])][(int)(*pos[X] - move[COS])] != WALL)
-			*pos[X] -= move[COS];
-	}
-	else if (keycode == KEYCODE_D)
-	{
-		if (mlx->map->grid[(int)(*pos[Y] + move[COS])][(int)(*pos[X])] != WALL)
-			*pos[Y] += move[COS];
-		if (mlx->map->grid[(int)(*pos[Y])][(int)(*pos[X] - move[SIN])] != WALL)
-			*pos[X] -= move[SIN];
-	}
+	calculate_delta_move(keycode, mlx, move);
+	if (mlx->map->grid[(int)(*pos[Y] + move[Y])][(int)(*pos[X])] != WALL)
+		*pos[Y] += move[Y];
+	if (mlx->map->grid[(int)(*pos[Y])][(int)(*pos[X] + move[X])] != WALL)
+		*pos[X] += move[X];
 	ray_cast(mlx);
 }
 
