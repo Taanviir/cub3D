@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 13:24:22 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 14:49:24 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/11 12:59:48 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	scene_set_color(int *map_color, char *current_map_row)
 	ft_free_double((void **)rgb_color_strings);
 	free(color_string);
 	if (status)
-	free(current_map_row);
+		free(current_map_row);
 	return (status);
 }
 
