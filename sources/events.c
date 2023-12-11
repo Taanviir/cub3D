@@ -63,10 +63,10 @@ void	rotate_player(t_mlx *mlx, t_rot rotation)
 
 void	move_player(int keycode, t_mlx *mlx)
 {
-	double *pos[2];
-	double move[3];
+	double	*pos[2];
+	double	move[3];
 
-	move[ANGLE] = atan2(mlx->player.direction[Y],  mlx->player.direction[X]);
+	move[ANGLE] = atan2(mlx->player.direction[Y], mlx->player.direction[X]);
 	move[SIN] = MOVE * sin(move[ANGLE]);
 	move[COS] = MOVE * cos(move[ANGLE]);
 	pos[X] = &mlx->player.pos[X];
