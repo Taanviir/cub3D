@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:34:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 19:52:59 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/11 13:16:18 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
+
+#ifdef __LINUX__
 
 int	close_mlx(t_mlx *mlx)
 {
@@ -23,14 +25,32 @@ int	close_mlx(t_mlx *mlx)
 	while (i < TOTAL_TEXTURES && mlx->textures[i].img_ptr)
 		mlx_destroy_image(mlx->mlx_ptr, mlx->textures[i++].img_ptr);
 	mlx_destroy_window(mlx->mlx_ptr, mlx->window);
-	#ifdef __LINUX__
 	mlx_destroy_display(mlx->mlx_ptr);
-	#endif
 	free(mlx->mlx_ptr);
 	free(mlx);
 	map_free(map);
 	return (SUCCESS);
 }
+
+#elif __APPLE__
+
+int	close_mlx(t_mlx *mlx)
+{
+	int		i;
+	t_map	*map;
+
+	map = mlx->map;
+	i = 0;
+	mlx_destroy_image(mlx->mlx_ptr, mlx->img_data.img_ptr);
+	while (i < TOTAL_TEXTURES && mlx->textures[i].img_ptr)
+		mlx_destroy_image(mlx->mlx_ptr, mlx->textures[i++].img_ptr);
+	mlx_destroy_window(mlx->mlx_ptr, mlx->window);
+	free(mlx->mlx_ptr);
+	free(mlx);
+	map_free(map);
+	return (SUCCESS);
+}
+#endif
 
 void	rotate_player(t_mlx *mlx, t_rot rotation)
 {

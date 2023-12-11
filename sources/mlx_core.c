@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_core.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/12/09 13:11:23 by sabdelra         ###   ########.fr       */
+/*   Created: 2023/12/09 16:15:34 by tanas             #+#    #+#             */
+/*   Updated: 2023/12/11 13:15:49 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
 /* ------------------------------ initializing ------------------------------ */
+
+#ifdef __LINUX__
+
 static void	*exit_init(t_mlx *mlx, char *error_message)
 {
 	if (mlx->map && mlx->img_data.img_ptr)
@@ -23,9 +26,7 @@ static void	*exit_init(t_mlx *mlx, char *error_message)
 		map_free(mlx->map);
 	if (mlx->mlx_ptr)
 	{
-		#ifdef __LINUX__
 		mlx_destroy_display(mlx->mlx_ptr);
-		#endif
 		free(mlx->mlx_ptr);
 	}
 	free(mlx);
@@ -33,6 +34,25 @@ static void	*exit_init(t_mlx *mlx, char *error_message)
 		write_error_msg(error_message);
 	return (NULL);
 }
+
+#elif __APPLE__
+
+static void	*exit_init(t_mlx *mlx, char *error_message)
+{
+	if (mlx->map && mlx->img_data.img_ptr)
+		mlx_destroy_image(mlx->mlx_ptr, mlx->img_data.img_ptr);
+	if (mlx->window)
+		mlx_destroy_window(mlx->mlx_ptr, mlx->window);
+	if (mlx->map)
+		map_free(mlx->map);
+	if (mlx->mlx_ptr)
+		free(mlx->mlx_ptr);
+	free(mlx);
+	if (error_message)
+		write_error_msg(error_message);
+	return (NULL);
+}
+#endif
 
 static bool	load_textures(t_mlx *mlx)
 {
@@ -54,7 +74,7 @@ static bool	load_textures(t_mlx *mlx)
 		if (!texture)
 			return (write_error_msg(TEXTURE_FAIL));
 		*address = mlx_get_data_addr(texture, &mlx->textures[i].bpp,
-			&mlx->textures[i].line_length, &mlx->textures[i].endian);
+				&mlx->textures[i].line_length, &mlx->textures[i].endian);
 		if (!address)
 			return (write_error_msg(TEXTURE_FAIL));
 	}
