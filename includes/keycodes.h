@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:50:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/11/01 16:35:28 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/11 14:10:59 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #  define KEYCODE_R_ARROW 124
 
 # elif __LINUX__
-#  define KEYCODE_ESC XK_Escape
+#  define KEYCODE_ESC 0xFF1B
 #  define KEYCODE_W 119
 #  define KEYCODE_A 97
 #  define KEYCODE_S 115

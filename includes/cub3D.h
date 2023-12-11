@@ -3,25 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 13:42:16 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 19:53:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:10:27 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/* -------------------------------------------------------------------------- */
-/*                                    TODO                                    */
-/* -------------------------------------------------------------------------- */
-
-// [ ] norminette
-// [ ] clean ray_caster.c
-// [-] no magic numeros
-// [x] validating texture path
-// [x] player spawns in wall segfault, EW
-	// [x] directions inverted for EW
-// [x] double free on multiple players
-// [-] fix error handling in map.c:225
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -42,12 +29,12 @@
 
 /* ----------------------------------- dda ---------------------------------- */
 
-#define X 0 // coordinates
-#define Y 1 // coordinates
-#define STEP 2 // texel step
-#define COLOR 3 // texel color
-#define H 0 // horizontal
-#define V 1 // vertical
+# define X 0 // coordinates
+# define Y 1 // coordinates
+# define STEP 2 // texel step
+# define COLOR 3 // texel color
+# define H 0 // horizontal
+# define V 1 // vertical
 
 // hit side determines the texture to load
 typedef enum e_texture
@@ -57,19 +44,19 @@ typedef enum e_texture
 	EA,
 	SO,
 	TOTAL_TEXTURES
-} t_texture;
+}	t_texture;
 
 typedef struct s_dda
 {
-	int			map_cell[2]; // the cell where the player is located
+	int			map_cell[2];
 	double		ray[2];
-	double		delta[2]; // the distance a ray has to travel to  hit the next H or V line
+	double		delta[2];
 	double		next_hit[2];
-	double		step[2]; // how much you need to step to get to the next hit (H or V)
+	double		step[2];
 	double		distance_to_wall;
 	t_texture	hit;
-	t_texture	side[2]; // 2 textures either horizontal or vertical
-} t_dda;
+	t_texture	side[2];
+}	t_dda;
 
 typedef struct s_player
 {
@@ -82,9 +69,9 @@ typedef struct s_player
 # define MAP_INITIAL_CAPACITY 5
 # define DOUBLE 2
 
-#define ACCEPTED_CHARACTERS "10VNSWE\n " // list of valid map characters
-#define PLAYER_DIRECTIONS "NSWE"
-#define WALL '1'
+# define ACCEPTED_CHARACTERS "10VNSWE\n " // list of valid map characters
+# define PLAYER_DIRECTIONS "NSWE"
+# define WALL '1'
 
 typedef enum e_map_color
 {
@@ -92,27 +79,24 @@ typedef enum e_map_color
 	G,
 	B,
 	TOTAL_COLORS
-} t_map_color;
+}	t_map_color;
 
 /**
  * @brief Structure to hold map data including the grid and its metadata.
  *
- * The grid is represented as a dynamic array of strings, where each string represents a row.
- * The structure also holds the current number of rows (n_rows) and the current grid capacity (grid_capacity).
+ * The grid is represented as a dynamic array of strings, where each string
+ * represents a row. The structure also holds the current number of rows
+ * (n_rows) and the current grid capacity (grid_capacity).
  */
 typedef struct s_map
 {
-	/* ---------------------------------- grid ---------------------------------- */
-	char	**grid;					// Dynamic array of strings to represent the grid.
-	int		n_rows;					// Current number of rows in the grid.
-	int		grid_capacity;			// Current capacity of the grid array.
-
-	/* ---------------------------------- scene --------------------------------- */
+	char	**grid;
+	int		n_rows;
+	int		grid_capacity;
 	char	*texture[TOTAL_TEXTURES];
-	int		f_color[TOTAL_COLORS];	// floor color
-	int		c_color[TOTAL_COLORS];	// ceiling color
+	int		f_color[TOTAL_COLORS];
+	int		c_color[TOTAL_COLORS];
 }	t_map;
-
 
 t_map	*map_load(char *map_path);
 int		grid_load(t_map *map, int map_fd, char **current_map_row);
@@ -158,30 +142,30 @@ typedef enum e_slice
 	TOP = 0,
 	BOT,
 	HEIGHT
-} t_slice;
+}	t_slice;
 
-#define VERY_BIG_NUMBER 453211111.0f
+# define VERY_BIG_NUMBER 453211111.0f
 
 void	draw_slice(t_mlx *mlx, t_dda *dda, int slice);
 void	display_background(t_mlx *mlx);
 void	ray_cast(t_mlx *mlx);
 
 /* --------------------------------- events --------------------------------- */
-#define MOVE 0.05f
-#define ROTATE_ANGLE 2
+# define MOVE 0.05f
+# define ROTATE_ANGLE 2
 
 typedef enum e_rot
 {
 	LEFT = -1,
 	RIGHT = 1
-} t_rot;
+}	t_rot;
 
 typedef enum e_movement
 {
 	SIN = 0,
 	COS,
 	ANGLE
-} t_movement;
+}	t_movement;
 
 int		no_event(void);
 int		handle_events(int keycode, t_mlx *mlx_core);
