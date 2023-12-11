@@ -32,7 +32,7 @@ int	close_mlx(t_mlx *mlx)
 	return (SUCCESS);
 }
 
-void turn(t_mlx *mlx, t_rot rotation)
+void	rotate_player(t_mlx *mlx, t_rot rotation)
 {
 	double	*camera[2];
 	double	*direction[2];
@@ -58,14 +58,6 @@ void turn(t_mlx *mlx, t_rot rotation)
 		+ old_direction[Y] * angle_step[COS];
 	*camera[Y] = (rotation * old_camera[X]) * angle_step[SIN]
 		+ old_camera[Y] * angle_step[COS];
-}
-
-void	rotate_player(int keycode, t_mlx *mlx)
-{
-	if (keycode == KEYCODE_L_ARROW)
-		turn(mlx, LEFT);
-	else if (keycode == KEYCODE_R_ARROW)
-		turn(mlx, RIGHT);
 	ray_cast(mlx);
 }
 
@@ -117,8 +109,10 @@ int	handle_events(int keycode, t_mlx *mlx)
 	else if (keycode == KEYCODE_W || keycode == KEYCODE_A
 		|| keycode == KEYCODE_S || keycode == KEYCODE_D)
 		move_player(keycode, mlx);
-	else if (keycode == KEYCODE_L_ARROW || keycode == KEYCODE_R_ARROW)
-		rotate_player(keycode, mlx);
+	else if (keycode == KEYCODE_L_ARROW)
+		rotate_player(mlx, LEFT);
+	else if (keycode == KEYCODE_R_ARROW)
+		rotate_player(mlx, RIGHT);
 	return (0);
 }
 
