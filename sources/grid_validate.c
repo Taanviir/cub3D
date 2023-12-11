@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grid_validate.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:45:12 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/12/09 13:50:20 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/12/10 00:53:49 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,43 @@
  *
  * @brief Grid Validation for Game Map
  *
- * This file implements the grid validation logic for a game map. It includes functions to:
+ * This file implements the grid validation logic for a game map.
+ * It includes functions to:
  * - Check if the map grid is enclosed by walls.
- * - Validate the characters in the map grid against a set of accepted characters.
+ * - Validate the characters in the map grid against a set of accepted
+ *   characters.
  * - Ensure there is exactly one player spawn point.
  *
- * These functions are used to validate the integrity of the map layout before the game starts, ensuring
- * that the environment is set up correctly and is ready for gameplay.
+ * These functions are used to validate the integrity of the map layout
+ * before the game starts, ensuring that the environment is set up correctly
+ * and is ready for gameplay.
  */
 
-#include "cub3D.h"
+#include "../includes/cub3D.h"
 
-static bool	grid_is_enclosed(const t_map *map, const int x,const int y);
+static bool	grid_is_enclosed(const t_map *map, const int x, const int y);
 static bool	grid_validate_characters(t_map *map, t_player *player);
-static void	create_player(t_player *player, int x, int y, char view_direction); //! improve this
-
-
+static void	create_player(t_player *player, int x, int y, char view_direction);
 
 /**
  * @brief Validates the entire map grid for a game level.
  *
- * This function orchestrates the validation of the game map by first checking if all characters within the grid are valid
- * and then ensuring the map's integrity by verifying that it's fully enclosed. It acts as the final step in the map
- * validation process, aggregating checks for character correctness and structural enclosure.
+ * This function orchestrates the validation of the game map by first checking
+ * if all characters within the grid are valid and then ensuring the map's
+ * integrity by verifying that it's fully enclosed. It acts as the final
+ * step in the map validation process, aggregating checks for character
+ * correctness and structural enclosure.
  *
- * @param map A pointer to the t_map structure that represents the map to be validated.
+ * @param map A pointer to the t_map structure that represents the map to be
+ * validated.
  *
  * @return true if the map grid passes all validation checks, otherwise false.
  */
 t_map	*grid_validate(t_map *map, t_player *player)
 {
-	if (!map || !player)
-		return (NULL);
 	if (!grid_validate_characters(map, player))
 		map_free(map);
-	if (!grid_is_enclosed(map, player->position[X], player->position[Y]))
+	if (!grid_is_enclosed(map, player->pos[X], player->pos[Y]))
 	{
 		write_error_msg(MAP_NOT_ENCLOSED);
 		map_free(map);
@@ -58,15 +60,18 @@ t_map	*grid_validate(t_map *map, t_player *player)
 }
 
 /**
- * @brief Checks if a given cell in the map grid is enclosed by walls ('1') or not.
+ * @brief Checks if a given cell in the map grid is enclosed by walls ('1')
+ * or not.
  *
- * Starting from the players position specified by its coordinates (x, y), the function uses recursion to traverse the neighboring cells.
+ * Starting from the players position specified by its coordinates (x, y),
+ * the function uses recursion to traverse the neighboring cells.
  *
  * @param map A pointer to the t_map structure.
  * @param x The initial x-coordinate of the player.
  * @param y The initial y-coordinate of the player.
  *
- * @return Returns true if the starting cell is completely enclosed by '1', else returns false.
+ * @return Returns true if the starting cell is completely enclosed by '1',
+ * else returns false.
  * @note the grid cell value is changed to V, to indicate visited
  */
 static bool	grid_is_enclosed(const t_map *map, const int x, const int y)
@@ -94,12 +99,13 @@ static bool	grid_is_enclosed(const t_map *map, const int x, const int y)
 /**
  * @brief Validates map grid for character integrity and initializes player.
  *
- * Iterates over the map grid to ensure all characters are valid and locates the player's
- * position and direction, enforcing a single player rule.
+ * Iterates over the map grid to ensure all characters are valid and
+ * locates the player's position and direction, enforcing a single player rule.
  *
  * @param map A pointer to the t_map structure containing the grid.
  *
- * @return true if the grid passes validation with one player present, false otherwise.
+ * @return true if the grid passes validation with one player present,
+ * false otherwise.
  */
 static bool	grid_validate_characters(t_map *map, t_player *player)
 {
@@ -128,11 +134,10 @@ static bool	grid_validate_characters(t_map *map, t_player *player)
 	return (true);
 }
 
-//! needs alot of work and maybe move it out of here, doesn't belong here
 static void	create_player(t_player *player, int x, int y, char view_direction)
 {
-	player->position[X] = x + 0.5;
-	player->position[Y] = y + 0.5;
+	player->pos[X] = x + 0.5;
+	player->pos[Y] = y + 0.5;
 	if (view_direction == 'E')
 	{
 		player->direction[X] = 1;

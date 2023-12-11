@@ -1,0 +1,15 @@
+NO ./test_maps/textures/wood.xpm
+SO ./test_maps/textures/redbrick.xpm
+WE ./test_maps/textures/colorstone.xpm
+EA ./test_maps/textures/mossy.xpm
+
+
+F 225,255,255
+C 225,0,0
+
+1111111111
+101S000101
+1011110501
+1010120301
+1010000101
+1111111111
