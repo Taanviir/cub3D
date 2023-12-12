@@ -1,0 +1,19 @@
+NO ./test_maps/textures/wood.xpm
+SO ./test_maps/textures/wood.xpm
+WE ./test_maps/textures/wood.xpm
+EA ./test_maps/textures/wood.xpm
+
+F 38,93,11
+C 135,206,235
+
+1111111111
+1000000111
+1000011011
+1000100001
+1000000101
+10000N0101
+1000011001
+1000100001
+1000100001
+1000000001
+1111111111
