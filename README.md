@@ -8,7 +8,7 @@ This is a project from the 42 school curriculum. The goal is to create a raycast
 
 The user or player in this case can move around the maze using the WASD keys, and rotate the camera using the left and right arrow keys. (See more in the [Usage](#usage) section below)
 
-...attach gif here...
+![gif of gameplay](./gameplay.gif)
 
 ## Installation
 
