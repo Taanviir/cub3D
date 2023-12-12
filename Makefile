@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 19:38:08 by tanas             #+#    #+#              #
-#    Updated: 2023/12/11 14:04:06 by tanas            ###   ########.fr        #
+#    Updated: 2023/12/12 00:55:19 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,9 +35,9 @@ else ifeq ($(UNAME), Darwin)
 endif
 
 SRCS_DIR = sources
-SRCS = main.c mlx_core.c utils.c map.c grid_validate.c events.c \
-	ray_caster.c display_background.c draw_slice.c grid_operations.c \
-	scene_manager.c scene_utils.c map_cleanup.c close_mlx.c
+SRCS = close_mlx.c display_background.c draw_slice.c events.c grid_validate.c \
+	grid_operations.c main.c map.c map_cleanup.c mlx_core.c \
+	ray_caster.c scene_manager.c scene_utils.c utils.c
 
 OBJS_DIR = objects
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
