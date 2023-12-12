@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 14:03:11 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/11 14:04:15 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/12 01:04:25 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ void	move_player(int keycode, t_mlx *mlx)
 
 	pos[X] = &mlx->player.pos[X];
 	pos[Y] = &mlx->player.pos[Y];
+	move[X] = 0;
+	move[Y] = 0;
+	move[ANGLE] = 0;
 	calculate_delta_move(keycode, mlx, move);
 	if (mlx->map->grid[(int)(*pos[Y] + move[Y])][(int)(*pos[X])] != WALL)
 		*pos[Y] += move[Y];

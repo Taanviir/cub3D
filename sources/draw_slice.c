@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 19:57:04 by tanas             #+#    #+#             */
-/*   Updated: 2023/12/10 02:09:53 by tanas            ###   ########.fr       */
+/*   Updated: 2023/12/12 01:03:35 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ inline static unsigned int	get_texel_color(t_img *img, int x, int y, bool dark)
 {
 	unsigned int	current_color;
 
+	current_color = 0;
 	if (y >= 0 && x >= 0 && x < img->img_width && y < img->img_height)
 		current_color = *((unsigned int *)(img->addr
 					+ (y * img->line_length + x * (img->bpp / 8))));
